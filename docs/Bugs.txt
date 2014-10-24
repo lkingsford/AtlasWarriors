@@ -1,0 +1,81 @@
+IMMEDIATE TO DO LIST:
+[x] 	Fix messages
+[x] 	Fix Unarmed DV bug
+[x]	Implement Special Dragon Weapons
+[x]	Implement Shield Fire Blocking
+[x]	Implement Bandits
+[-]	Implement Goliaths - Bugged?
+[x]	Implement Zombies
+[x]	Implement Orcs
+[ ]	Implement Assassins
+[x]	Implement Necromancer
+[-]	Implement Warlord
+[ ]	Finish Victory Screen
+
+To Add
+- Sound
+- Make burning enemy look better
+- Make blunt weapons stun loner on crit?
+- Assassins go invisible next to walls, and improve AI accordingly
+- Give best weapon for PC skills if they defeat the dragon on 9
+- Let shields do a bit fire blocking
+- Smaller dragons in addition
+- Monsters should gain HP and damage when they start at higher hitpoints
+- Axes shouldn't gain as much DV with levels
+- Shields have 1.5(?)x effectiveness when standing still
+- Shields have 2(?)x effectiveness when retreated from the attack
+- Dagger counterattack adds extra blank line of message
+- Counterattack/Parry message order needs to be sorted
+- Give bandits weapons
+- Add zombie DV reduce effect
+- Necromancers are not implemented
+- Make healers focus on Warlord if on same level
+- Make the door to the emerald court shut when you walk through it
+- Win when you kill the warlord
+- Unarmed skll doesn't contribute to DV
+- Warload death doesn't look fantastic
+
+Questions
+- Should dragons have a winged leap - something that has maybe a 10 turn
+  cooldown, and costs a little MP to jump 5 spaces or something?
+  	I don't think so
+- How should multiple weapons be handled?
+	Presently:
+		Attack takes as long as slowest weapon
+		Both weapons attack at once, with a two weapon skill
+	Options:
+		Can only wield 1 at a time, or 1 and a dagger
+		Can weild multiple weapons, but only attack with one at a time, maybe with 3/4 speed?
+		Can wield multiple weapons, but each weapon only takes as long as it takes
+- Should critters be scattered as opposed to starting in the same place?
+- My original thought with goliaths was to have them
+  charge, but I can't think of a good way to make that work
+- Should Critters follow more cleverly, or roam? At the moment, they blindly
+  move towards the nearest enemy
+		
+To Refactor
+- Seperate the interface from the game as much as possible. This is not done
+  nearly at all now
+- Move the special tile thing out of tryMove to seperate cell classes
+  
+Bugs to fix
+- Shields can't affect ToHit of weapons when equipped
+- Up stairs should be more randomised
+- map.ChooseItem can't choose the least likely item 
+- Equipping an item to left hand while holding a 2 handed item holds both items
+- Some enemies (particularly in a line) seen to disappear
+- Animations display when out of sight
+- Flames shoot behind as well 
+- Flames animation needs to store previous state and draw it if no fire there anymore
+- Orcs won't do any melee at all, and can be easily cornered. They're still fun
+  (I think)
+- There is some circumstance where moveTo in BUGGYBIT00 in orc.py is [(,)] rather then (,,,).
+  I'm not sure why it is. When it is that, it crashes (rightfully so). There is a bandaid
+  fix on it at the moment, but it needs to be looked at. There is probably some path of
+  execution in which moveTo = moveTo[1] is never triggered. 
+
+Poential changes:
+- Check if the run away code (in Bandit.py for instance) could survive getting the maximum value
+  to run away rather then the nearest that's at least 5 away
+- Bandit AI is slow
+- Zombie DV mod is in character.py. I think this is too slow and should be moved.

@@ -1,0 +1,408 @@
+<?xml version="1.0"?>
+<items>
+        <Item>
+              <ID>0</ID>
+             <ItemClass>1</ItemClass>
+             <Name>Whacker</Name>
+             <ToHit>1</ToHit>
+             <ToDefend>0</ToDefend>
+             <Damage>3</Damage>
+             <TwoHanded>false</TwoHanded>
+             <Character>}</Character>
+             <Color>white</Color>
+       </Item>
+<Item>
+             <ID>1</ID><ItemClass>2</ItemClass>
+             <Name>My First Sword</Name>
+             <ToHit>2</ToHit>
+             <ToDefend>1</ToDefend>
+             <Damage>3</Damage>
+             <TwoHanded>false</TwoHanded>
+             <Character>\</Character>
+             <Color>white</Color>
+       </Item><Item>
+             <ID>2</ID><ItemClass>3</ItemClass>
+             <Name>6 Foot Pole</Name>
+             <ToHit>1</ToHit>
+             <ToDefend>0</ToDefend>
+             <Damage>3</Damage>
+             <TwoHanded>false</TwoHanded>
+             <Character>|</Character>
+             <Color>white</Color>
+       </Item>
+<Item>
+  <ID>3</ID><ItemClass>4</ItemClass>
+  <Name>Dagger Jr.</Name>
+  <ToHit>4</ToHit>
+  <ToDefend>0</ToDefend>
+  <Damage>1</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>/</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>4</ID><ItemClass>5</ItemClass>
+  <Name>Hand Hatchet</Name>
+  <ToHit>0</ToHit>
+  <ToDefend>-1</ToDefend>
+  <Damage>4</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>&amp;&amp;</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>5</ID><ItemClass>6</ItemClass>
+  <Name>Plastic Buckler</Name>
+  <ToHit>0</ToHit>
+  <ToDefend>2</ToDefend>
+  <Damage>0</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>[</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>6</ID><ItemClass>3</ItemClass>
+  <Name>8 Foot Pole</Name>
+  <ToHit>1</ToHit>
+  <ToDefend>0</ToDefend>
+  <Damage>4</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>\</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>7</ID><ItemClass>2</ItemClass>
+  <Name>Iron Sword</Name>
+  <ToHit>3</ToHit>
+  <ToDefend>2</ToDefend>
+  <Damage>4</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>\</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>8</ID><ItemClass>2</ItemClass>
+  <Name>Steel Sword</Name>
+  <ToHit>3</ToHit>
+  <ToDefend>3</ToDefend>
+  <Damage>5</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>\</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>9</ID><ItemClass>2</ItemClass>
+  <Name>Gigantic Sword</Name>
+  <ToHit>2</ToHit>
+  <ToDefend>2</ToDefend>
+  <Damage>6</Damage>
+  <TwoHanded>true</TwoHanded>
+  <Character>\</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>10</ID><ItemClass>2</ItemClass>
+  <Name>Kings Blade</Name>
+  <ToHit>3</ToHit>
+  <ToDefend>2</ToDefend>
+  <Damage>10</Damage>
+  <TwoHanded>true</TwoHanded>
+  <Character>\</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>11</ID><ItemClass>3</ItemClass>
+  <Name>Spear</Name>
+  <ToHit>2</ToHit>
+  <ToDefend>0</ToDefend>
+  <Damage>4</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>|</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>12</ID><ItemClass>3</ItemClass>
+  <Name>Trident</Name>
+  <ToHit>3</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>5</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>|</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>13</ID><ItemClass>3</ItemClass>
+  <Name>Giant Spear</Name>
+  <ToHit>2</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>10</Damage>
+  <TwoHanded>true</TwoHanded>
+  <Character>|</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>14</ID><ItemClass>3</ItemClass>
+  <Name>Obsidian Spear</Name>
+  <ToHit>3</ToHit>
+  <ToDefend>2</ToDefend>
+  <Damage>11</Damage>
+  <TwoHanded>true</TwoHanded>
+  <Character>|</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>15</ID><ItemClass>4</ItemClass>
+  <Name>Bowie Knife</Name>
+  <ToHit>5</ToHit>
+  <ToDefend>0</ToDefend>
+  <Damage>3</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>/</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>16</ID><ItemClass>4</ItemClass>
+  <Name>Defending Dagger</Name>
+  <ToHit>4</ToHit>
+  <ToDefend>4</ToDefend>
+  <Damage>3</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>/</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>17</ID><ItemClass>4</ItemClass>
+  <Name>Dagger</Name>
+  <ToHit>5</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>3</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>/</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>18</ID><ItemClass>4</ItemClass>
+  <Name>Phased Dagger</Name>
+  <ToHit>9</ToHit>
+  <ToDefend>0</ToDefend>
+  <Damage>2</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>/</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>19</ID><ItemClass>5</ItemClass>
+  <Name>Cleaver</Name>
+  <ToHit>1</ToHit>
+  <ToDefend>0</ToDefend>
+  <Damage>5</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>&amp;&amp;</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>20</ID><ItemClass>5</ItemClass>
+  <Name>Stone Axe</Name>
+  <ToHit>2</ToHit>
+  <ToDefend>-2</ToDefend>
+  <Damage>6</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>&amp;&amp;</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>21</ID><ItemClass>5</ItemClass>
+  <Name>Woodsman's Axe</Name>
+  <ToHit>2</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>6</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>&amp;&amp;</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>22</ID><ItemClass>5</ItemClass>
+  <Name>Twin Bladed Axe</Name>
+  <ToHit>3</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>7</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>&amp;&amp;</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>23</ID><ItemClass>5</ItemClass>
+  <Name>Executor's Axe</Name>
+  <ToHit>1</ToHit>
+  <ToDefend>-1</ToDefend>
+  <Damage>15</Damage>
+  <TwoHanded>true</TwoHanded>
+  <Character>&amp;&amp;</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>24</ID><ItemClass>1</ItemClass>
+  <Name>Mace</Name>
+  <ToHit>2</ToHit>
+  <ToDefend>2</ToDefend>
+  <Damage>4</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>}</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>25</ID><ItemClass>1</ItemClass>
+  <Name>Baseball Bat</Name>
+  <ToHit>3</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>4</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>}</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>26</ID><ItemClass>1</ItemClass>
+  <Name>Cricket Bat</Name>
+  <ToHit>2</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>5</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>}</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>27</ID><ItemClass>1</ItemClass>
+  <Name>Flail</Name>
+  <ToHit>1</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>6</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>}</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>28</ID><ItemClass>1</ItemClass>
+  <Name>Halberd</Name>
+  <ToHit>1</ToHit>
+  <ToDefend>1</ToDefend>
+  <Damage>7</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>}</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>29</ID><ItemClass>1</ItemClass>
+  <Name>Gigantic Halberd</Name>
+  <ToHit>1</ToHit>
+  <ToDefend>0</ToDefend>
+  <Damage>12</Damage>
+  <TwoHanded>true</TwoHanded>
+  <Character>}</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>30</ID><ItemClass>6</ItemClass>
+  <Name>Metal Buckler</Name>
+  <ToHit>0</ToHit>
+  <ToDefend>4</ToDefend>
+  <Damage>0</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>[</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>31</ID><ItemClass>6</ItemClass>
+  <Name>Spiked Buckler</Name>
+  <ToHit>1</ToHit>
+  <ToDefend>3</ToDefend>
+  <Damage>0</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>[</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>32</ID><ItemClass>6</ItemClass>
+  <Name>Kite Shield</Name>
+  <ToHit>-1</ToHit>
+  <ToDefend>6</ToDefend>
+  <Damage>0</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>[</Character>
+  <Color>white</Color>
+</Item>
+<Item>
+  <ID>33</ID><ItemClass>6</ItemClass>
+  <Name>Cowards Shield</Name>
+  <ToHit>-3</ToHit>
+  <ToDefend>8</ToDefend>
+  <Damage>0</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>[</Character>
+  <Color>white</Color>
+</Item>
+<!-- Artifact Weapons -->
+
+<Item>
+<ID>34</ID>
+  <ItemClass>2</ItemClass>
+  <Name>Gray Steel Sword "Paragon"</Name>
+  <ToHit>7</ToHit>
+  <ToDefend>5</ToDefend>
+  <Damage>9</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>\</Character>
+  <Color>gray</Color>
+<Artifact>true</Artifact></Item><Item>
+  <ID>35</ID><ItemClass>3</ItemClass>
+  <Name>Inscribed Spear "Gungnir"</Name>
+  <ToHit>8</ToHit>
+  <ToDefend>4</ToDefend>
+  <Damage>9</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>|</Character>
+  <Color>red</Color>
+<Artifact>true</Artifact></Item><Item>
+  <ID>36</ID><ItemClass>4</ItemClass>
+  <Name>Long Dagger "Sting"</Name>
+  <ToHit>11</ToHit>
+  <ToDefend>2</ToDefend>
+  <Damage>7</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>/</Character>
+  <Color>blue</Color>
+<Artifact>true</Artifact></Item>
+<Item>
+  <ID>37</ID><ItemClass>5</ItemClass>
+  <Name>Glowing Axe "Silversbane"</Name>
+  <ToHit>7</ToHit>
+  <ToDefend>2</ToDefend>
+  <Damage>14</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>&amp;&amp;</Character>
+  <Color>silver</Color>
+  <Artifact>true</Artifact>
+</Item>
+<Item>
+  <ID>38</ID><ItemClass>1</ItemClass>
+  <Name>Lead-Filled Mace "Punch"</Name>
+  <ToHit>3</ToHit>
+  <ToDefend>3</ToDefend>
+  <Damage>11</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>}</Character>
+  <Color>yellow</Color>
+  <Artifact>true</Artifact>
+</Item>
+<Item>
+  <ID>39</ID><ItemClass>0</ItemClass>
+  <Name>Clawed Gauntlet "Wolf"</Name>
+  <ToHit>5</ToHit>
+  <ToDefend>5</ToDefend>
+  <Damage>7</Damage>
+  <TwoHanded>false</TwoHanded>
+  <Character>"</Character>
+  <Color>green</Color>
+  <Artifact>true</Artifact>
+</Item>
+</items>
+

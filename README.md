@@ -3,7 +3,7 @@ Atlas Warriors
 
 Atlas Warriors is a Roguelike Game primarily developed by Lachlan Kingsford of www.nerdygentleman.com.
 
-You can financially support the development of this project at the moment by paypal donation to lachlan@nerdygentleman.com or bitcoin donation to 14PgnsEcgqgSrCFxTjVvczfu5Fyh85hjbU
+You can financially support the development of this project at the moment by pledgie at https://pledgie.com/campaigns/27179 , paypal donation to lachlan@nerdygentleman.com or bitcoin donation to 14PgnsEcgqgSrCFxTjVvczfu5Fyh85hjbU
 
 The game is designed from the outset to be in some ways a minimalist roguelike, taking inspiration from Brogue. Every monster must fight differently and have a unique purpose.
 
