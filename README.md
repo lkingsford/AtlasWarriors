@@ -1,17 +1,11 @@
 Atlas Warriors
 =============
+Atlas Warriors is an in-development, playable, roguelike game. It is a roguelike with a minimalist philosphy inspired by Brogue and ADOM. I have been working on it since around August, 2014.
 
-Atlas Warriors is a Roguelike Game primarily developed by Lachlan Kingsford of www.nerdygentleman.com.
+It is playable at this point, but it’s not finished. Most of the game play is implemented but it needs more bugfixing, balancing, polishing and maybe a little more content. It will not be a continuously in development roguelike constantly getting bigger. Instead, I want it to reach a stage I’m happy with, and move on (probably using the same engine for another roguelike project). After that stage, I may continue some work on it (and would actively encourage other people using it as a basis for mods or their own game) but will only add minimal content.
 
-You can financially support the development of this project at the moment by pledgie at https://pledgie.com/campaigns/27179 , paypal donation to lachlan@nerdygentleman.com or bitcoin donation to 14PgnsEcgqgSrCFxTjVvczfu5Fyh85hjbU
+The project is released under the MIT license which allows you to use the source for almost anything. You can also find more information at my website, http://www.nerdygentleman.com. 
 
-The game is designed from the outset to be in some ways a minimalist roguelike, taking inspiration from Brogue. Every monster must fight differently and have a unique purpose.
+Donations enable me to spend more time working on the project. Hopefully, they will allow me to complete it and provide a useful basis for other projects for both myself and others. Another good reason would be simply if you had fun playing it and feel like rewarding me for my work. You can financially support the development of this project at the moment by pledgie at https://pledgie.com/campaigns/27179 , paypal donation to lachlan@nerdygentleman.com or bitcoin donation to 14PgnsEcgqgSrCFxTjVvczfu5Fyh85hjbU
 
-The game is currently about 30 minutes long. I do not want the game to get any longer then that.
-
-Ideally, I'm hoping for a point where a person can beat Easiest within 20 or 30 tries.
-
-It can not be considered finished just yet.
-
-By way of full disclosure, I wish to accept donations for this project and may use it (as permitted by the MIT license) to create a commercial project in the future. I will be creating a Pledgie campaign for it.
-
+Why call it ‘Atlas Warriors’? Honestly, because it is a horribly generic RPG name that is not currently in use. I hope to use it as a banner title for other works within the same world!
