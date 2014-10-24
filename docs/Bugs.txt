@@ -17,22 +17,11 @@ To Add
 - Make burning enemy look better
 - Make blunt weapons stun loner on crit?
 - Assassins go invisible next to walls, and improve AI accordingly
-- Give best weapon for PC skills if they defeat the dragon on 9
-- Let shields do a bit fire blocking
 - Smaller dragons in addition
 - Monsters should gain HP and damage when they start at higher hitpoints
 - Axes shouldn't gain as much DV with levels
 - Shields have 1.5(?)x effectiveness when standing still
 - Shields have 2(?)x effectiveness when retreated from the attack
-- Dagger counterattack adds extra blank line of message
-- Counterattack/Parry message order needs to be sorted
-- Give bandits weapons
-- Add zombie DV reduce effect
-- Necromancers are not implemented
-- Make healers focus on Warlord if on same level
-- Make the door to the emerald court shut when you walk through it
-- Win when you kill the warlord
-- Unarmed skll doesn't contribute to DV
 - Warload death doesn't look fantastic
 
 Questions
@@ -60,10 +49,9 @@ To Refactor
   
 Bugs to fix
 - Shields can't affect ToHit of weapons when equipped
-- Up stairs should be more randomised
-- map.ChooseItem can't choose the least likely item 
+- map.ChooseItem can't choose the least likely item  (unknown - needs testing)
 - Equipping an item to left hand while holding a 2 handed item holds both items
-- Some enemies (particularly in a line) seen to disappear
+- Some enemies (particularly in a line) seen to disappear (unknown - needs testing)
 - Animations display when out of sight
 - Flames shoot behind as well 
 - Flames animation needs to store previous state and draw it if no fire there anymore
