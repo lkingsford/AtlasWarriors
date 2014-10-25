@@ -281,7 +281,7 @@
   <Color>white</Color>
 </Item>
 <Item>
-  <ID>28</ID><ItemClass>1</ItemClass>
+  <ID>28</ID><ItemClass>3</ItemClass>
   <Name>Halberd</Name>
   <ToHit>1</ToHit>
   <ToDefend>1</ToDefend>
@@ -291,7 +291,7 @@
   <Color>white</Color>
 </Item>
 <Item>
-  <ID>29</ID><ItemClass>1</ItemClass>
+  <ID>29</ID><ItemClass>3</ItemClass>
   <Name>Gigantic Halberd</Name>
   <ToHit>1</ToHit>
   <ToDefend>0</ToDefend>
