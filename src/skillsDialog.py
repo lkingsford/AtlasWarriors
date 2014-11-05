@@ -16,7 +16,7 @@ class SkillsDialog(dialog.Dialog):
 		self.Context = None
 		
 	def draw(self, win):
-		self.Box = pygame.Rect(50, 50, win.get_width() - 100, 238)
+		self.Box = pygame.Rect(100, 5, win.get_width() - 200, 198)
 		self.LeftHandBox = pygame.Rect(150, 118, win.get_width() - 205, 20)
 		self.RightHandBox = pygame.Rect(150, 98, win.get_width() - 205, 20)	
 		self.BackpackBox = pygame.Rect(55, 158, win.get_width() - 110, 124)
@@ -25,34 +25,34 @@ class SkillsDialog(dialog.Dialog):
 		pygame.draw.rect(win, (128,128,128,255), self.Box, 1)
 		
 		titleSize = self.TitleFont.size('Skills')
-		win.blit(self.TitleFont.render('Skills', True, (255, 255, 255, 255)), (round((win.get_width() - titleSize[0])/2), 60))
+		win.blit(self.TitleFont.render('Skills', True, (255, 255, 255, 255)), (round((win.get_width() - titleSize[0])/2), 15))
 		
-		win.blit(self.BodyFont.render('Category' , True, (255, 0, 0, 0)), (60, 85))
-		win.blit(self.BodyFont.render('Level' , True, (255, 0, 0, 0)), (160, 85))
-		win.blit(self.BodyFont.render('Next' , True, (255, 0, 0, 0)), (200, 85))
-		win.blit(self.BodyFont.render('Hit+' , True, (255, 0, 0, 0)), (240, 85))
-		win.blit(self.BodyFont.render('Def+' , True, (255, 0, 0, 0)), (280, 85))
-		win.blit(self.BodyFont.render('Dmg+' , True, (255, 0, 0, 0)), (320, 85))
-		win.blit(self.BodyFont.render('Unarmed' , True, (255, 255, 255, 255)), (60, 100))
-		win.blit(self.BodyFont.render('Blunts' , True, (255, 255, 255, 255)), (60, 115))
-		win.blit(self.BodyFont.render('Swords' , True, (255, 255, 255, 255)), (60, 130))
-		win.blit(self.BodyFont.render('Polearms' , True, (255, 255, 255, 255)), (60, 145))
-		win.blit(self.BodyFont.render('Daggers' , True, (255, 255, 255, 255)), (60, 160))
-		win.blit(self.BodyFont.render('Axes' , True, (255, 255, 255, 255)), (60, 175))
-		win.blit(self.BodyFont.render('Shields' , True, (255, 255, 255, 255)), (60, 190))
-		win.blit(self.BodyFont.render('Duel Wielding' , True, (255, 255, 255, 255)), (60, 205))
+		win.blit(self.BodyFont.render('Category' , True, (255, 0, 0, 0)), (110, 50))
+		win.blit(self.BodyFont.render('Level' , True, (255, 0, 0, 0)), (210, 50))
+		win.blit(self.BodyFont.render('Next' , True, (255, 0, 0, 0)), (250, 50))
+		win.blit(self.BodyFont.render('Hit+' , True, (255, 0, 0, 0)), (290, 50))
+		win.blit(self.BodyFont.render('Def+' , True, (255, 0, 0, 0)), (330, 50))
+		win.blit(self.BodyFont.render('Dmg+' , True, (255, 0, 0, 0)), (370, 50))
+		win.blit(self.BodyFont.render('Unarmed' , True, (255, 255, 255, 255)), (110, 65))
+		win.blit(self.BodyFont.render('Blunts' , True, (255, 255, 255, 255)), (110, 80))
+		win.blit(self.BodyFont.render('Swords' , True, (255, 255, 255, 255)), (110, 95))
+		win.blit(self.BodyFont.render('Polearms' , True, (255, 255, 255, 255)), (110, 110))
+		win.blit(self.BodyFont.render('Daggers' , True, (255, 255, 255, 255)), (110, 125))
+		win.blit(self.BodyFont.render('Axes' , True, (255, 255, 255, 255)), (110, 140))
+		win.blit(self.BodyFont.render('Shields' , True, (255, 255, 255, 255)), (110, 155))
+		win.blit(self.BodyFont.render('Duel Wielding' , True, (255, 255, 255, 255)), (110, 170))
 		
 		for i in enumerate(self.PC.skills):			
 			# Level
-			win.blit(self.BodyFont.render(str(i[1][1]), True, (255, 255, 255, 255)), (160, 100 + 15 * i[0]))
+			win.blit(self.BodyFont.render(str(i[1][1]), True, (255, 255, 255, 255)), (210, 65 + 15 * i[0]))
 			# Hits
-			win.blit(self.BodyFont.render(str(self.PC.NextLevelHitsNeeded(i[1][1], i[0]) - i[1][0]), True, (255, 255, 255, 255)), (200, 100 + 15 * i[0]))
+			win.blit(self.BodyFont.render(str(self.PC.NextLevelHitsNeeded(i[1][1], i[0]) - i[1][0]), True, (255, 255, 255, 255)), (250, 65 + 15 * i[0]))
 			# To Hit
-			win.blit(self.BodyFont.render(str(self.PC.ToHitMod(i[0])), True, (255, 255, 255, 255)), (240, 100 + 15 * i[0]))
+			win.blit(self.BodyFont.render(str(self.PC.ToHitMod(i[0])), True, (255, 255, 255, 255)), (290, 65 + 15 * i[0]))
 			# To Def
-			win.blit(self.BodyFont.render(str(self.PC.ToDefMod(i[0])), True, (255, 255, 255, 255)), (280, 100 + 15 * i[0]))
+			win.blit(self.BodyFont.render(str(self.PC.ToDefMod(i[0])), True, (255, 255, 255, 255)), (330, 65 + 15 * i[0]))
 			# Dmg Mod
-			win.blit(self.BodyFont.render(str(self.PC.DmgMod(i[0])), True, (255, 255, 255, 255)), (320, 100 + 15 * i[0]))
+			win.blit(self.BodyFont.render(str(self.PC.DmgMod(i[0])), True, (255, 255, 255, 255)), (370, 65 + 15 * i[0]))
 	
 	def process(self, event):
 		if event.type == KEYDOWN:

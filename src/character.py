@@ -8,108 +8,109 @@ from item import ItemClass
 
 # Any character - monster or PC
 class Character:
-	def __init__(self, messageLog, currentMap):
-		self.x = 1;
-		self.y = 1;
-		self.character = '@'
-		self.color = "silver"		
-		self.speed = 10
-		self.team = 1;
-		self.currentMap = currentMap
-		self.level = 1
-		self.hp = 10	
-		self.maxhp = 10
-		self.baseToHit = 1
-		self.baseToDefend = 1
-		self.baseDamage = 1
-		self.baseCritMult = 4
-		self.living = True
-		self.name = 'Character'		
-		self.xp = 0
-		
-		# This is for the score (but only used by the Player Character)
-		self.totalxp = 0
-		
-		self.baseXPToLevel = 10
-		self.ticksUntilTurn = random.randint(0,10)
-		self.ZombieMod = 0
-		
-		self.messageLog = messageLog
-		
-		self.lastx = 1;
-		self.lasty = 1;
-		self.backpackSize = 6
-		self.backpack = []
-		self.leftHandEquipped = None
-		self.rightHandEquipped = None
-		
-		self.animations = []
-		
-		self.burning = False
-		self.burnDamage = 0
-		self.DEFAULT_BURN_WAIT_TURNS = 3
-		
-		self.RetaliateBonus = 4
-		
-		self.moved = False
-		
-		self.chartype = ""
-		
-		self.nextLevel =  self.baseXPToLevel * (self.level ** .69897)
-		
-		# See comment before def RegisterHit for how this list is used
-		self.skills = [(0, 0) for i in range(8)]	
-	
-	def dead(self):
-		return self.hp <= 0
-			
-	
-	def update(self):		
-		if self.burning:			
-			if self.moved:
-				self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
-			else:
-				self.burnWaitTurns -= 1
-				if self.burnWaitTurns == 0:
-					self.Extinguish()
-			self.messageLog.append(Message.Message(self.name + " is burning!"))
-			if self.Attacked(self.burnDamage, self.burnSource):
-				self.messageLog.append(Message.Message(self.name + " burns to death"))
-				self.burnSource.Killed(self)
-		self.moved = False
-		
-	def tryMove(self, newX, newY):
-		self.moved = True
-		if self.currentMap.Map[newX][newY].walkable == True:
-			monsterInSquare = [i for i in self.currentMap.characters if (i.x == newX) and (i.y == newY)]
-			if len(monsterInSquare) > 0:
-				if (monsterInSquare[0].team != self.team):				
-					self.Attack((newX, newY))
-			else:
-				self.lastx = self.x
-				self.lasty = self.y
-				self.x = newX
-				self.y = newY	
-				action = self.currentMap.Map[newX][newY].walkbehavior
-				if (action != 'none'):
-					if (action == 'go up'):
-						self.ChangeMap(self.currentMap.lastMap, self.currentMap.lastMap.endX, self.currentMap.lastMap.endY)
-					if (action == 'go down'):
-						self.ChangeMap(self.currentMap.nextMap,  self.currentMap.nextMap.startX, self.currentMap.nextMap.startY)
-				self.currentMap.Map[newX][newY].OnWalk(self)
-				self.ticksUntilTurn = round(100/self.speed)
+    def __init__(self, messageLog, currentMap):
+        self.x = 1;
+        self.y = 1;
+        self.character = '@'
+        self.color = "silver"       
+        self.speed = 10
+        self.team = 1;
+        self.currentMap = currentMap
+        self.level = 1
+        self.hp = 10    
+        self.maxhp = 10
+        self.baseToHit = 1
+        self.baseToDefend = 1
+        self.baseDamage = 1
+        self.baseCritMult = 4
+        self.living = True
+        self.name = 'Character'     
+        self.xp = 0
+        
+        # This is for the score (but only used by the Player Character)
+        self.totalxp = 0
+        
+        self.baseXPToLevel = 10
+        self.ticksUntilTurn = random.randint(0,10)
+        self.ZombieMod = 0
+        
+        self.messageLog = messageLog
+        
+        self.lastx = 1;
+        self.lasty = 1;
+        self.backpackSize = 6
+        self.backpack = []
+        self.leftHandEquipped = None
+        self.rightHandEquipped = None
+        
+        self.animations = []
+        
+        self.burning = False
+        self.burnDamage = 0
+        self.DEFAULT_BURN_WAIT_TURNS = 3
+        
+        self.RetaliateBonus = 4
+        
+        self.moved = False
+        
+        self.chartype = ""
+        
+        self.nextLevel =  self.baseXPToLevel * (self.level ** .69897)
+        
+        # See comment before def RegisterHit for how this list is used
+        self.skills = [(0, 0) for i in range(8)]    
+    
+    def dead(self):
+        return self.hp <= 0
+            
+    
+    def update(self):       
+        if self.burning:            
+            if self.moved:
+                self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
+            else:
+                self.burnWaitTurns -= 1
+                if self.burnWaitTurns == 0:
+                    self.Extinguish()
+            self.messageLog.append(Message.Message(self.name + " is burning!"))
+            if self.Attacked(self.burnDamage, self.burnSource):
+                self.messageLog.append(Message.Message(self.name + " burns to death"))
+                self.burnSource.Killed(self)
+        self.moved = False
+        
+    def tryMove(self, newX, newY):
+        self.moved = True
+        if self.currentMap.Map[newX][newY].walkable == True:
+            monsterInSquare = [i for i in self.currentMap.characters if (i.x == newX) and (i.y == newY)]
+            if len(monsterInSquare) > 0:
+                if (monsterInSquare[0].team != self.team):              
+                    self.Attack((newX, newY))
+            else:
+                self.lastx = self.x
+                self.lasty = self.y
+                self.x = newX
+                self.y = newY   
+                action = self.currentMap.Map[newX][newY].walkbehavior
+                if (action != 'none'):
+                    if (action == 'go up'):
+                        self.ChangeMap(self.currentMap.lastMap, self.currentMap.lastMap.endX, self.currentMap.lastMap.endY)
+                    if (action == 'go down'):
+                        self.ChangeMap(self.currentMap.nextMap,  self.currentMap.nextMap.startX, self.currentMap.nextMap.startY)
+                self.currentMap.Map[newX][newY].OnWalk(self)
+                self.ticksUntilTurn = round(100/self.speed)
 
-	def ChangeMap(self, newMap, x = 0, y = 0):
-		self.currentMap.characters.remove(self)
-		self.currentMap = newMap
-		self.currentMap.characters.append(self)					
-		if (x != 0):
-			self.x = x
-			self.y = y
-		else:
-			self.x = newMap.startX
-			self.y = newMap.startY
+    def ChangeMap(self, newMap, x = 0, y = 0):
+        self.currentMap.characters.remove(self)
+        self.currentMap = newMap
+        self.currentMap.characters.append(self)                 
+        if (x != 0):
+            self.x = x
+            self.y = y
+        else:
+            self.x = newMap.startX
+            self.y = newMap.startY
 
+<<<<<<< HEAD
 	def GetWeaponToHit(self, weapon):
 		return self.baseToHit + weapon.ToHit		
 	
@@ -369,353 +370,364 @@ class Character:
 			else:
 				weaponBlockLeftChance = 1 - self.ChanceToHit(toHit, (self.leftHandEquipped.ToDefend + self.ToDefMod(self.leftHandEquipped.ItemClass)))
 
-		# Get chance with right hand
-		if (self.rightHandEquipped != None):
-			if self.rightHandEquipped.ItemClass == ItemClass.shield:
-				shieldBlockChance += 1 - self.ChanceToHit(toHit,	(self.rightHandEquipped.ToDefend + self.ToDefMod(self.rightHandEquipped.ItemClass)))
-			else:
-				weaponBlockRightChance = 1 - self.ChanceToHit(toHit, (self.rightHandEquipped.ToDefend + self.ToDefMod(self.rightHandEquipped.ItemClass)))
-		
-		# Add shield skill points if one is weilded
-		if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass == 6) or\
-			(self.rightHandEquipped != None and self.rightHandEquipped.ItemClass == 6):
-				self.RegisterSkillHit(6)
-		
-		totalChance = shieldBlockChance+weaponBlockLeftChance+weaponBlockRightChance+dodgeChance
-		shieldBlockChance = shieldBlockChance / totalChance
-		weaponBlockLeftChance = weaponBlockLeftChance / totalChance + shieldBlockChance
-		weaponBlockRightChance = weaponBlockRightChance / totalChance + weaponBlockLeftChance
-		
-		# There might be a neater way to do this, but this will do
-		v = random.random()
-		if v < shieldBlockChance:
-			# Blocked with shield
-			self.messageLog.append(Message.Message(self.name + " deflects " + attacker.name + "'s attack with the shield"))
-			pass
-		elif v < weaponBlockLeftChance:
-			# Blocked (or else) with left hand item
-			if self.leftHandEquipped.ItemClass == item.ItemClass.sword:
-				# Parry if a sword
-				self.messageLog.append(Message.Message(self.name + " parried " + attacker.name + "'s attack with the " + self.leftHandEquipped.Name))				
-				self.AttackWithWeapon(attacker, [self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
-			else:
-				self.messageLog.append(Message.Message(self.name + " blocks " + attacker.name + "'s attack with the " + self.leftHandEquipped.Name))
+        # Get chance with right hand
+        if (self.rightHandEquipped != None):
+            if self.rightHandEquipped.ItemClass == ItemClass.shield:
+                shieldBlockChance += 1 - self.ChanceToHit(toHit,    (self.rightHandEquipped.ToDefend + self.ToDefMod(self.rightHandEquipped.ItemClass)))
+            else:
+                weaponBlockRightChance = 1 - self.ChanceToHit(toHit, (self.rightHandEquipped.ToDefend + self.ToDefMod(self.rightHandEquipped.ItemClass)))
+        
+        # Add shield skill points if one is weilded
+        if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass == 6) or\
+            (self.rightHandEquipped != None and self.rightHandEquipped.ItemClass == 6):
+                self.RegisterSkillHit(6)
+        
+        totalChance = shieldBlockChance+weaponBlockLeftChance+weaponBlockRightChance+dodgeChance
+        shieldBlockChance = shieldBlockChance / totalChance
+        weaponBlockLeftChance = weaponBlockLeftChance / totalChance + shieldBlockChance
+        weaponBlockRightChance = weaponBlockRightChance / totalChance + weaponBlockLeftChance
+        
+        # There might be a neater way to do this, but this will do
+        v = random.random()
+        if v < shieldBlockChance:
+            # Blocked with shield
+            self.messageLog.append(Message.Message(self.name + " deflects " + attacker.name + "'s attack with the shield"))
+            pass
+        elif v < weaponBlockLeftChance:
+            # Blocked (or else) with left hand item
+            if self.leftHandEquipped.ItemClass == item.ItemClass.sword:
+                # Parry if a sword
+                self.messageLog.append(Message.Message(self.name + " parried " + attacker.name + "'s attack with the " + self.leftHandEquipped.Name))               
+                self.AttackWithWeapon(attacker, [self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
+            else:
+                self.messageLog.append(Message.Message(self.name + " blocks " + attacker.name + "'s attack with the " + self.leftHandEquipped.Name))
 
-				
-		elif v < weaponBlockRightChance:
-			# Blocked (or else) with right hand item
-			if self.rightHandEquipped.ItemClass == item.ItemClass.sword:
-				# Parry if a sword
-				self.messageLog.append(Message.Message(self.name + " parried " + attacker.name + "'s attack with the " + self.rightHandEquipped.Name))				
-				self.AttackWithWeapon(attacker, [self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])
-			else:
-				self.messageLog.append(Message.Message(self.name + " blocks " + attacker.name+ "'s attack with the " + self.rightHandEquipped.Name))
-				
-		else:
-			# Dodged			
-			self.messageLog.append(Message.Message(self.name + " dodges " + attacker.name + "'s attack "))
-			pass
-		
-		#print ("Shield Chance:", shieldBlockChance, " Weapon Block Left Chance:", weaponBlockLeftChance, " Weapon Black Right Chance:", weaponBlockRightChance)
-		
-	
-	def Wait(self):
-		self.ticksUntilTurn = round(100/self.speed)
-		
-	def Equip(self, item, slot):		
-		if slot == 0:
-			if (self.rightHandEquipped != None):
-				self.backpack.append(self.rightHandEquipped)
-			self.rightHandEquipped = item
-			if (item != None and item.TwoHanded):
-				if (self.leftHandEquipped != None):
-					self.backpack.append(self.leftHandEquipped)
-					self.leftHandEquipped = None
-			
-		if slot == 1:
-			if (self.leftHandEquipped != None):
-				self.backpack.append(self.leftHandEquipped)
-			self.leftHandEquipped = item
-			if (item != None and item.TwoHanded):
-				if (self.rightHandEquipped != None):
-					self.backpack.append(self.rightHandEquipped)
-					self.rightHandEquipped = None
-					
-		if item in self.backpack:
-			self.backpack.remove(item)
-		
-	def Drop(self, item):
-		if item in self.backpack:
-			self.backpack.remove(item)
-			item.x = self.x
-			item.y = self.y
-			self.currentMap.Items.append(item)
-		if (self.rightHandEquipped == item):
-			self.Equip(None, 0)
-		if (self.leftHandEquipped == item):
-			self.Equip(None, 1)
-	
-	def Pickup(self, item):
-		if len(self.backpack) < self.backpackSize:
-			self.backpack.append(item)
-			self.currentMap.Items.remove(item)
-			return True
-		else:
-			return False
-			
-	# se 0 through 6 are ItemClass skills
-	# Skill 7 is Duel Wielding Skill
-	
-	def RegisterSkillHit(self, skill):
-		hits, level = self.skills[skill]
-		hits += 1
-		
-		if hits > self.NextLevelHitsNeeded(level, skill):
-			hits = 0
-			level += 1
-			
-		self.skills[skill] = hits, level		
-	
-	def NextLevelHitsNeeded(self, currentLevel, skill):
-		if skill == 6:
-			# Shields will get inflated real quick otherwise
-			return round(30 * pow(1.3, currentLevel - 1))
-		if skill == 0:
-			# Help unarmed to be a bit beter
-			return round(7 * pow(1.3, currentLevel - 1))
-		else:
-			return round(10 * pow(1.3, currentLevel - 1))
-	
-	def ToHitMod(self, skill):
-		if skill == 0:
-			#Unarmed
-			return self.skills[skill][1]
-		elif skill > 0 and skill < 6:
-			# Weapon
-			# I may change this to be per weapon
-			return self.skills[skill][1] * 0.5
-		elif skill == 6:
-			# Shield
-			return 0;
-		elif skill == 7:
-			# Duel Wielding
-			return self.skills[skill][1] * 0.5 - 3
-		
-	def ToDefMod(self, skill):
-		if skill == 0:
-			#Unarmed
-			return round(self.skills[skill][1] * 0.75)
-			
-		elif skill > 0 and skill < 6:
-			return round(self.skills[skill][1] * 0.333)
-		
-		elif skill == 6:
-			return self.skills[skill][1] * 0.5
-			
-		elif skill == 7:
-			return round(self.skills[skill][1] * 0.166)
-		
-	def DmgMod(self, skill):
-		if skill == 0:
-			#Unarmed
-			return round(self.skills[skill][1] * 1.5)
-			
-		elif skill > 0 and skill < 6:
-			return round(self.skills[skill][1] * 0.66)
-		
-		elif skill == 6:
-			return 0
-		
-		elif skill == 7:
-			return 0
-	
-	def Ignite(self, chance, damage, source):
-		if random.random() < chance*(10-max(9,self.GetShieldDV())):
-			self.burning = True
-			self.burnDamage = max(self.burnDamage, damage)
-			self.burnSource = source
-			self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
-			return (True, self.Attacked(damage, None))
-		return (False, False)
-		
-	def Extinguish(self):
-		if self.burning:
-			self.burning = False
-			self.burnDamage = 0
-			self.burnSource = None
-			self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
-			self.messageLog.append(Message.Message(self.name + " is no longer on fire"))
-	
-	def Stun(self):
-		self.ticksUntilTurn += round(200/self.speed)
-	
-	def GetRoute(self, dest):
-		# Performs an A* search to find route to go somewhere
-		# Input:
-		# 	x, y - from self.x and self.y
-		#	self.currentMap.Walkable(x,y) - returns if can walk at x,y
-		# 	dest - (x, y) tuplet of destination
-		#
-		# Returns a list of (x, y) tuplets
-		#
-		# This does have a special behaviour that it will list the final square whether or not it can be 
-		# walked on - so, it will attack if needed when position is fed to TryMove
-		# 
-		# From <http://www.policyalmanac.org/games/aStarTutorial.htm>
-		# 1) Add the starting square (or node) to the open list.
-		# 2) Repeat the following:
-		#   a) Look for the lowest F cost square on the open list. We refer to this as the current square.
-		#   b) Switch it to the closed list.
-		#   c) For each of the 8 squares adjacent to this current square 
-		#      If it is not walkable or if it is on the closed list, ignore it. Otherwise do the following.           
-		#      If it isn't on the open list, add it to the open list. Make the current square the parent of this square. Record the F, G, and H costs of the square. 
-		#      If it is on the open list already, check to see if this path to that square is better, using G cost as the measure. A lower G cost means that this is a better path. If so, change the parent of the square to the current square, and recalculate the G and F scores of the square. If you are keeping your open list sorted by F score, you may need to resort the list to account for the change.
-		#   d) Stop when you:
-		#      Add the target square to the closed list, in which case the path has been found (see note below), or
-		#      Fail to find the target square, and the open list is empty. In this case, there is no path.   
-		# 3) Save the path. Working backwards from the target square, go from each square to its parent square until you reach the starting square. That is your path.
-		
-		# ORTH_DISTANCE and DIAG_DISTANCE are for weights of travelling between the cells orthogonally
-		# and diagonally respectively. If diagoanal is further in game, then DIAG_DISTANCE should be 14
-		# As the distances are the same in mine, they're weighted evenly
-		ORTH_DISTANCE = 10
-		DIAG_DISTANCE = 10
-		
-		# Heuristic for calculating h is Manhattan Distance - 
-		#   abs(pos.x - dest.x) + abs(pos.y - dest.y)
-		
-		# OpenLists consists of tuplets with (
-		#   [0]: Position.x, 
-		#   [1]: Position.y,
-		#   [2]: ParentPosition.x, 
-		#   [3]: ParentPosition.y,
-		#   [4]: g (distance to get here from parent),
-		#   [5]: h (heuristic distance to destination) )
-		OpenList = [(self.x, self.y, self.x, self.y, 0, abs(self.x-dest[0]) + abs(self.y-dest[1]))]		
-		ClosedList = []
-		
-		Found = None
-		
-		while (len(OpenList) > 0 and Found == None):				
-			# Find entry in OpenList with lowest F score
-			# F = G + H					
-			Current = min(OpenList, key=lambda i:i[4]+i[5])			
-			OpenList.remove(Current)
-			ClosedList.append(Current)
-			Active = [(Current[0] - 1, 	Current[1], 	Current[0], Current[1], Current[4] + ORTH_DISTANCE, abs(Current[0] - 1 - dest[0]) 	+ abs(Current[1] - dest[1])),
-				(Current[0] + 1, 	Current[1], 	Current[0], Current[1], Current[4] + ORTH_DISTANCE, abs(Current[0] + 1 - dest[0]) 	+ abs(Current[1] - dest[1])),
-				(Current[0] - 1, 	Current[1] - 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE, abs(Current[0] - 1 - dest[0]) 	+ abs(Current[1] - 1 - dest[1])),
-				(Current[0] + 1, 	Current[1] - 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE, abs(Current[0] + 1 - dest[0]) 	+ abs(Current[1] - 1 - dest[1])),
-				(Current[0] - 1, 	Current[1] + 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE, abs(Current[0] - 1 - dest[0]) 	+ abs(Current[1] + 1 - dest[1])),
-				(Current[0] + 1, 	Current[1] + 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE, abs(Current[0] + 1 - dest[0]) 	+ abs(Current[1] + 1 - dest[1])),
-				(Current[0], 		Current[1] - 1, Current[0], Current[1], Current[4] + ORTH_DISTANCE, abs(Current[0] - dest[0]) 		+ abs(Current[1] - dest[1] - 1)),
-				(Current[0], 		Current[1] + 1,	Current[0], Current[1], Current[4] + ORTH_DISTANCE, abs(Current[0] + dest[0]) 		+ abs(Current[1] - dest[1] + 1))]
-			for i in Active:
-				# If point not in closed list and is walkable
-				# Remove the or (i[0] == dest[0] and i[1] == dest[1] to prevent the special behaviour
-				if ((len([j for j in ClosedList if j[0] == i[0] and j[1] == i[1]]) == 0)\
-					and (self.currentMap.Walkable(i, True) or (i[0] == dest[0] and i[1] == dest[1]))):
-						
-					# Look for point in open List
-					Candidate = [j for j in OpenList if j[0] == i[0] and j[1] == i[1]]
-					# If point not in open list					
-					if(len(Candidate) == 0):
-						# Add point to the open list
-						OpenList.append(i)
-						if (i[0] == dest[0] and i[1] == dest[1]):
-							Found = i
-					else:
-						# Otherwise, check to see if this path to the square is shorter, using G. If so, replace square with current route (changing parent and g) 
-						if Candidate[0][4] > i[4]:
-							OpenList.remove(Candidate[0])
-							OpenList.append(i)
-		# If no path found, return empty route
-		if Found == None:
-			return []
-		else:
-			# Add path to route				
-			CurSquare = Found
-			Route = [CurSquare]
-			# Iterate until we reach the starting point
-			while (not(CurSquare[0] == CurSquare[2] and CurSquare[1] == CurSquare[3])):					
-				CurSquare = [j for j in (OpenList+ClosedList) if j[0] == CurSquare[2] and j[1] == CurSquare[3]][0]
-				Route.insert(0, CurSquare)
-			return Route
-				
-	
-	def GetNearest(self, destLogic, startingPointAllowed = False):
-		# Performs Dijkstra's algorithm to find nearest square resulting in destLogic = True
-		# destLogic has to take a tuplet of (x,y) as input and return a boolean as output
-		#
-		# Starting Point Allowed allows the alogithm to recognise the initial x y as a valid answer
-		
-		# As above in GetRoute
-		ORTH_DISTANCE = 10
-		DIAG_DISTANCE = 10
-		
-		Found = None
-			
-		# Check starting point. If it is, then return it and skip the rest
-		if startingPointAllowed:
-			if destLogic((self.x, self.y)):
-				return [(self.x, self.y)]				
-				
-		# OpenLists consists of tuplets with (
-		#   [0]: Position.x, 
-		#   [1]: Position.y,
-		#   [2]: ParentPosition.x, 
-		#   [3]: ParentPosition.y,
-		#   [4]: g (distance to get here from parent)
-		
-		OpenList = [(self.x, self.y, self.x, self.y, 0)]		
-		ClosedList = []
-		while (len(OpenList) > 0 and Found == None):				
-			# Find entry in OpenList with lowest G score
-			Current = min(OpenList, key=lambda i:i[4])			
-			OpenList.remove(Current)
-			ClosedList.append(Current)
-			Active = [(Current[0] - 1, 	Current[1], 	Current[0], Current[1], Current[4] + ORTH_DISTANCE),
-				(Current[0] + 1, 	Current[1], 	Current[0], Current[1], Current[4] + ORTH_DISTANCE),
-				(Current[0] - 1, 	Current[1] - 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE),
-				(Current[0] + 1, 	Current[1] - 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE),
-				(Current[0] - 1, 	Current[1] + 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE),
-				(Current[0] + 1, 	Current[1] + 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE),
-				(Current[0], 		Current[1] - 1, Current[0], Current[1], Current[4] + ORTH_DISTANCE),
-				(Current[0], 		Current[1] + 1,	Current[0], Current[1], Current[4] + ORTH_DISTANCE)]
-			for i in Active:
-				# If point not in closed list and is walkable
-				if (len([j for j in ClosedList if j[0] == i[0] and j[1] == i[1]]) == 0) and self.currentMap.Walkable(i, True):
-					# Look for point in open List
-					Candidate = [j for j in OpenList if j[0] == i[0] and j[1] == i[1]]
-					# If point not in open list					
-					if(len(Candidate) == 0):
-						# Add point to the open list
-						OpenList.append(i)
-						#print ("Check ", i)
-						if destLogic(i):
-							Found = i
-							#print("Found")							
-					else:
-						# Otherwise, check to see if this path to the square is shorter, using G. If so, replace square with current route (changing parent and g) 
-						if Candidate[0][4] > i[4]:
-							OpenList.remove(Candidate[0])
-							OpenList.append(i)
-			
+                
+        elif v < weaponBlockRightChance:
+            # Blocked (or else) with right hand item
+            if self.rightHandEquipped.ItemClass == item.ItemClass.sword:
+                # Parry if a sword
+                self.messageLog.append(Message.Message(self.name + " parried " + attacker.name + "'s attack with the " + self.rightHandEquipped.Name))              
+                self.AttackWithWeapon(attacker, [self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])
+            else:
+                self.messageLog.append(Message.Message(self.name + " blocks " + attacker.name+ "'s attack with the " + self.rightHandEquipped.Name))
+                
+        else:
+            # Dodged            
+            self.messageLog.append(Message.Message(self.name + " dodges " + attacker.name + "'s attack "))
+            pass
+        
+        #print ("Shield Chance:", shieldBlockChance, " Weapon Block Left Chance:", weaponBlockLeftChance, " Weapon Black Right Chance:", weaponBlockRightChance)
+        
+    
+    def Wait(self):
+        self.ticksUntilTurn = round(100/self.speed)
+        
+    def Equip(self, item, slot):        
+        if slot == 0:
+            if (self.rightHandEquipped != None):
+                self.backpack.append(self.rightHandEquipped)
+            self.rightHandEquipped = item
+            if (item != None and item.TwoHanded):
+                if (self.leftHandEquipped != None):
+                    self.backpack.append(self.leftHandEquipped)
+                    self.leftHandEquipped = None                    
+                    
+        if slot == 1:
+            if (self.leftHandEquipped != None):
+                self.backpack.append(self.leftHandEquipped)
+            self.leftHandEquipped = item
+            if (item != None and item.TwoHanded):
+                if (self.rightHandEquipped != None):
+                    self.backpack.append(self.rightHandEquipped)
+                    self.rightHandEquipped = None
+                    
+        if item in self.backpack:
+            self.backpack.remove(item)
+        elif item in self.currentMap.Items:
+            self.currentMap.Items.remove(item)
+            
+        # This prevents more then six items ending up in the backpack
+        # when two are unequipped at the same time. One will go on the
+        # floor.
+        
+        while (len(self.backpack) > self.backpackSize):
+            print (len(self.backpack))
+            print (self.backpack[-1])
+            self.Drop(self.backpack[-1])
+        
+    def Drop(self, item):
+        if item in self.backpack:
+            self.backpack.remove(item)
+            item.x = self.x
+            item.y = self.y
+            self.currentMap.Items.append(item)
+        if (self.rightHandEquipped == item):
+            self.Equip(None, 0)
+        if (self.leftHandEquipped == item):
+            self.Equip(None, 1)
+    
+    def Pickup(self, item):
+        if len(self.backpack) < self.backpackSize:
+            self.backpack.append(item)
+            self.currentMap.Items.remove(item)
+            return True
+        else:
+            return False
+            
+    # se 0 through 6 are ItemClass skills
+    # Skill 7 is Duel Wielding Skill
+    
+    def RegisterSkillHit(self, skill):
+        hits, level = self.skills[skill]
+        hits += 1
+        
+        if hits > self.NextLevelHitsNeeded(level, skill):
+            hits = 0
+            level += 1
+            
+        self.skills[skill] = hits, level        
+    
+    def NextLevelHitsNeeded(self, currentLevel, skill):
+        if skill == 6:
+            # Shields will get inflated real quick otherwise
+            return round(30 * pow(1.3, currentLevel - 1))
+        if skill == 0:
+            # Help unarmed to be a bit beter
+            return round(7 * pow(1.3, currentLevel - 1))
+        else:
+            return round(10 * pow(1.3, currentLevel - 1))
+    
+    def ToHitMod(self, skill):
+        if skill == 0:
+            #Unarmed
+            return self.skills[skill][1]
+        elif skill > 0 and skill < 6:
+            # Weapon
+            # I may change this to be per weapon
+            return self.skills[skill][1] * 0.5
+        elif skill == 6:
+            # Shield
+            return 0;
+        elif skill == 7:
+            # Duel Wielding
+            return self.skills[skill][1] * 0.5 - 3
+        
+    def ToDefMod(self, skill):
+        if skill == 0:
+            #Unarmed
+            return round(self.skills[skill][1] * 0.75)
+            
+        elif skill > 0 and skill < 6:
+            return round(self.skills[skill][1] * 0.333)
+        
+        elif skill == 6:
+            return self.skills[skill][1] * 0.5
+            
+        elif skill == 7:
+            return round(self.skills[skill][1] * 0.166)
+        
+    def DmgMod(self, skill):
+        if skill == 0:
+            #Unarmed
+            return round(self.skills[skill][1] * 1.5)
+            
+        elif skill > 0 and skill < 6:
+            return round(self.skills[skill][1] * 0.66)
+        
+        elif skill == 6:
+            return 0
+        
+        elif skill == 7:
+            return 0
+    
+    def Ignite(self, chance, damage, source):
+        if random.random() < chance*(10-max(9,self.GetShieldDV())):
+            self.burning = True
+            self.burnDamage = max(self.burnDamage, damage)
+            self.burnSource = source
+            self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
+            return (True, self.Attacked(damage, None))
+        return (False, False)
+        
+    def Extinguish(self):
+        if self.burning:
+            self.burning = False
+            self.burnDamage = 0
+            self.burnSource = None
+            self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
+            self.messageLog.append(Message.Message(self.name + " is no longer on fire"))
+    
+    def Stun(self):
+        self.ticksUntilTurn += round(200/self.speed)
+    
+    def GetRoute(self, dest):
+        # Performs an A* search to find route to go somewhere
+        # Input:
+        #   x, y - from self.x and self.y
+        #   self.currentMap.Walkable(x,y) - returns if can walk at x,y
+        #   dest - (x, y) tuplet of destination
+        #
+        # Returns a list of (x, y) tuplets
+        #
+        # This does have a special behaviour that it will list the final square whether or not it can be 
+        # walked on - so, it will attack if needed when position is fed to TryMove
+        # 
+        # From <http://www.policyalmanac.org/games/aStarTutorial.htm>
+        # 1) Add the starting square (or node) to the open list.
+        # 2) Repeat the following:
+        #   a) Look for the lowest F cost square on the open list. We refer to this as the current square.
+        #   b) Switch it to the closed list.
+        #   c) For each of the 8 squares adjacent to this current square 
+        #      If it is not walkable or if it is on the closed list, ignore it. Otherwise do the following.           
+        #      If it isn't on the open list, add it to the open list. Make the current square the parent of this square. Record the F, G, and H costs of the square. 
+        #      If it is on the open list already, check to see if this path to that square is better, using G cost as the measure. A lower G cost means that this is a better path. If so, change the parent of the square to the current square, and recalculate the G and F scores of the square. If you are keeping your open list sorted by F score, you may need to resort the list to account for the change.
+        #   d) Stop when you:
+        #      Add the target square to the closed list, in which case the path has been found (see note below), or
+        #      Fail to find the target square, and the open list is empty. In this case, there is no path.   
+        # 3) Save the path. Working backwards from the target square, go from each square to its parent square until you reach the starting square. That is your path.
+        
+        # ORTH_DISTANCE and DIAG_DISTANCE are for weights of travelling between the cells orthogonally
+        # and diagonally respectively. If diagoanal is further in game, then DIAG_DISTANCE should be 14
+        # As the distances are the same in mine, they're weighted evenly
+        ORTH_DISTANCE = 10
+        DIAG_DISTANCE = 10
+        
+        # Heuristic for calculating h is Manhattan Distance - 
+        #   abs(pos.x - dest.x) + abs(pos.y - dest.y)
+        
+        # OpenLists consists of tuplets with (
+        #   [0]: Position.x, 
+        #   [1]: Position.y,
+        #   [2]: ParentPosition.x, 
+        #   [3]: ParentPosition.y,
+        #   [4]: g (distance to get here from parent),
+        #   [5]: h (heuristic distance to destination) )
+        OpenList = [(self.x, self.y, self.x, self.y, 0, abs(self.x-dest[0]) + abs(self.y-dest[1]))]     
+        ClosedList = []
+        
+        Found = None
+        
+        while (len(OpenList) > 0 and Found == None):                
+            # Find entry in OpenList with lowest F score
+            # F = G + H                 
+            Current = min(OpenList, key=lambda i:i[4]+i[5])         
+            OpenList.remove(Current)
+            ClosedList.append(Current)
+            Active = [(Current[0] - 1,  Current[1],     Current[0], Current[1], Current[4] + ORTH_DISTANCE, abs(Current[0] - 1 - dest[0])   + abs(Current[1] - dest[1])),
+                (Current[0] + 1,    Current[1],     Current[0], Current[1], Current[4] + ORTH_DISTANCE, abs(Current[0] + 1 - dest[0])   + abs(Current[1] - dest[1])),
+                (Current[0] - 1,    Current[1] - 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE, abs(Current[0] - 1 - dest[0])   + abs(Current[1] - 1 - dest[1])),
+                (Current[0] + 1,    Current[1] - 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE, abs(Current[0] + 1 - dest[0])   + abs(Current[1] - 1 - dest[1])),
+                (Current[0] - 1,    Current[1] + 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE, abs(Current[0] - 1 - dest[0])   + abs(Current[1] + 1 - dest[1])),
+                (Current[0] + 1,    Current[1] + 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE, abs(Current[0] + 1 - dest[0])   + abs(Current[1] + 1 - dest[1])),
+                (Current[0],        Current[1] - 1, Current[0], Current[1], Current[4] + ORTH_DISTANCE, abs(Current[0] - dest[0])       + abs(Current[1] - dest[1] - 1)),
+                (Current[0],        Current[1] + 1, Current[0], Current[1], Current[4] + ORTH_DISTANCE, abs(Current[0] + dest[0])       + abs(Current[1] - dest[1] + 1))]
+            for i in Active:
+                # If point not in closed list and is walkable
+                # Remove the or (i[0] == dest[0] and i[1] == dest[1] to prevent the special behaviour
+                if ((len([j for j in ClosedList if j[0] == i[0] and j[1] == i[1]]) == 0)\
+                    and (self.currentMap.Walkable(i, True) or (i[0] == dest[0] and i[1] == dest[1]))):
+                        
+                    # Look for point in open List
+                    Candidate = [j for j in OpenList if j[0] == i[0] and j[1] == i[1]]
+                    # If point not in open list                 
+                    if(len(Candidate) == 0):
+                        # Add point to the open list
+                        OpenList.append(i)
+                        if (i[0] == dest[0] and i[1] == dest[1]):
+                            Found = i
+                    else:
+                        # Otherwise, check to see if this path to the square is shorter, using G. If so, replace square with current route (changing parent and g) 
+                        if Candidate[0][4] > i[4]:
+                            OpenList.remove(Candidate[0])
+                            OpenList.append(i)
+        # If no path found, return empty route
+        if Found == None:
+            return []
+        else:
+            # Add path to route             
+            CurSquare = Found
+            Route = [CurSquare]
+            # Iterate until we reach the starting point
+            while (not(CurSquare[0] == CurSquare[2] and CurSquare[1] == CurSquare[3])):                 
+                CurSquare = [j for j in (OpenList+ClosedList) if j[0] == CurSquare[2] and j[1] == CurSquare[3]][0]
+                Route.insert(0, CurSquare)
+            return Route
+                
+    
+    def GetNearest(self, destLogic, startingPointAllowed = False):
+        # Performs Dijkstra's algorithm to find nearest square resulting in destLogic = True
+        # destLogic has to take a tuplet of (x,y) as input and return a boolean as output
+        #
+        # Starting Point Allowed allows the alogithm to recognise the initial x y as a valid answer
+        
+        # As above in GetRoute
+        ORTH_DISTANCE = 10
+        DIAG_DISTANCE = 10
+        
+        Found = None
+            
+        # Check starting point. If it is, then return it and skip the rest
+        if startingPointAllowed:
+            if destLogic((self.x, self.y)):
+                return [(self.x, self.y)]               
+                
+        # OpenLists consists of tuplets with (
+        #   [0]: Position.x, 
+        #   [1]: Position.y,
+        #   [2]: ParentPosition.x, 
+        #   [3]: ParentPosition.y,
+        #   [4]: g (distance to get here from parent)
+        
+        OpenList = [(self.x, self.y, self.x, self.y, 0)]        
+        ClosedList = []
+        while (len(OpenList) > 0 and Found == None):                
+            # Find entry in OpenList with lowest G score
+            Current = min(OpenList, key=lambda i:i[4])          
+            OpenList.remove(Current)
+            ClosedList.append(Current)
+            Active = [(Current[0] - 1,  Current[1],     Current[0], Current[1], Current[4] + ORTH_DISTANCE),
+                (Current[0] + 1,    Current[1],     Current[0], Current[1], Current[4] + ORTH_DISTANCE),
+                (Current[0] - 1,    Current[1] - 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE),
+                (Current[0] + 1,    Current[1] - 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE),
+                (Current[0] - 1,    Current[1] + 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE),
+                (Current[0] + 1,    Current[1] + 1, Current[0], Current[1], Current[4] + DIAG_DISTANCE),
+                (Current[0],        Current[1] - 1, Current[0], Current[1], Current[4] + ORTH_DISTANCE),
+                (Current[0],        Current[1] + 1, Current[0], Current[1], Current[4] + ORTH_DISTANCE)]
+            for i in Active:
+                # If point not in closed list and is walkable
+                if (len([j for j in ClosedList if j[0] == i[0] and j[1] == i[1]]) == 0) and self.currentMap.Walkable(i, True):
+                    # Look for point in open List
+                    Candidate = [j for j in OpenList if j[0] == i[0] and j[1] == i[1]]
+                    # If point not in open list                 
+                    if(len(Candidate) == 0):
+                        # Add point to the open list
+                        OpenList.append(i)
+                        #print ("Check ", i)
+                        if destLogic(i):
+                            Found = i
+                            #print("Found")                         
+                    else:
+                        # Otherwise, check to see if this path to the square is shorter, using G. If so, replace square with current route (changing parent and g) 
+                        if Candidate[0][4] > i[4]:
+                            OpenList.remove(Candidate[0])
+                            OpenList.append(i)
+            
 
-				
-		# If no path found, return empty route
-		if Found == None:
-			return []
-		else:
-			# Add path to route				
-			CurSquare = Found
-			Route = [CurSquare]
-			# Iterate until we reach the starting point
-			while (not(CurSquare[0] == CurSquare[2] and CurSquare[1] == CurSquare[3])):					
-				CurSquare = [j for j in (OpenList+ClosedList) if j[0] == CurSquare[2] and j[1] == CurSquare[3]][0]
-				Route.insert(0, CurSquare)
-			return Route
-				
-			
-		
-					
+                
+        # If no path found, return empty route
+        if Found == None:
+            return []
+        else:
+            # Add path to route             
+            CurSquare = Found
+            Route = [CurSquare]
+            # Iterate until we reach the starting point
+            while (not(CurSquare[0] == CurSquare[2] and CurSquare[1] == CurSquare[3])):                 
+                CurSquare = [j for j in (OpenList+ClosedList) if j[0] == CurSquare[2] and j[1] == CurSquare[3]][0]
+                Route.insert(0, CurSquare)
+            return Route
+                
+            
+        
+                    

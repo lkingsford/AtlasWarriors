@@ -325,6 +325,10 @@ while True:
 					PC.ChangeMap(Maps[PC.currentMap.level+1])
 					PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
 					ForceDraw = True
+					
+				if event.key == pygame.K_i:
+				    dialog = inventoryDialog.InventoryDialog(PC)
+				    
 		else:
 			dialog.process(event)
 		
@@ -333,7 +337,7 @@ while True:
 			#print(win.getcoordinatesatpixel(event.pos))
 			if mouseCellY == 26:
 				if mouseCellX < 9:					
-					dialog = messagesDialog.MessagesDialog()
+					dialog = messagesDialog.MessagesDialog(messageLog)
 				if mouseCellX >= 9 and mouseCellX < 18:
 					dialog = inventoryDialog.InventoryDialog(PC)
 				if mouseCellX >= 18 and mouseCellX < 27:
