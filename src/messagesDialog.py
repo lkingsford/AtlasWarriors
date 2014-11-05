@@ -27,7 +27,7 @@ class MessagesDialog(dialog.Dialog):
         # This code may need to be reviewed for speed when the program has
         # been running a while.
         # 
-        for i in enumerate(self.messages[::-1]):           
+        for i in enumerate(self.messages[:-19:-1]):           
             win.blit(self.BodyFont.render(i[1].text, True, (255, 255, 255, 255)), (15, 48 + i[0] * 20))
    
     def process(self, event):
