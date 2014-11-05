@@ -110,264 +110,264 @@ class Character:
             self.x = newMap.startX
             self.y = newMap.startY
 
-	def GetWeaponToHit(self, weapon):
-		return self.baseToHit + weapon.ToHit		
-	
-	def GetTwoHanded(self):
-		return (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True and 
-				(self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True ))
-		
-	def ToHit(self):						
-			
-			# Unarmed
-			if ((self.leftHandEquipped == None) or (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == False ))\
-			 and ((self.rightHandEquipped == None) or (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == False )):
-				return [(self.baseToHit + self.ToHitMod(0) + (self.leftHandEquipped.ToHit if self.leftHandEquipped != None else 0) + (self.rightHandEquipped.ToHit if self.rightHandEquipped != None else 0) , None)]
-			
-			# 1 Weapon
-			elif (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True and not\
-				(self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True )) and not\
-				(self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True ):
-					return [(self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + (self.rightHandEquipped.ToHit if self.rightHandEquipped != None else 0), self.leftHandEquipped)]
-			
-			elif (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True and not\
-				(self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True )) and not\
-				(self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True ):
-					return [(self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + (self.leftHandEquipped.ToHit if self.leftHandEquipped != None else 0), self.rightHandEquipped)]
-			
-			# 2 Weapons
-			else:
-				return [(self.baseToHit + self.leftHandEquipped.ToHit + self.ToHitMod(self.leftHandEquipped.ItemClass) + self.ToHitMod(7), self.leftHandEquipped), \
-					(self.baseToHit + self.rightHandEquipped.ToHit + self.ToHitMod(self.rightHandEquipped.ItemClass) + self.ToHitMod(7), self.rightHandEquipped)]
-					
-			
-		
-	def ToDefend(self):
-		# This would have be changed in a different game - there is the special provision for zombie DV drain
-		toDefend = self.baseToDefend +\
-			((self.leftHandEquipped.ToDefend + self.ToDefMod(self.leftHandEquipped.ItemClass)) if self.leftHandEquipped != None else 0) +\
-			((self.rightHandEquipped.ToDefend + self.ToDefMod(self.rightHandEquipped.ItemClass)) if self.rightHandEquipped !=None else 0) +\
-			((self.ToDefMod(7) if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass < 6 and self.rightHandEquipped != None and self.rightHandEquipped.ItemClass < 6) else 0)) +\
-			((self.ToDefMod(0) if (self.leftHandEquipped == None) and (self.rightHandEquipped == None) else 0))						
-		return toDefend - self.ZombieMod
-		
-	def Damage(self):
-		return self.baseDamage	
-	
-	def CritMult(self):
-		return self.baseCritMult
-	
-	def GetDamageMultiplier(self, difference):
-		levelDifferenceDamageMultipliers = {
-			-6: 0.05,
-			-5: 0.1,
-			-4: 0.2, 
-			-3: 0.4, 
-			-2: 0.6,
-			-1: 0.8, 
-			0 : 1,
-			1 : 1.1,
-			2 : 1.2,
-			3 : 1.3,
-			4 : 1.4,
-			5 : 1.6,
-			6 : 2 }
-		if (difference < -6):
-			difference = -6
-		if (difference > 6):
-			difference = 6
-		return levelDifferenceDamageMultipliers[difference]
-	
-	def Killed(self, target):
-		xp = round(target.danger() * self.GetDamageMultiplier(target.level - self.level))
-		self.xp += xp
-		self.totalxp += xp
-		if self.xp > self.nextLevel:
-			self.LevelUp()					
-			self.nextLevel = round(self.baseXPToLevel * (self.level ** .69897))
-	
-	def Color(self):
-		if not self.burning:
-			return (self.color, 'black')
-		else:
-			return ('red', 'yellow')
-	
-			
-	def LevelUp(self, suppress = False):
-		self.xp = round(self.xp - int(self.baseXPToLevel * (max(0, self.level) ** .69897)), 0) 
-		self.level += 1
-		self.maxhp = round(10 * ((self.level) ** 0.4));
-		self.hp = self.maxhp		
-		self.animations.append(animation.LevelUpAnimation((self.x, self.y)))
-		if not(suppress):
-			self.messageLog.append(Message.Message(self.name + " levels up!"));
-	
-	def ChanceToHit(self, toHit, toDefend):
-		return (math.atan(0.6 * (toHit - toDefend) - 1) + math.pi/2) / math.pi
-	
-	def ChanceToCrit(self, toHit, toDefend):
-		return (math.atan(0.5 * (toHit - toDefend) - 3.5) + math.pi/2) / math.pi
-	
-	def GetAverageDamage(self, toDefend, defenderLevel):
-		damage = []
-		for i in self.ToHit():
-			chanceToHit = self.ChanceToHit(i[0], toDefend)
-			chanceToCrit = self.ChanceToCrit(i[0], toDefend)
-			normDamageChance = chanceToHit * (((self.Damage() if i[1] == None else i[1].Damage) + self.DmgMod(0 if i[1] == None else i[1].ItemClass)) * self.GetDamageMultiplier(self.level - defenderLevel)) * (1 - chanceToCrit)
-			critDamageChance = chanceToHit * (((self.Damage() if i[1] == None else i[1].Damage) + self.DmgMod(0 if i[1] == None else i[1].ItemClass)) * self.GetDamageMultiplier(self.level - defenderLevel)) * (chanceToCrit) * self.CritMult()
-			damage.append(normDamageChance + critDamageChance)
-		return 0 if len(damage) == 0 else sum(damage)/float(len(damage))
-			
-	def GetShieldDV(self):
-		TotalDV = 0
-		if self.leftHandEquipped != None and self.leftHandEquipped.ItemClass == ItemClass.shield:
-			TotalDV += self.leftHandEquipped.ToDefend
-		if self.rightHandEquipped != None and self.rightHandEquipped.ItemClass == ItemClass.shield:
-			TotalDV += self.rightHandEquipped.ToDefend
-		return TotalDV
-	
-			
-	def Attack(self, pos):
-		self.moved = True
-		self.ticksUntilTurn = round(100/self.speed)
-		
-		# Unarmed
-		if ((self.leftHandEquipped == None) or (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == False ))\
-		 and ((self.rightHandEquipped == None) or (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == False )):
-			Weapons = [(self.baseToHit + self.ToHitMod(0), None)]
-		
-		# 1 Weapon
-		elif (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True and not\
-			(self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True )) and not\
-			(self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True ):
-				Weapons = [(self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass), self.leftHandEquipped)]
-		
-		elif (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True and not\
-			(self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True )) and not\
-			(self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True ):
-				Weapons = [(self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass), self.rightHandEquipped)]
-		
-		# 2 Weapons
-		else:
-			Weapons = [(self.baseToHit + self.leftHandEquipped.ToHit + self.ToHitMod(self.leftHandEquipped.ItemClass) + self.ToHitMod(7), self.leftHandEquipped), \
-				(self.baseToHit + self.rightHandEquipped.ToHit + self.ToHitMod(self.rightHandEquipped.ItemClass) + self.ToHitMod(7), self.rightHandEquipped)]
-				
-		for i in Weapons:
-			attackSquares = [pos]
-			if (i[1] != None):
-				if (i[1].ItemClass == ItemClass.polearm):
-					dx = pos[0] - self.x
-					dy = pos[1] - self.y
-					attackSquares = [pos, (self.x + dx * 2, self.y + dy * 2)]
-				elif (i[1].ItemClass == ItemClass.axe):
-					dx = pos[0] - self.x 
-					dy = pos[1] - self.y
-					if (dx == 0 and dy == -1):
-						attackSquares = [pos, (self.x - 1, self.y - 1), (self.x + 1, self.y - 1)]
-					if (dx == 0 and dy == 1):
-						attackSquares = [pos, (self.x - 1, self.y + 1), (self.x + 1, self.y + 1)]
-					if (dx == -1 and dy == 0):
-						attackSquares = [pos, (self.x - 1, self.y - 1), (self.x - 1, self.y - 1)]
-					if (dx == 1 and dy == 0):
-						attackSquares = [pos, (self.x + 1, self.y + 1), (self.x + 1, self.y - 1)]
-					if (dx == -1 and dy == -1):
-						attackSquares = [pos, (self.x - 1, self.y), (self.x, self.y - 1)]
-					if (dx == 1 and dy == -1):
-						attackSquares = [pos, (self.x + 1, self.y), (self.x, self.y - 1)]
-					if (dx == -1 and dy == 1):
-						attackSquares = [pos, (self.x - 1, self.y), (self.x, self.y + 1)]
-					if (dx == 1 and dy == 1):
-						attackSquares = [pos, (self.x + 1, self.y), (self.x, self.y + 1)]								
-			
-			for j in attackSquares:
-				# self.animations.append(animation.DrawAttackAnimation(attackSquares))				
-				monsterInSquare = [c for c in self.currentMap.characters if (c.x == j[0]) and (c.y == j[1])]
-				if len(monsterInSquare) > 0:
-					if (monsterInSquare[0].team != self.team):			
-						self.AttackWithWeapon(monsterInSquare[0], i)
-						
-		self.ticksUntilTurn = round(max(map(lambda i:100 if i[1] == None else i[1].Speed, Weapons))/self.speed)
-	
-	def AttackWithWeapon(self, target, ToHit):
-		self.moved = True		
-		#Calculate odds to hit
-		chanceToHit = self.ChanceToHit(ToHit[0], target.ToDefend())
-		#Calculate odds to crit
-		chanceToCrit = self.ChanceToCrit(ToHit[0], target.ToDefend()) 
-		
-		#Did it hit?
-		hit = random.random() < chanceToHit
-		
-		#Did it crit?
-		crit = random.random() < chanceToCrit
-		
-		if hit:
-			damage = ((self.Damage() if ToHit[1] == None else ToHit[1].Damage) + self.DmgMod(0 if ToHit[1] == None else ToHit[1].ItemClass)) * self.GetDamageMultiplier(self.level - target.level) * (self.CritMult() if crit else 1)
-			target.Attacked(damage, self)
-			if crit:
-				self.messageLog.append(Message.Message(self.name + " crits " + target.name + " (" + str(target.hp) + ")"));
-			else:
-				self.messageLog.append(Message.Message(self.name + " attacks " + target.name+ " (" + str(target.hp) + ")"));
-			if (target.dead()):
-				self.messageLog.append(Message.Message(target.name + " has been killed!"));
-				self.Killed(target)
-			if (ToHit[1] != None):				
-				self.RegisterSkillHit(ToHit[1].ItemClass)
-				if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass < 6 and self.rightHandEquipped != None and self.rightHandEquipped.ItemClass < 6):
-					self.RegisterSkillHit(7)
-				stunned = False
-				if ToHit[1].ItemClass == ItemClass.blunt:
-					stunned = True
-					target.Stun();
-			else:
-				self.RegisterSkillHit(0)
-				
-		else:
-			damage = 0
-			target.Missed(ToHit[0], self)			
-			
-		"""print (self.name, '->', target.name, ' ToHit - ToDefend = ', 
-			self.ToHit() - target.ToDefend(), ' chanceToHit ', 
-			chanceToHit, ' chanceToCrit ', chanceToCrit, ' hit ', 
-			hit, ' crit ', crit, ' DamageMultiplyer ', 
-			self.GetDamageMultiplier(self.level-target.level),
-			' damage done ', damage)"""					
-			
-	def Attacked(self, damage, attacker, melee = True):
-		self.hp -= round(damage)
-		# The dagger retalliate is replicated both here and in player.py
-		if attacker != None and melee == True:
-			if (self.leftHandEquipped != None) and (self.leftHandEquipped.ItemClass == ItemClass.dagger):
-				# Retalliate attack if got dagger
-				# Retalliate attack does 4 extra ToHit
-				self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.leftHandEquipped.Name))
-				self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
-				
-			if (self.rightHandEquipped != None) and (self.rightHandEquipped.ItemClass == ItemClass.dagger):
-				self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.rightHandEquipped.Name))
-				self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])			
-				
-		if self.hp <= 0:
-			return True
-		else:
-			return False
-	
-	def Missed(self, toHit, attacker):
-		# Find if it hit the shield, was dodged or was parried
-		
-		# Get chance to miss without anything equipped (dodge chance)		
-		dodgeChance = 1 - self.ChanceToHit(toHit, self.baseToDefend)
-		
-		shieldBlockChance = 0
-		weaponBlockLeftChance = 0
-		weaponBlockRightChance = 0
-		
-		# Get chance with left hand
-		if (self.leftHandEquipped != None):
-			if self.leftHandEquipped.ItemClass == ItemClass.shield:
-				shieldBlockChance += 1 - self.ChanceToHit(toHit,	(self.leftHandEquipped.ToDefend + self.ToDefMod(self.leftHandEquipped.ItemClass)))
-			else:
-				weaponBlockLeftChance = 1 - self.ChanceToHit(toHit, (self.leftHandEquipped.ToDefend + self.ToDefMod(self.leftHandEquipped.ItemClass)))
+    def GetWeaponToHit(self, weapon):
+        return self.baseToHit + weapon.ToHit        
+    
+    def GetTwoHanded(self):
+        return (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True and 
+                (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True ))
+        
+    def ToHit(self):                        
+            
+            # Unarmed
+            if ((self.leftHandEquipped == None) or (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == False ))\
+             and ((self.rightHandEquipped == None) or (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == False )):
+                return [(self.baseToHit + self.ToHitMod(0) + (self.leftHandEquipped.ToHit if self.leftHandEquipped != None else 0) + (self.rightHandEquipped.ToHit if self.rightHandEquipped != None else 0) , None)]
+            
+            # 1 Weapon
+            elif (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True and not\
+                (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True )) and not\
+                (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True ):
+                    return [(self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + (self.rightHandEquipped.ToHit if self.rightHandEquipped != None else 0), self.leftHandEquipped)]
+            
+            elif (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True and not\
+                (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True )) and not\
+                (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True ):
+                    return [(self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + (self.leftHandEquipped.ToHit if self.leftHandEquipped != None else 0), self.rightHandEquipped)]
+            
+            # 2 Weapons
+            else:
+                return [(self.baseToHit + self.leftHandEquipped.ToHit + self.ToHitMod(self.leftHandEquipped.ItemClass) + self.ToHitMod(7), self.leftHandEquipped), \
+                    (self.baseToHit + self.rightHandEquipped.ToHit + self.ToHitMod(self.rightHandEquipped.ItemClass) + self.ToHitMod(7), self.rightHandEquipped)]
+                    
+            
+        
+    def ToDefend(self):
+        # This would have be changed in a different game - there is the special provision for zombie DV drain
+        toDefend = self.baseToDefend +\
+            ((self.leftHandEquipped.ToDefend + self.ToDefMod(self.leftHandEquipped.ItemClass)) if self.leftHandEquipped != None else 0) +\
+            ((self.rightHandEquipped.ToDefend + self.ToDefMod(self.rightHandEquipped.ItemClass)) if self.rightHandEquipped !=None else 0) +\
+            ((self.ToDefMod(7) if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass < 6 and self.rightHandEquipped != None and self.rightHandEquipped.ItemClass < 6) else 0)) +\
+            ((self.ToDefMod(0) if (self.leftHandEquipped == None) and (self.rightHandEquipped == None) else 0))                     
+        return toDefend - self.ZombieMod
+        
+    def Damage(self):
+        return self.baseDamage  
+    
+    def CritMult(self):
+        return self.baseCritMult
+    
+    def GetDamageMultiplier(self, difference):
+        levelDifferenceDamageMultipliers = {
+            -6: 0.05,
+            -5: 0.1,
+            -4: 0.2, 
+            -3: 0.4, 
+            -2: 0.6,
+            -1: 0.8, 
+            0 : 1,
+            1 : 1.1,
+            2 : 1.2,
+            3 : 1.3,
+            4 : 1.4,
+            5 : 1.6,
+            6 : 2 }
+        if (difference < -6):
+            difference = -6
+        if (difference > 6):
+            difference = 6
+        return levelDifferenceDamageMultipliers[difference]
+    
+    def Killed(self, target):
+        xp = round(target.danger() * self.GetDamageMultiplier(target.level - self.level))
+        self.xp += xp
+        self.totalxp += xp
+        if self.xp > self.nextLevel:
+            self.LevelUp()                  
+            self.nextLevel = round(self.baseXPToLevel * (self.level ** .69897))
+    
+    def Color(self):
+        if not self.burning:
+            return (self.color, 'black')
+        else:
+            return ('red', 'yellow')
+    
+            
+    def LevelUp(self, suppress = False):
+        self.xp = round(self.xp - int(self.baseXPToLevel * (max(0, self.level) ** .69897)), 0) 
+        self.level += 1
+        self.maxhp = round(10 * ((self.level) ** 0.4));
+        self.hp = self.maxhp        
+        self.animations.append(animation.LevelUpAnimation((self.x, self.y)))
+        if not(suppress):
+            self.messageLog.append(Message.Message(self.name + " levels up!"));
+    
+    def ChanceToHit(self, toHit, toDefend):
+        return (math.atan(0.6 * (toHit - toDefend) - 1) + math.pi/2) / math.pi
+    
+    def ChanceToCrit(self, toHit, toDefend):
+        return (math.atan(0.5 * (toHit - toDefend) - 3.5) + math.pi/2) / math.pi
+    
+    def GetAverageDamage(self, toDefend, defenderLevel):
+        damage = []
+        for i in self.ToHit():
+            chanceToHit = self.ChanceToHit(i[0], toDefend)
+            chanceToCrit = self.ChanceToCrit(i[0], toDefend)
+            normDamageChance = chanceToHit * (((self.Damage() if i[1] == None else i[1].Damage) + self.DmgMod(0 if i[1] == None else i[1].ItemClass)) * self.GetDamageMultiplier(self.level - defenderLevel)) * (1 - chanceToCrit)
+            critDamageChance = chanceToHit * (((self.Damage() if i[1] == None else i[1].Damage) + self.DmgMod(0 if i[1] == None else i[1].ItemClass)) * self.GetDamageMultiplier(self.level - defenderLevel)) * (chanceToCrit) * self.CritMult()
+            damage.append(normDamageChance + critDamageChance)
+        return 0 if len(damage) == 0 else sum(damage)/float(len(damage))
+            
+    def GetShieldDV(self):
+        TotalDV = 0
+        if self.leftHandEquipped != None and self.leftHandEquipped.ItemClass == ItemClass.shield:
+            TotalDV += self.leftHandEquipped.ToDefend
+        if self.rightHandEquipped != None and self.rightHandEquipped.ItemClass == ItemClass.shield:
+            TotalDV += self.rightHandEquipped.ToDefend
+        return TotalDV
+    
+            
+    def Attack(self, pos):
+        self.moved = True
+        self.ticksUntilTurn = round(100/self.speed)
+        
+        # Unarmed
+        if ((self.leftHandEquipped == None) or (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == False ))\
+         and ((self.rightHandEquipped == None) or (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == False )):
+            Weapons = [(self.baseToHit + self.ToHitMod(0), None)]
+        
+        # 1 Weapon
+        elif (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True and not\
+            (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True )) and not\
+            (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True ):
+                Weapons = [(self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass), self.leftHandEquipped)]
+        
+        elif (self.rightHandEquipped != None and self.rightHandEquipped.IsWeapon() == True and not\
+            (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True )) and not\
+            (self.leftHandEquipped != None and self.leftHandEquipped.IsWeapon() == True ):
+                Weapons = [(self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass), self.rightHandEquipped)]
+        
+        # 2 Weapons
+        else:
+            Weapons = [(self.baseToHit + self.leftHandEquipped.ToHit + self.ToHitMod(self.leftHandEquipped.ItemClass) + self.ToHitMod(7), self.leftHandEquipped), \
+                (self.baseToHit + self.rightHandEquipped.ToHit + self.ToHitMod(self.rightHandEquipped.ItemClass) + self.ToHitMod(7), self.rightHandEquipped)]
+                
+        for i in Weapons:
+            attackSquares = [pos]
+            if (i[1] != None):
+                if (i[1].ItemClass == ItemClass.polearm):
+                    dx = pos[0] - self.x
+                    dy = pos[1] - self.y
+                    attackSquares = [pos, (self.x + dx * 2, self.y + dy * 2)]
+                elif (i[1].ItemClass == ItemClass.axe):
+                    dx = pos[0] - self.x 
+                    dy = pos[1] - self.y
+                    if (dx == 0 and dy == -1):
+                        attackSquares = [pos, (self.x - 1, self.y - 1), (self.x + 1, self.y - 1)]
+                    if (dx == 0 and dy == 1):
+                        attackSquares = [pos, (self.x - 1, self.y + 1), (self.x + 1, self.y + 1)]
+                    if (dx == -1 and dy == 0):
+                        attackSquares = [pos, (self.x - 1, self.y - 1), (self.x - 1, self.y - 1)]
+                    if (dx == 1 and dy == 0):
+                        attackSquares = [pos, (self.x + 1, self.y + 1), (self.x + 1, self.y - 1)]
+                    if (dx == -1 and dy == -1):
+                        attackSquares = [pos, (self.x - 1, self.y), (self.x, self.y - 1)]
+                    if (dx == 1 and dy == -1):
+                        attackSquares = [pos, (self.x + 1, self.y), (self.x, self.y - 1)]
+                    if (dx == -1 and dy == 1):
+                        attackSquares = [pos, (self.x - 1, self.y), (self.x, self.y + 1)]
+                    if (dx == 1 and dy == 1):
+                        attackSquares = [pos, (self.x + 1, self.y), (self.x, self.y + 1)]                               
+            
+            for j in attackSquares:
+                # self.animations.append(animation.DrawAttackAnimation(attackSquares))              
+                monsterInSquare = [c for c in self.currentMap.characters if (c.x == j[0]) and (c.y == j[1])]
+                if len(monsterInSquare) > 0:
+                    if (monsterInSquare[0].team != self.team):          
+                        self.AttackWithWeapon(monsterInSquare[0], i)
+                        
+        self.ticksUntilTurn = round(max(map(lambda i:100 if i[1] == None else i[1].Speed, Weapons))/self.speed)
+    
+    def AttackWithWeapon(self, target, ToHit):
+        self.moved = True       
+        #Calculate odds to hit
+        chanceToHit = self.ChanceToHit(ToHit[0], target.ToDefend())
+        #Calculate odds to crit
+        chanceToCrit = self.ChanceToCrit(ToHit[0], target.ToDefend()) 
+        
+        #Did it hit?
+        hit = random.random() < chanceToHit
+        
+        #Did it crit?
+        crit = random.random() < chanceToCrit
+        
+        if hit:
+            damage = ((self.Damage() if ToHit[1] == None else ToHit[1].Damage) + self.DmgMod(0 if ToHit[1] == None else ToHit[1].ItemClass)) * self.GetDamageMultiplier(self.level - target.level) * (self.CritMult() if crit else 1)
+            target.Attacked(damage, self)
+            if crit:
+                self.messageLog.append(Message.Message(self.name + " crits " + target.name + " (" + str(target.hp) + ")"));
+            else:
+                self.messageLog.append(Message.Message(self.name + " attacks " + target.name+ " (" + str(target.hp) + ")"));
+            if (target.dead()):
+                self.messageLog.append(Message.Message(target.name + " has been killed!"));
+                self.Killed(target)
+            if (ToHit[1] != None):              
+                self.RegisterSkillHit(ToHit[1].ItemClass)
+                if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass < 6 and self.rightHandEquipped != None and self.rightHandEquipped.ItemClass < 6):
+                    self.RegisterSkillHit(7)
+                stunned = False
+                if ToHit[1].ItemClass == ItemClass.blunt:
+                    stunned = True
+                    target.Stun();
+            else:
+                self.RegisterSkillHit(0)
+                
+        else:
+            damage = 0
+            target.Missed(ToHit[0], self)           
+            
+        """print (self.name, '->', target.name, ' ToHit - ToDefend = ', 
+            self.ToHit() - target.ToDefend(), ' chanceToHit ', 
+            chanceToHit, ' chanceToCrit ', chanceToCrit, ' hit ', 
+            hit, ' crit ', crit, ' DamageMultiplyer ', 
+            self.GetDamageMultiplier(self.level-target.level),
+            ' damage done ', damage)"""                 
+            
+    def Attacked(self, damage, attacker, melee = True):
+        self.hp -= round(damage)
+        # The dagger retalliate is replicated both here and in player.py
+        if attacker != None and melee == True:
+            if (self.leftHandEquipped != None) and (self.leftHandEquipped.ItemClass == ItemClass.dagger):
+                # Retalliate attack if got dagger
+                # Retalliate attack does 4 extra ToHit
+                self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.leftHandEquipped.Name))
+                self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
+                
+            if (self.rightHandEquipped != None) and (self.rightHandEquipped.ItemClass == ItemClass.dagger):
+                self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.rightHandEquipped.Name))
+                self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
+                
+        if self.hp <= 0:
+            return True
+        else:
+            return False
+    
+    def Missed(self, toHit, attacker):
+        # Find if it hit the shield, was dodged or was parried
+        
+        # Get chance to miss without anything equipped (dodge chance)       
+        dodgeChance = 1 - self.ChanceToHit(toHit, self.baseToDefend)
+        
+        shieldBlockChance = 0
+        weaponBlockLeftChance = 0
+        weaponBlockRightChance = 0
+        
+        # Get chance with left hand
+        if (self.leftHandEquipped != None):
+            if self.leftHandEquipped.ItemClass == ItemClass.shield:
+                shieldBlockChance += 1 - self.ChanceToHit(toHit,    (self.leftHandEquipped.ToDefend + self.ToDefMod(self.leftHandEquipped.ItemClass)))
+            else:
+                weaponBlockLeftChance = 1 - self.ChanceToHit(toHit, (self.leftHandEquipped.ToDefend + self.ToDefMod(self.leftHandEquipped.ItemClass)))
 
         # Get chance with right hand
         if (self.rightHandEquipped != None):
