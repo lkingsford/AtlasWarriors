@@ -14,12 +14,14 @@ class InventoryDialog(dialog.Dialog):
 		self.BackpackBox = pygame.Rect(0,0,0,0)
 		self.PC = PC
 		self.Context = None
+		self.FloorItems = [i for i in PC.currentMap.Items if i.x == PC.x and i.y == PC.y]
 	
-	def draw(self, win):
-		self.Box = pygame.Rect(50, 50, win.get_width() - 100, 238)
-		self.LeftHandBox = pygame.Rect(150, 118, win.get_width() - 205, 20)
-		self.RightHandBox = pygame.Rect(150, 98, win.get_width() - 205, 20)	
-		self.BackpackBox = pygame.Rect(55, 158, win.get_width() - 110, 124)
+	def draw(self, win):	    
+		self.Box = pygame.Rect(5, 50, win.get_width() - 10, 408)
+		self.LeftHandBox = pygame.Rect(120, 118, win.get_width() - 153, 20)
+		self.RightHandBox = pygame.Rect(120, 98, win.get_width() - 153, 20)	
+		self.BackpackBox = pygame.Rect(28, 168, win.get_width() - 60, 124)
+		self.FloorBox = pygame.Rect(28, 318, win.get_width() - 60, 124)
 		
 		pygame.draw.rect(win, (32,32,32,255), self.Box, 0)
 		pygame.draw.rect(win, (128,128,128,255), self.Box, 1)
@@ -31,17 +33,22 @@ class InventoryDialog(dialog.Dialog):
 		pygame.draw.rect(win, (128,128,128,255), self.BackpackBox, 1)
 		titleSize = self.TitleFont.size('Load Out')
 		win.blit(self.TitleFont.render('Load Out', True, (255, 255, 255, 255)), (round((win.get_width() - titleSize[0])/2), 60))
-		win.blit(self.BodyFont.render('Equipped:', True, (255, 255, 255, 255)), (60, 80))
-		win.blit(self.BodyFont.render('Right Hand:', True, (255, 255, 255, 255)), (60, 100))		
-		win.blit(self.BodyFont.render('Left Hand:', True, (255, 255, 255, 255)), (60, 120))
+		win.blit(self.BodyFont.render('Equipped:', True, (255, 255, 255, 255)), (30, 80))
+		win.blit(self.BodyFont.render('Right Hand:', True, (255, 255, 255, 255)), (30, 100))		
+		win.blit(self.BodyFont.render('Left Hand:', True, (255, 255, 255, 255)), (30, 120))
 		
-		win.blit(self.BodyFont.render(self.PC.rightHandEquipped.Description() if self.PC.rightHandEquipped != None else (('(' + self.PC.leftHandEquipped.Description() + ')') if self.PC.leftHandEquipped != None and self.PC.leftHandEquipped.TwoHanded  else 'Empty'), True, (255, 255, 255, 255)), (152, 100))		
-		win.blit(self.BodyFont.render(self.PC.leftHandEquipped.Description() if self.PC.leftHandEquipped != None else (('(' + self.PC.rightHandEquipped.Description() + ')') if self.PC.rightHandEquipped != None and self.PC.rightHandEquipped.TwoHanded  else 'Empty'), True, (255, 255, 255, 255)), (152, 120))
+		win.blit(self.BodyFont.render(self.PC.rightHandEquipped.Description() if self.PC.rightHandEquipped != None else (('(' + self.PC.leftHandEquipped.Description() + ')') if self.PC.leftHandEquipped != None and self.PC.leftHandEquipped.TwoHanded  else 'Empty'), True, (255, 255, 255, 255)), (122, 100))		
+		win.blit(self.BodyFont.render(self.PC.leftHandEquipped.Description() if self.PC.leftHandEquipped != None else (('(' + self.PC.rightHandEquipped.Description() + ')') if self.PC.rightHandEquipped != None and self.PC.rightHandEquipped.TwoHanded  else 'Empty'), True, (255, 255, 255, 255)), (122, 120))
 		
-		win.blit(self.BodyFont.render('Backpack:', True, (255, 255, 255, 255)), (60, 140))
+		win.blit(self.BodyFont.render('Backpack:', True, (255, 255, 255, 255)), (30, 150))
+		
+		win.blit(self.BodyFont.render('On Floor:', True, (255, 255, 255, 255)), (30, 300))
 		
 		for i in enumerate(self.PC.backpack):			
-			win.blit(self.BodyFont.render(i[1].Description(), True, (255, 255, 255, 255)), (60, 160 + i[0] * 20))
+			win.blit(self.BodyFont.render(i[1].Description(), True, (255, 255, 255, 255)), (30, 170 + i[0] * 20))
+			
+		for i in enumerate(self.FloorItems):			
+			win.blit(self.BodyFont.render(i[1].Description(), True, (255, 255, 255, 255)), (30, 320 + i[0] * 20))
 		
 		if self.Context != None:
 			self.Context.draw(win)

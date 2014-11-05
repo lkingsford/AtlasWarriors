@@ -325,6 +325,10 @@ while True:
 					PC.ChangeMap(Maps[PC.currentMap.level+1])
 					PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
 					ForceDraw = True
+					
+				if event.key == pygame.K_i:
+				    dialog = inventoryDialog.InventoryDialog(PC)
+				    
 		else:
 			dialog.process(event)
 		
