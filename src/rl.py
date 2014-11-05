@@ -337,7 +337,7 @@ while True:
 			#print(win.getcoordinatesatpixel(event.pos))
 			if mouseCellY == 26:
 				if mouseCellX < 9:					
-					dialog = messagesDialog.MessagesDialog()
+					dialog = messagesDialog.MessagesDialog(messageLog)
 				if mouseCellX >= 9 and mouseCellX < 18:
 					dialog = inventoryDialog.InventoryDialog(PC)
 				if mouseCellX >= 18 and mouseCellX < 27:
