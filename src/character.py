@@ -194,7 +194,7 @@ class Character:
 	
 			
 	def LevelUp(self, suppress = False):
-		self.xp = round(self.xp - int(self.baseXPToLevel * (self.level ** .69897)), 0) 
+		self.xp = round(self.xp - int(self.baseXPToLevel * (max(0, self.level) ** .69897)), 0) 
 		self.level += 1
 		self.maxhp = round(10 * ((self.level) ** 0.4));
 		self.hp = self.maxhp		
