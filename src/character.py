@@ -110,7 +110,6 @@ class Character:
             self.x = newMap.startX
             self.y = newMap.startY
 
-<<<<<<< HEAD
 	def GetWeaponToHit(self, weapon):
 		return self.baseToHit + weapon.ToHit		
 	
