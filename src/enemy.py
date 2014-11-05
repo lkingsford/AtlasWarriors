@@ -53,7 +53,12 @@ class Enemy(character.Character):
             
         if len(EnemiesInRoom) > 0:
             # Calculate enemies average damage per hit to dragon
-            return sum(map(lambda i: i.GetAverageDamage(self.ToDefend(), self.level)/max(abs(i.x - self.x ),abs(i.y-self.y)), EnemiesInRoom))/max(1,self.hp)                                
+            try:
+                return sum(map(lambda i: i.GetAverageDamage(self.ToDefend(), 
+                    self.level)/max(abs(i.x - self.x ),abs(i.y-self.y)), 
+                    EnemiesInRoom))/max(1,self.hp)
+            except ZeroDivisionError:
+                return 1
         else:
             return 0
         
