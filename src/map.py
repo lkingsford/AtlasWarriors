@@ -292,41 +292,18 @@ class Map:
 			self.AddHealers(self.Rooms[1])
 			self.AddWarlord(self.Rooms[1])
 		
-		# if level < 9:
-			# currentDanger = 0
-			# while currentDanger < desiredDanger[level]:
-				# nextEnemy = random.choice(chooseEnemies)
-				# if nextEnemy.minLevel <= level:
-					# room = random.choice(self.Rooms)
-					# for i in range(nextEnemy.minGroup):
-						# newenemy = copy.deepcopy(nextEnemy)		
-						# newenemy.currentMap = self
-						# newenemy.x = random.randrange(room.x, room.x+room.w)
-						# newenemy.y = random.randrange(room.y, room.y+room.h)
-						# levelmod = random.choice([-2, -1 , -1, 0, 0, 0, 0, 0, 1, 1, 2])
-						# monsterLevel = max(0, level + levelmod)
-						# newenemy.level = monsterLevel	
-						# self.characters.append(newenemy)
-						# currentDanger += newenemy.baseDanger
-		# else:			
-			# newenemy = next(i for i in enemies if i.name == "Lachlan")
-			# newenemy.x = self.Rooms[-1].x + round(self.Rooms[-1].w / 2)
-			# newenemy.y = self.Rooms[-1].y + round(self.Rooms[-1].h / 2)
-			# newenemy.currentMap = self
-			# self.characters.append(newenemy)
-		# 
-		
 		for i in range(random.randrange(1, 3)):
 			room = random.choice(self.Rooms)
 			item = copy.deepcopy(self.ChooseItem(level))
-			#print(room.x, ' ', room.y, ' ', room.w, ' ', room.h)
-			#print(room.x+1,' ', room.x+room.w-2, room.y+1, ' ', room.y+room.h-2)
-			#print (room.x+1, ' ', room.x+room.w-1)
 			item.x = (random.randrange(room.x, room.x+room.w)) if (room.x != room.x+room.w) else (room.x)
 			item.y = (random.randrange(room.y, room.y+room.h)) if (room.y != room.y+room.h) else (room.y)
+			
+            # LK - Fixes bug #6 (5/11/2014)            
+			while (self.Map[item.x][item.y].walkbehavior != 'none'):
+			    item.x = (random.randrange(room.x, room.x+room.w)) if (room.x != room.x+room.w) else (room.x)
+			    item.y = (random.randrange(room.y, room.y+room.h)) if (room.y != room.y+room.h) else (room.y)			
+			
 			self.Items.append(item)
-
-
 		
 		if level != 0:			
 			self.Map[self.startX][self.startY] = Cell('<', True, 'white', 'blue', 'go up')
