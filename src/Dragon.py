@@ -78,7 +78,7 @@ class Dragon(Enemy):
             
         if self.Target != None and self.Target.living == True:
             DangerToTargetMelee = self.GetAverageDamage(self.Target.ToDefend(), self.Target.level)/max(1,self.Target.hp)
-            DangerToTargetRange = self.burnDamage * 3 / self.Target.hp
+            DangerToTargetRange = self.burnDamage * 3 / max(1,self.Target.hp)
         
         # Pick what the preferred state should be
         if Danger > 0.6:
