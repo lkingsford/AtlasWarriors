@@ -10,11 +10,11 @@ class Goliath(Enemy):
         self.levelMod = random.choice([-2,-1,0,0,0,0,0,1,1,2])
         self.level = currentMap.level + self.levelMod               
         self.character = "g"        
-        self.speed = 5
+        self.speed = 7
         self.hp = self.maxhp = self.starthp = round(20 * (max(1,self.level - 2) ** 0.4))
         self.baseDamage = self.startDamage = round(5 * (max(1,self.level - 2) ** 0.2))
-        self.baseToHit =  round(3 * (max(1,self.level - 3)  ** 0.2))
-        self.baseToDefend = round(3 * (max(1,self.level - 3) ** 0.2))
+        self.baseToHit =  round(8 * (max(1,self.level - 3)  ** 0.2))
+        self.baseToDefend = round(7 * (max(1,self.level - 3) ** 0.2))
         self.color = "silver"
         if badass != -1:
             self.badass = badass 
@@ -68,7 +68,7 @@ class Goliath(Enemy):
             # is being punched in
             dx = 0 if target.x == self.x else (1 if target.x > self.x else -1)
             dy = 0 if target.y == self.y else (1 if target.y > self.y else -1)
-            print(dx,' ', dy)
+            # print(dx,' ', dy)
             force = self.badass + 3
             while force > 0:
                 newX = target.x + dx
