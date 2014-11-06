@@ -231,7 +231,7 @@ for i in range(10):
         Maps[i].nextMap = Maps[i + 1]
     if (i != 0):
         Maps[i].lastMap = Maps[i - 1]
-    Maps[i].background = pygame.image.load(os.path.join('assets','back_level_'+str(i)+'.png'))
+    Maps[i].background = pygame.image.load(os.path.join('assets','back_level_'+str(i % 4)+'.png'))
         
 PC = player_character.PlayerCharacter(messageLog, Maps[0], DefaultItems, difficulty)
 PC.x = Maps[0].startX
