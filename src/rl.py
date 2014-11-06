@@ -39,13 +39,16 @@ def getToCritChance (toHit):
 
 def LoseGame (win):
     win.setscreencolors('lime', 'black', clear=True)
-    win.putchars('For you, the dream ends here.', 6, 5, 'white')
-    win.putchars('You have died.', 14, 10, 'white')
-    win.putchars('Well. That sucks.', 13, 15, 'white')
+    win.putchars('For you, the dream ends here.', 6, 5, 'white', 'black')
+    win.putchars('You have died.', 14, 10, 'white', 'black')
+    win.putchars('Well. That sucks.', 13, 15, 'white', 'black')
     score = scores.CalculateScore(Maps, PC, difficulty, 0)  
-    win.putchars('Score: ' + str(score), 2, 17, 'red')
+    win.putchars('Score: ' + str(score), 2, 17, 'red', 'black')
         
     win.update() 
+    screen.blit(surface,(0,0))
+    pygame.display.update()
+    pygame.display.flip()
     pygcurse.waitforkeypress()  
     pygcurse.waitforkeypress()  
     pygame.quit()   
@@ -72,73 +75,77 @@ def LoseGame (win):
 def WinGame (victoryCondition, win):
     if victoryCondition == 1:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('Congratulations!', 1, 2, 'white')
-        win.putchars('You have slain the the mighty warlord', 1, 3, 'white')
+        win.putchars('Congratulations!', 1, 2, 'white', 'black')
+        win.putchars('You have slain the the mighty warlord', 1, 3, 'white', 'black')
         win.update()
         
     elif victoryCondition == 2:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('Congratulations!', 1, 2, 'white')
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('It may not have been by your hand, but', 1, 4, 'white')
-        win.putchars('this part of Atlas is at least for now,', 1, 5, 'white')
-        win.putchars('in peace.', 1, 6, 'white')
+        win.putchars('Congratulations!', 1, 2, 'white', 'black')
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('It may not have been by your hand, but', 1, 4, 'white', 'black')
+        win.putchars('this part of Atlas is at least for now,', 1, 5, 'white', 'black')
+        win.putchars('in peace.', 1, 6, 'white', 'black')
         win.update()
     
     elif victoryCondition == 3:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('by the horrible demonic goliath.', 1, 4, 'white')
-        win.putchars('Absorbing his vast power, the ', 1, 5, 'white')
-        win.putchars('unholy beast unleashes hell upon', 1, 6, 'white')
-        win.putchars('Atlas.', 1, 7, 'white')
-        win.putchars('Doom awaits those who survive.', 1, 7, 'white')
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('by the horrible demonic goliath.', 1, 4, 'white', 'black')
+        win.putchars('Absorbing his vast power, the ', 1, 5, 'white', 'black')
+        win.putchars('unholy beast unleashes hell upon', 1, 6, 'white', 'black')
+        win.putchars('Atlas.', 1, 7, 'white', 'black')
+        win.putchars('Doom awaits those who survive.', 1, 7, 'white', 'black')
         win.update()
     
     elif victoryCondition == 4:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('by the apocalyptic goliath.', 1, 4, 'white')
-        win.putchars('Absorbing his vast power, the ', 1, 5, 'white')
-        win.putchars('unholy beast unleashes a wave', 1, 6, 'white')
-        win.putchars('of destruction that clouds', 1, 7, 'white')
-        win.putchars('Atlas in fire and desolation', 1, 8, 'white')
-        win.putchars('leaving nothing.', 1, 9, 'white')
-        win.putchars('You achieved your goal of', 1, 10, 'white')
-        win.putchars('bringing peace to Atlas.', 1, 11, 'white')
-        win.putchars('You have done so eternally.', 1, 12, 'white')
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('by the apocalyptic goliath.', 1, 4, 'white', 'black')
+        win.putchars('Absorbing his vast power, the ', 1, 5, 'white', 'black')
+        win.putchars('unholy beast unleashes a wave', 1, 6, 'white', 'black')
+        win.putchars('of destruction that clouds', 1, 7, 'white', 'black')
+        win.putchars('Atlas in fire and desolation', 1, 8, 'white', 'black')
+        win.putchars('leaving nothing.', 1, 9, 'white', 'black')
+        win.putchars('You achieved your goal of', 1, 10, 'white', 'black')
+        win.putchars('bringing peace to Atlas.', 1, 11, 'white', 'black')
+        win.putchars('You have done so eternally.', 1, 12, 'white', 'black')
         win.update()
         
     elif victoryCondition == 5:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('by the Mortreon, the True Dragon.', 1, 4, 'white')
-        win.putchars('Mortreon absorbs the explosion of', 1, 5, 'white')
-        win.putchars('power in its entirity and' , 1, 6, 'white')
-        win.putchars('unleashes an almighty roar', 1, 7, 'white')
-        win.putchars('resurrecting Eon, the God King of', 1, 8, 'white')
-        win.putchars('Dragons.', 1, 9, 'white')
-        win.putchars('The second age of Eon will', 1, 10, 'white')
-        win.putchars('come.', 1, 11, 'white')
-        win.putchars('The sons of Eon will reign.', 1, 12, 'white')     
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('by the Mortreon, the True Dragon.', 1, 4, 'white', 'black')
+        win.putchars('Mortreon absorbs the explosion of', 1, 5, 'white', 'black')
+        win.putchars('power in its entirity and' , 1, 6, 'white', 'black')
+        win.putchars('unleashes an almighty roar', 1, 7, 'white', 'black')
+        win.putchars('resurrecting Eon, the God King of', 1, 8, 'white', 'black')
+        win.putchars('Dragons.', 1, 9, 'white', 'black')
+        win.putchars('The second age of Eon will', 1, 10, 'white', 'black')
+        win.putchars('come.', 1, 11, 'white', 'black')
+        win.putchars('The sons of Eon will reign.', 1, 12, 'white', 'black')     
         win.update()
         
     elif victoryCondition == 6:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('by the blackest of the black', 1, 4, 'white')
-        win.putchars('The Necromancer grins as his ', 1, 5, 'white')
-        win.putchars('flesh rots away under the', 1, 6, 'white')
-        win.putchars('force of his absorbed power.', 1, 7, 'white')
-        win.putchars('With the power of the warlord', 1, 8, 'white')
-        win.putchars('the Necromancer enslaves', 1, 9, 'white')
-        win.putchars('Atlas. And what of his body?', 1, 10, 'white')
-        win.putchars('Bodies are for mortal men.', 1, 11, 'white')
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('by the blackest of the black', 1, 4, 'white', 'black')
+        win.putchars('The Necromancer grins as his ', 1, 5, 'white', 'black')
+        win.putchars('flesh rots away under the', 1, 6, 'white', 'black')
+        win.putchars('force of his absorbed power.', 1, 7, 'white', 'black')
+        win.putchars('With the power of the warlord', 1, 8, 'white', 'black')
+        win.putchars('the Necromancer enslaves', 1, 9, 'white', 'black')
+        win.putchars('Atlas. And what of his body?', 1, 10, 'white', 'black')
+        win.putchars('Bodies are for mortal men.', 1, 11, 'white', 'black')
         win.update()
     
     score = scores.CalculateScore(Maps, PC, difficulty, victoryCondition)   
     win.putchars('Score: ' + str(score), 2, 17, 'red')
-        
+    
+    screen.blit(surface,(0,0))
+    pygame.display.update()
+    pygame.display.flip()
+    
     pygcurse.waitforkeypress()
     pygcurse.waitforkeypress()      
     pygame.quit()
@@ -154,7 +161,7 @@ def DrawChar(x, y):
     vis = PC.currentMap.VisibilityStatus(x,y)
     darkColor = pygame.Color(32,32,32)
     if (ShowMapCheat == True): vis = 2
-    if vis == 0:
+    if vis == 0 :
         win.putchar(' ', x, y, 'black', pygame.Color(0,0,0,0));
     elif vis == 1:
         win.putchar(PC.currentMap.Map[x][y].character, x, y, darkColor, pygame.Color(0,0,0,0));
@@ -184,7 +191,7 @@ if len(sys.argv) > 1:
 else:
     action = mainmenu.MainMenu(win, screen, surface)
 
-win = pygcurse.PygcurseSurface(width=40, height=27, windowsurface=surface)
+win = pygcurse.PygcurseSurface(width=40, height=27, windowsurface=surface, shadow=True)
 win.font = pygame.font.Font("DejaVuSansMono.ttf", 20)
 
 if action == 0:

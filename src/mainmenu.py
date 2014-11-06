@@ -12,7 +12,7 @@ def MainMenu(win, screen, surface):
 
     selected = 0
     
-    while action == -1:
+    while action == -1:        
         win.putchars('A T L A S    W A R R I O R S', 6, 5)
         win.putchars(version.Version(), 2, 20)
         win.putchars('Lachlan Kingsford 2014',2,21)
@@ -22,6 +22,7 @@ def MainMenu(win, screen, surface):
         win.update() # THIS IS THE NEW CALL TO THE UPDATE() METHOD
         screen.blit(surface,(0,0))
         pygame.display.flip()
+        win.setscreencolors('gray', 'black', clear=True)
         
         selected = selected
         
