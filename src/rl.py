@@ -164,7 +164,10 @@ def DrawChar(x, y):
 # Main function
 
 # Init
-win = pygcurse.PygcurseWindow(40, 27, 'Atlas Warriors')
+screen = pygame.display.set_mode((520,648))
+pygame.display.set_caption('Atlas Warriors')
+surface = pygame.Surface((520, 648))
+win = pygcurse.PygcurseSurface(width=40, height=27, windowsurface=surface)
 win.font = pygame.font.Font("DejaVuSansMono.ttf", 20)
 descriptFont = pygame.font.Font("DejaVuSansMono.ttf", 10)
 descriptTitleFont = pygame.font.Font("DejaVuSansMono.ttf", 12)
@@ -178,8 +181,11 @@ messageLog = []
 if len(sys.argv) > 1:
     action = int(sys.argv[1])
 else:
-    action = mainmenu.MainMenu(win)
-    
+    action = mainmenu.MainMenu(win, screen, surface)
+
+win = pygcurse.PygcurseSurface(width=40, height=27, windowsurface=surface)
+win.font = pygame.font.Font("DejaVuSansMono.ttf", 20)
+
 if action == 0:
     difficulty = difficulty.Easiest()
 elif action == 1:
@@ -437,14 +443,19 @@ while True:
     
     #win.putchars('Score: ' + str(scores.CalculateScore(Maps, PC, 1, 0) ), 2, 17, 'red')
     
-    win.update() # THIS IS THE NEW CALL TO THE UPDATE() METHOD
+    if dialog != None:
+        dialog.draw(surface)
+        screen.blit(surface,(0,0))
+    else:
+        win.update() # THIS IS THE NEW CALL TO THE UPDATE() METHOD
 
+        
     
     
     
     # Draw HUD
     #  Clear HUD
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 20, win._cellwidth * 40, win._pixelheight - win._cellheight * 21))  
+    pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 20, win._cellwidth * 40, win._pixelheight - win._cellheight * 21))  
     
     # Draw Messages
     toHit = PC.ToHit()
@@ -464,25 +475,24 @@ while True:
     spacing = 3
     
     for i in lines:
-        win._windowsurface.blit(i, (3,  curY))
+        surface.blit(i, (3,  curY))
         curY += i.get_height() + spacing
     
-    if dialog != None:
-        dialog.draw(win._windowsurface)
+
     
     
     # Draw Bottom Screen Operations
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['blue'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
-    win._windowsurface.blit(win.font.render(' Messages ', True, (255, 255, 255, 255)), (0, win._cellheight * 26))
+    pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
+    pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
+    surface.blit(win.font.render(' Messages ', True, (255, 255, 255, 255)), (0, win._cellheight * 26))
     
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 9, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 9, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
-    win._windowsurface.blit(win.font.render(' Load Out ', True, (255, 255, 255, 255)), (win._cellwidth * 9, win._cellheight * 26))
+    pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 9, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
+    pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 9, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
+    surface.blit(win.font.render(' Load Out ', True, (255, 255, 255, 255)), (win._cellwidth * 9, win._cellheight * 26))
     
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
-    win._windowsurface.blit(win.font.render('  Skills  ', True, (255, 255, 255, 255)), (win._cellwidth * 18, win._cellheight * 26))         
+    pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
+    pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
+    surface.blit(win.font.render('  Skills  ', True, (255, 255, 255, 255)), (win._cellwidth * 18, win._cellheight * 26))         
     
     if dialog == None:  
         top =  mousePos[1] 
@@ -507,10 +517,10 @@ while True:
                 widthNeeded = max(l.get_width() for l in lines ) + 6
                 heightNeeded = 3 * len(lines) + sum(l.get_height() for l in lines) + 12
                 top = top + heightNeeded
-                pygame.draw.rect(win._windowsurface, pygcurse.colornames['yellow'], pygame.Rect(min(mousePos[0], win._windowsurface.get_width()-widthNeeded), mousePos[1], (widthNeeded), (heightNeeded)))
+                pygame.draw.rect(surface, pygcurse.colornames['yellow'], pygame.Rect(min(mousePos[0], surface.get_width()-widthNeeded), mousePos[1], (widthNeeded), (heightNeeded)))
                 curY = 3
                 for i in lines:
-                    win._windowsurface.blit(i, (min(mousePos[0], win._windowsurface.get_width() - widthNeeded) + 3, mousePos[1] + 3 + curY))
+                    surface.blit(i, (min(mousePos[0], surface.get_width() - widthNeeded) + 3, mousePos[1] + 3 + curY))
                     curY += i.get_height() + spacing
         
         itemLines = []
@@ -521,16 +531,18 @@ while True:
         if (len(itemLines) > 0):
             widthNeeded = max(l.get_width() for l in itemLines) + 6         
             heightNeeded = 3 * len(itemLines) + sum(l.get_height() for l in itemLines)
-            pygame.draw.rect(win._windowsurface, pygcurse.colornames['green'], pygame.Rect(min(mousePos[0], win._windowsurface.get_width()-widthNeeded), top, (widthNeeded), (heightNeeded)))
+            pygame.draw.rect(surface, pygcurse.colornames['green'], pygame.Rect(min(mousePos[0], surface.get_width()-widthNeeded), top, (widthNeeded), (heightNeeded)))
             curY = 0
             for i in itemLines:
-                win._windowsurface.blit(i, (min(mousePos[0], win._windowsurface.get_width() - widthNeeded) + 3, top + curY))
+                surface.blit(i, (min(mousePos[0], surface.get_width() - widthNeeded) + 3, top + curY))
                 curY += i.get_height() + spacing            
         
     
         
     # Draw Screen
+    screen.blit(surface,(0,0))
     pygame.display.update()
+    pygame.display.flip()
 
     
     #If Lachlan is dead, you win

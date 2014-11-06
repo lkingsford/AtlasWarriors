@@ -21,7 +21,7 @@ class Cell:
     def __init__ (self, character = '.',
         walkable = True,
         forecolor = 'silver',
-        backcolor = 'black',
+        backcolor = None,
         walkbehavior = 'none'):
         self.walkable = walkable
         self.character = character
@@ -37,7 +37,7 @@ class CloseDoorCell(Cell):
     def __init__(self, target, character = '.',
         walkable = True,
         forecolor = 'silver',
-        backcolor = 'black',
+        backcolor = None,
         walkbehavior = 'none'):
         super().__init__(character, walkable, forecolor, backcolor, walkbehavior)
         self.target = target
