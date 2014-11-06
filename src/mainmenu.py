@@ -7,18 +7,22 @@ from pygame.locals import *
 
 
 # This is quick, and dirty, but will do the job for now
-def MainMenu(win):
+def MainMenu(win, screen, surface):
     action = -1
 
     selected = 0
     
-    while action == -1:
+    while action == -1:        
         win.putchars('A T L A S    W A R R I O R S', 6, 5)
         win.putchars(version.Version(), 2, 20)
         win.putchars('Lachlan Kingsford 2014',2,21)
         win.fgcolor = 'red'
         win.putchars('WORK IN PROGRESS!',2,22, 'red')
-        win.update()
+        
+        win.update() # THIS IS THE NEW CALL TO THE UPDATE() METHOD
+        screen.blit(surface,(0,0))
+        pygame.display.flip()
+        win.setscreencolors('gray', 'black', clear=True)
         
         selected = selected
         
@@ -52,6 +56,8 @@ def MainMenu(win):
             # I want this to point to a donate page
             webbrowser.open_new_tab("http://www.nerdygentleman.com")
             action = -1
+                
+    win.erase()
     return action
         
         

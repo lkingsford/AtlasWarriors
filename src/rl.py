@@ -19,6 +19,7 @@ import Message
 import scores
 import difficulty
 import mainmenu
+import os
 
 from pygame.locals import *
      
@@ -38,13 +39,16 @@ def getToCritChance (toHit):
 
 def LoseGame (win):
     win.setscreencolors('lime', 'black', clear=True)
-    win.putchars('For you, the dream ends here.', 6, 5, 'white')
-    win.putchars('You have died.', 14, 10, 'white')
-    win.putchars('Well. That sucks.', 13, 15, 'white')
+    win.putchars('For you, the dream ends here.', 6, 5, 'white', 'black')
+    win.putchars('You have died.', 14, 10, 'white', 'black')
+    win.putchars('Well. That sucks.', 13, 15, 'white', 'black')
     score = scores.CalculateScore(Maps, PC, difficulty, 0)  
-    win.putchars('Score: ' + str(score), 2, 17, 'red')
+    win.putchars('Score: ' + str(score), 2, 17, 'red', 'black')
         
     win.update() 
+    screen.blit(surface,(0,0))
+    pygame.display.update()
+    pygame.display.flip()
     pygcurse.waitforkeypress()  
     pygcurse.waitforkeypress()  
     pygame.quit()   
@@ -71,73 +75,77 @@ def LoseGame (win):
 def WinGame (victoryCondition, win):
     if victoryCondition == 1:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('Congratulations!', 1, 2, 'white')
-        win.putchars('You have slain the the mighty warlord', 1, 3, 'white')
+        win.putchars('Congratulations!', 1, 2, 'white', 'black')
+        win.putchars('You have slain the the mighty warlord', 1, 3, 'white', 'black')
         win.update()
         
     elif victoryCondition == 2:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('Congratulations!', 1, 2, 'white')
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('It may not have been by your hand, but', 1, 4, 'white')
-        win.putchars('this part of Atlas is at least for now,', 1, 5, 'white')
-        win.putchars('in peace.', 1, 6, 'white')
+        win.putchars('Congratulations!', 1, 2, 'white', 'black')
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('It may not have been by your hand, but', 1, 4, 'white', 'black')
+        win.putchars('this part of Atlas is at least for now,', 1, 5, 'white', 'black')
+        win.putchars('in peace.', 1, 6, 'white', 'black')
         win.update()
     
     elif victoryCondition == 3:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('by the horrible demonic goliath.', 1, 4, 'white')
-        win.putchars('Absorbing his vast power, the ', 1, 5, 'white')
-        win.putchars('unholy beast unleashes hell upon', 1, 6, 'white')
-        win.putchars('Atlas.', 1, 7, 'white')
-        win.putchars('Doom awaits those who survive.', 1, 7, 'white')
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('by the horrible demonic goliath.', 1, 4, 'white', 'black')
+        win.putchars('Absorbing his vast power, the ', 1, 5, 'white', 'black')
+        win.putchars('unholy beast unleashes hell upon', 1, 6, 'white', 'black')
+        win.putchars('Atlas.', 1, 7, 'white', 'black')
+        win.putchars('Doom awaits those who survive.', 1, 7, 'white', 'black')
         win.update()
     
     elif victoryCondition == 4:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('by the apocalyptic goliath.', 1, 4, 'white')
-        win.putchars('Absorbing his vast power, the ', 1, 5, 'white')
-        win.putchars('unholy beast unleashes a wave', 1, 6, 'white')
-        win.putchars('of destruction that clouds', 1, 7, 'white')
-        win.putchars('Atlas in fire and desolation', 1, 8, 'white')
-        win.putchars('leaving nothing.', 1, 9, 'white')
-        win.putchars('You achieved your goal of', 1, 10, 'white')
-        win.putchars('bringing peace to Atlas.', 1, 11, 'white')
-        win.putchars('You have done so eternally.', 1, 12, 'white')
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('by the apocalyptic goliath.', 1, 4, 'white', 'black')
+        win.putchars('Absorbing his vast power, the ', 1, 5, 'white', 'black')
+        win.putchars('unholy beast unleashes a wave', 1, 6, 'white', 'black')
+        win.putchars('of destruction that clouds', 1, 7, 'white', 'black')
+        win.putchars('Atlas in fire and desolation', 1, 8, 'white', 'black')
+        win.putchars('leaving nothing.', 1, 9, 'white', 'black')
+        win.putchars('You achieved your goal of', 1, 10, 'white', 'black')
+        win.putchars('bringing peace to Atlas.', 1, 11, 'white', 'black')
+        win.putchars('You have done so eternally.', 1, 12, 'white', 'black')
         win.update()
         
     elif victoryCondition == 5:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('by the Mortreon, the True Dragon.', 1, 4, 'white')
-        win.putchars('Mortreon absorbs the explosion of', 1, 5, 'white')
-        win.putchars('power in its entirity and' , 1, 6, 'white')
-        win.putchars('unleashes an almighty roar', 1, 7, 'white')
-        win.putchars('resurrecting Eon, the God King of', 1, 8, 'white')
-        win.putchars('Dragons.', 1, 9, 'white')
-        win.putchars('The second age of Eon will', 1, 10, 'white')
-        win.putchars('come.', 1, 11, 'white')
-        win.putchars('The sons of Eon will reign.', 1, 12, 'white')     
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('by the Mortreon, the True Dragon.', 1, 4, 'white', 'black')
+        win.putchars('Mortreon absorbs the explosion of', 1, 5, 'white', 'black')
+        win.putchars('power in its entirity and' , 1, 6, 'white', 'black')
+        win.putchars('unleashes an almighty roar', 1, 7, 'white', 'black')
+        win.putchars('resurrecting Eon, the God King of', 1, 8, 'white', 'black')
+        win.putchars('Dragons.', 1, 9, 'white', 'black')
+        win.putchars('The second age of Eon will', 1, 10, 'white', 'black')
+        win.putchars('come.', 1, 11, 'white', 'black')
+        win.putchars('The sons of Eon will reign.', 1, 12, 'white', 'black')     
         win.update()
         
     elif victoryCondition == 6:
         win.setscreencolors('lime', 'black', clear=True)    
-        win.putchars('The mighty warlord has been slain', 1, 3, 'white')
-        win.putchars('by the blackest of the black', 1, 4, 'white')
-        win.putchars('The Necromancer grins as his ', 1, 5, 'white')
-        win.putchars('flesh rots away under the', 1, 6, 'white')
-        win.putchars('force of his absorbed power.', 1, 7, 'white')
-        win.putchars('With the power of the warlord', 1, 8, 'white')
-        win.putchars('the Necromancer enslaves', 1, 9, 'white')
-        win.putchars('Atlas. And what of his body?', 1, 10, 'white')
-        win.putchars('Bodies are for mortal men.', 1, 11, 'white')
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('by the blackest of the black', 1, 4, 'white', 'black')
+        win.putchars('The Necromancer grins as his ', 1, 5, 'white', 'black')
+        win.putchars('flesh rots away under the', 1, 6, 'white', 'black')
+        win.putchars('force of his absorbed power.', 1, 7, 'white', 'black')
+        win.putchars('With the power of the warlord', 1, 8, 'white', 'black')
+        win.putchars('the Necromancer enslaves', 1, 9, 'white', 'black')
+        win.putchars('Atlas. And what of his body?', 1, 10, 'white', 'black')
+        win.putchars('Bodies are for mortal men.', 1, 11, 'white', 'black')
         win.update()
     
     score = scores.CalculateScore(Maps, PC, difficulty, victoryCondition)   
     win.putchars('Score: ' + str(score), 2, 17, 'red')
-        
+    
+    screen.blit(surface,(0,0))
+    pygame.display.update()
+    pygame.display.flip()
+    
     pygcurse.waitforkeypress()
     pygcurse.waitforkeypress()      
     pygame.quit()
@@ -153,10 +161,10 @@ def DrawChar(x, y):
     vis = PC.currentMap.VisibilityStatus(x,y)
     darkColor = pygame.Color(32,32,32)
     if (ShowMapCheat == True): vis = 2
-    if vis == 0:
-        win.putchar(' ', x, y, 'black', 'black');
+    if vis == 0 :
+        win.putchar(' ', x, y, 'black', pygame.Color(0,0,0,0));
     elif vis == 1:
-        win.putchar(PC.currentMap.Map[x][y].character, x, y, darkColor, 'black');
+        win.putchar(PC.currentMap.Map[x][y].character, x, y, darkColor, pygame.Color(0,0,0,0));
     elif vis == 2:
         win.putchar(PC.currentMap.Map[x][y].character, x, y, PC.currentMap.Map[x][y].forecolor, PC.currentMap.Map[x][y].backcolor);
 
@@ -164,7 +172,10 @@ def DrawChar(x, y):
 # Main function
 
 # Init
-win = pygcurse.PygcurseWindow(40, 27, 'Atlas Warriors')
+screen = pygame.display.set_mode((520,648))
+pygame.display.set_caption('Atlas Warriors')
+surface = pygame.Surface((520, 648))
+win = pygcurse.PygcurseSurface(width=40, height=27, windowsurface=surface)
 win.font = pygame.font.Font("DejaVuSansMono.ttf", 20)
 descriptFont = pygame.font.Font("DejaVuSansMono.ttf", 10)
 descriptTitleFont = pygame.font.Font("DejaVuSansMono.ttf", 12)
@@ -178,8 +189,11 @@ messageLog = []
 if len(sys.argv) > 1:
     action = int(sys.argv[1])
 else:
-    action = mainmenu.MainMenu(win)
-    
+    action = mainmenu.MainMenu(win, screen, surface)
+
+win = pygcurse.PygcurseSurface(width=40, height=27, windowsurface=surface, shadow=True)
+win.font = pygame.font.Font("DejaVuSansMono.ttf", 20)
+
 if action == 0:
     difficulty = difficulty.Easiest()
 elif action == 1:
@@ -217,6 +231,7 @@ for i in range(10):
         Maps[i].nextMap = Maps[i + 1]
     if (i != 0):
         Maps[i].lastMap = Maps[i - 1]
+    Maps[i].background = pygame.image.load(os.path.join('assets','back_level_'+str(i)+'.png'))
         
 PC = player_character.PlayerCharacter(messageLog, Maps[0], DefaultItems, difficulty)
 PC.x = Maps[0].startX
@@ -379,6 +394,8 @@ while True:
 
     #Draw Screen
     
+    # Draw Background
+    surface.blit(PC.currentMap.background, (0,0)) 
  
     
     #Draw Map   
@@ -396,7 +413,7 @@ while True:
     #Draw Items
     for item in PC.currentMap.Items:
         if (PC.currentMap.VisibilityStatus(item.x, item.y)) == 2 or ShowMapCheat:
-            win.putchar(item.Character, item.x, item.y, item.Color, 'black')
+            win.putchar(item.Character, item.x, item.y, item.Color, None)
     
     #Draw Characters
     for character in PC.currentMap.characters:
@@ -432,19 +449,22 @@ while True:
         newTint = (0,0,0)
         
     if newTint != currentTint:
-        win.settint(newTint[0], newTint[1], newTint[2],(0,0,40,20))
+        win.settint(newTint[0], newTint[1], newTint[2],(0,0,40,20))        
         currentTint = newTint
     
     #win.putchars('Score: ' + str(scores.CalculateScore(Maps, PC, 1, 0) ), 2, 17, 'red')
     
-    win.update() # THIS IS THE NEW CALL TO THE UPDATE() METHOD
+    if dialog != None:
+        dialog.draw(surface)
+        screen.blit(surface,(0,0))
+    else:
+        win.update() # THIS IS THE NEW CALL TO THE UPDATE() METHOD
 
+        
     
     
     
-    # Draw HUD
-    #  Clear HUD
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 20, win._cellwidth * 40, win._pixelheight - win._cellheight * 21))  
+    # Draw HUD 
     
     # Draw Messages
     toHit = PC.ToHit()
@@ -464,25 +484,24 @@ while True:
     spacing = 3
     
     for i in lines:
-        win._windowsurface.blit(i, (3,  curY))
+        surface.blit(i, (3,  curY))
         curY += i.get_height() + spacing
     
-    if dialog != None:
-        dialog.draw(win._windowsurface)
+
     
     
     # Draw Bottom Screen Operations
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['blue'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
-    win._windowsurface.blit(win.font.render(' Messages ', True, (255, 255, 255, 255)), (0, win._cellheight * 26))
+    pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
+    pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
+    surface.blit(win.font.render(' Messages ', True, (255, 255, 255, 255)), (0, win._cellheight * 26))
     
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 9, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 9, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
-    win._windowsurface.blit(win.font.render(' Load Out ', True, (255, 255, 255, 255)), (win._cellwidth * 9, win._cellheight * 26))
+    pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 9, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
+    pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 9, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
+    surface.blit(win.font.render(' Load Out ', True, (255, 255, 255, 255)), (win._cellwidth * 9, win._cellheight * 26))
     
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
-    pygame.draw.rect(win._windowsurface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
-    win._windowsurface.blit(win.font.render('  Skills  ', True, (255, 255, 255, 255)), (win._cellwidth * 18, win._cellheight * 26))         
+    pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
+    pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
+    surface.blit(win.font.render('  Skills  ', True, (255, 255, 255, 255)), (win._cellwidth * 18, win._cellheight * 26))         
     
     if dialog == None:  
         top =  mousePos[1] 
@@ -507,10 +526,10 @@ while True:
                 widthNeeded = max(l.get_width() for l in lines ) + 6
                 heightNeeded = 3 * len(lines) + sum(l.get_height() for l in lines) + 12
                 top = top + heightNeeded
-                pygame.draw.rect(win._windowsurface, pygcurse.colornames['yellow'], pygame.Rect(min(mousePos[0], win._windowsurface.get_width()-widthNeeded), mousePos[1], (widthNeeded), (heightNeeded)))
+                pygame.draw.rect(surface, pygcurse.colornames['yellow'], pygame.Rect(min(mousePos[0], surface.get_width()-widthNeeded), mousePos[1], (widthNeeded), (heightNeeded)))
                 curY = 3
                 for i in lines:
-                    win._windowsurface.blit(i, (min(mousePos[0], win._windowsurface.get_width() - widthNeeded) + 3, mousePos[1] + 3 + curY))
+                    surface.blit(i, (min(mousePos[0], surface.get_width() - widthNeeded) + 3, mousePos[1] + 3 + curY))
                     curY += i.get_height() + spacing
         
         itemLines = []
@@ -521,16 +540,18 @@ while True:
         if (len(itemLines) > 0):
             widthNeeded = max(l.get_width() for l in itemLines) + 6         
             heightNeeded = 3 * len(itemLines) + sum(l.get_height() for l in itemLines)
-            pygame.draw.rect(win._windowsurface, pygcurse.colornames['green'], pygame.Rect(min(mousePos[0], win._windowsurface.get_width()-widthNeeded), top, (widthNeeded), (heightNeeded)))
+            pygame.draw.rect(surface, pygcurse.colornames['green'], pygame.Rect(min(mousePos[0], surface.get_width()-widthNeeded), top, (widthNeeded), (heightNeeded)))
             curY = 0
             for i in itemLines:
-                win._windowsurface.blit(i, (min(mousePos[0], win._windowsurface.get_width() - widthNeeded) + 3, top + curY))
+                surface.blit(i, (min(mousePos[0], surface.get_width() - widthNeeded) + 3, top + curY))
                 curY += i.get_height() + spacing            
         
     
         
     # Draw Screen
+    screen.blit(surface,(0,0))
     pygame.display.update()
+    pygame.display.flip()
 
     
     #If Lachlan is dead, you win

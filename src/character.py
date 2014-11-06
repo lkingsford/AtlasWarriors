@@ -188,7 +188,7 @@ class Character:
     
     def Color(self):
         if not self.burning:
-            return (self.color, 'black')
+            return (self.color, None)
         else:
             return ('red', 'yellow')
     

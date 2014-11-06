@@ -34,6 +34,8 @@ class LevelUpAnimation(Animation):
         super().update(window)
         fore = 'silver'     
         back = pygame.Color(self.frame * 32, self.frame * 32, 0)
+        if self.frame >= self.frames:
+            back == None
         window.putchar("@", x = self.position[0], y = self.position[1], fgcolor = fore, bgcolor = back)
         window.putchar(" ", x = self.position[0] - 1, y = self.position[1], fgcolor = fore, bgcolor = back)
         window.putchar(" ", x = self.position[0] + 1, y = self.position[1], fgcolor = fore, bgcolor = back)
@@ -46,13 +48,15 @@ class BigPunchAnimation(Animation):
         self.frames = len(route) + 1
         self.route = route
         self.character = character
-        self.lastData = ((route[0][0], route[0][1]), '.', 'gray', 'black')
+        self.lastData = ((route[0][0], route[0][1]), '.', 'gray', None)
         
     def update(self, window):
         super().update(window)      
         curFrame = min(self.frame, len(self.route) - 1)
         fore = self.character.color 
-        back = 'black'
+        back = None
+        if self.frame >= self.frames:
+            back == None
         start = self.route[0]
         end = self.route[-1]
         dx = start[0] - end[0]
@@ -126,6 +130,8 @@ class DragonsBreathAnimation(Animation):
                         window.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,32,0), bgcolor = pygame.Color(32,0,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] > 0):
                         window.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,0,0), bgcolor = pygame.Color(32,0,0))
+                    elif (self.flameSpreadFrames[self.frame][i][j] == 0):
+                        window.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,0,0), bgcolor = None)
 
 class DrawArrowAnimation(Animation):
     def __init__(self, route):
@@ -140,7 +146,7 @@ class DrawArrowAnimation(Animation):
         super().update(window)      
         curFrame = min(self.frame, len(self.route) - 1)
         fore = pygame.Color(165,42,42)      
-        back = 'black'
+        back = None
         start = self.route[0]
         end = self.route[-1]
         dx = start[0] - end[0]
@@ -179,7 +185,7 @@ class DrawNecromancerSpell(Animation):
         super().update(window)      
         curFrame = min(self.frame, len(self.route) - 1)
         fore = pygame.Color(165,42,42)      
-        back = 'black'
+        back = None
         start = self.route[0]
         end = self.route[-1]
         dx = start[0] - end[0]
@@ -360,7 +366,7 @@ class DrawRouteAnimation(Animation):
         super().update(window)      
         curFrame = min(self.frame, len(self.route))
         fore = pygame.Color(128,196,255)        
-        back = 'black'
+        back = None
         for i in range(curFrame):           
             window.putchar("*", x = self.route[i][0], y = self.route[i][1], fgcolor = fore, bgcolor = back)
         
@@ -373,7 +379,7 @@ class DrawAttackAnimation(Animation):
     def update(self, window):
         super().update(window)
         fore = pygame.Color(128,196,255)        
-        back = 'black'
+        back = None
         for i in self.route:            
             window.putchar("*", x = i[0], y = i[1], fgcolor = fore, bgcolor = back)
 
