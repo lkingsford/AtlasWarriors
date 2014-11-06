@@ -167,7 +167,9 @@ class Dragon(Enemy):
                 else:
                     room = random.choice(self.currentMap.Rooms)
                     runningTo = (room.x + round(room.w / 2), room.y + round(room.y / 2))
-                    MovePos = self.GetRoute(self.runningTo)         
+                    # Not sure why this is necessary - potential bug
+                    if runningTo != None:
+                        MovePos = self.GetRoute(self.runningTo)         
                     
                 if MovePos == None or len(MovePos) == 0:
                     self.Wait()

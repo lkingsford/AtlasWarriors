@@ -20,6 +20,7 @@ class Drake(Dragon):
         self.baseToDefend = round(4 * (max(1,self.level - 4) ** 0.2))
         self.burnDamage = 1
         self.color = "yellow"       
+        self.chartype = "Drake"
     
     def danger(self):
         return 6
