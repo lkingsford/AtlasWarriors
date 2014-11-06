@@ -10,7 +10,7 @@ class Healer(Enemy):
         self.character = "h"
         self.name = "Healer"
         self.speed = 12
-        self.hp = self.maxhp = round(13 * (max(1,self.level - 2) ** 0.4))
+        self.hp = self.maxhp = round(15 * (max(1,self.level - 2) ** 0.4))
         self.mp = self.maxmp = round(10 * (max(1,self.level - 2) ** 0.4))
         self.mpChargeRate = round(3 * (max(1,self.level - 2) ** 0.4))
         self.baseDamage =  round(4 * (max(1,self.level - 2) ** 0.3))
@@ -22,32 +22,139 @@ class Healer(Enemy):
         return 3 + (self.levelMod / 2)
     
     def update(self):       
-        # Healer tries to stay more then 4 away from PC
+        super().update()
+        
+        # The healer has priorities:
+        #    healPriority -   the priority to heal a person in the room
+        #    movePriority -   the priority to get better tactical positioning,
+        #                     hopefully in the same room
+        #    runPriority  -   the priority to go between rooms to find another
+        #                     person on the team
+        #    attackPriority - nobody left but us healers. Hit away.
         
         # Find room currently in
-        room = [i for i in self.currentMap.Rooms if (self.x >= i.x and self.x <= i.x + i.w and self.y >= i.y and self.y <= i.y + i.h)][0]
-        # Get other characters in room
-        charactersInRoom = [i for i in self.currentMap.characters if (i.x >= room.x and i.x <= room.x + room.w and i.y >= room.y and i.y <= room.y + room.h)]       
-        # If got MP, heal the character on the same team with the lowest HP
-        healCasted = False
-        if self.mp > 2:
-            try:
-                lowestHealthFriend = min([i for i in charactersInRoom if i.team == self.team and i.hp < i.maxhp],
-                    key = lambda i: i.hp)
-            except ValueError:
-                lowestHealthFriend = None
-            if (lowestHealthFriend != None):
-                self.CastHeal(lowestHealthFriend)
-                healCasted = True
-        if not healCasted:
-            # Run from PC of non team if nobody to heal
-            try:
-                nearestEnemy = min([i for i in self.currentMap.characters if i != self and i.team != self.team],
-                    key = lambda i: abs(self.x - i.x) + abs(self.y - i.y))
-                dx = 0 if nearestEnemy.x == self.x else (1 if nearestEnemy.x < self.x else 1)
-                dy = 0 if nearestEnemy.y == self.y else (1 if nearestEnemy.y < self.y else 1)
-                self.tryMove(self.x + dx, self.y + dy)
-                
-            except ValueError:
+        inRoom = [i for i in self.currentMap.characters\
+            if len(self.currentMap.Map[self.x][self.y].rooms\
+            & self.currentMap.Map[i.x][i.y].rooms) > 0]
+            
+        # Returns allies with less then full health in room
+        alliesInRoom = [i for i in inRoom if (i.team == self.team)]
+        needsHealingInRoom = [i for i in alliesInRoom if (i.hp < i.maxhp)]
+        
+        # Pick who to heal. Priority is first to dragons, drakes and warlords
+        # if they have less then 50% health.
+        # Next priority is to anything with less then 6 health (lowest first). 
+        # Next priority is to most health lost
+        
+        healPriority = 0
+        
+        if len(needsHealingInRoom) > 0: 
+        
+            healTarget = None
+            priority1targets = [i for i in needsHealingInRoom if (i.chartype ==\
+                "TrueDragon" or i.chartype == "Drake" or\
+                i.chartype ==  "endboss") and i.hp <= (i.maxhp / 2)]
+            if len(priority1targets) > 0:
+                healTarget = priority1targets[0]
+                healPriority = 12
+            
+            else:
+                priority2targets = [i for i in needsHealingInRoom if i.hp <= 6]
+                if len(priority2targets) > 0:
+                    healTarget = priority2targets[0]
+                    healPriority = 8 - healTarget.maxhp + healTarget.hp
+                    
+                else:
+                    healTarget = max(needsHealingInRoom, key=lambda i:(i.maxhp\
+                        - i.hp))
+                    healPriority = 8 - healTarget.maxhp + healTarget.hp
+        
+        enemiesInRoom = [i for i in inRoom if (i.team != self.team)]
+        
+        if len(enemiesInRoom) == 0:
+            movePriority = 0
+        else:
+            nearestEnemy = min([i for i in enemiesInRoom], key = lambda i:\
+                abs(self.x - i.x) + abs(self.y - i.y))
+            nearestEnemyDistance = abs(self.x - nearestEnemy.x) +\
+                abs(self.y - nearestEnemy.y)
+            if nearestEnemyDistance == 1:
+                movePriority = 9
+            elif nearestEnemyDistance == 2:
+                movePriority = 6
+            elif nearestEnemyDistance == 3:
+                movePriority = 4
+            elif nearestEnemyDistance == 4:
+                movePriority = 1
+            else:
+                movePriority = 0
+            nearestEnemyAverageDamage = nearestEnemy.GetAverageDamage(\
+                self.ToDefend(), self.level)
+            if nearestEnemyAverageDamage >= self.hp:
+                movePriority = movePriority * 2
+
+        runPriority = 0
+        attackPriority = 0
+        
+        if (alliesInRoom == 0):
+            # Find nearest allies
+            allies = [i for i in currentMap.characters if i.team == self.team\
+                and i != self]
+            
+            # If no allies left, or they're all healers, ATTACK!
+            if len(allies) == 0 or (all([i.chartype=="Healer" for i in allies])\
+                and (self.hp >= self.maxhp)):
+                attackPriority  = 12
+            else:
+                # UGLY CODE WARNING!
+                nearestAllyPos = self.GetNearest(lambda i: len([j for j in\
+                    allies if len(self.currentMap.Map[i[0]][i[1]].rooms &\
+                self.currentMap.Map[j.x][j.y].rooms) > 0]))
+                if nearestAllyPos == None:
+                    attackPriority = 10
+                else:
+                    runPriority = 5
+                    
+        # I get that this is not the best way to do this, but it will do for now
+        if (runPriority == 0 and attackPriority == 0 and movePriority == 0 and healPriority == 0):
+            self.Wait()
+        
+        elif (runPriority >= attackPriority) and (runPriority >= movePriority)\
+            and (runPriority >=  healPriority):
+            moveTo = nearestAllyPos[1]
+            self.tryMove(moveTo[0], moveTo[1])
+        
+        elif (self.mp > 2) and (healPriority >= runPriority) and \
+            (healPriority >= movePriority) and (healPriority >=\
+            attackPriority):
+            self.CastHeal(healTarget)
+        
+        elif (movePriority >= healPriority) and (movePriority >= runPriority)\
+            and (movePriority >= attackPriority):
+            moveTo = self.GetNearest(lambda i: (max(abs(i[0]-nearestEnemy.x),\
+                abs(i[1]-nearestEnemy.y))) > nearestEnemyDistance)
+            if moveTo == None:
+                # Blocked in, so move closer to enemy (possibly attacking)
+                moveTo = self.GetRoute([nearestEnemy.x, nearestEnemy.y])
+                if moveTo == None:
+                    self.Wait()
+                else:
+                    moveTo = moveTo[1] 
+            else:
+                moveTo = moveTo[1]
+            self.tryMove(moveTo[0], moveTo[1])
+        
+        elif (attackPriority >= runPriority) and (attackPriority >=\
+            healPriority) and (attackPriorirty >= movePriorirty):
+            moveTo = self.GetRoute([nearestEnemy.x, nearestEnemy.y])
+            if moveTo == None:
                 self.Wait()
+            else:
+                moveTo = moveTo[1]
+            self.tryMove(moveTo[0], moveTo[1])
+        
+        else:
+            self.Wait()
+        
+ 
                 
