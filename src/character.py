@@ -451,8 +451,8 @@ class Character:
         # floor.
         
         while (len(self.backpack) > self.backpackSize):
-            print (len(self.backpack))
-            print (self.backpack[-1])
+            # print (len(self.backpack))
+            # (self.backpack[-1])
             self.Drop(self.backpack[-1])
         
     def Drop(self, item):

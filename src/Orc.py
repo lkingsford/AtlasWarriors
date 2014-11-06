@@ -186,7 +186,7 @@ class Orc(Enemy):
         # The second is to performs its action
         
         if self.mode == 0:
-            print ("self.mode == 0")
+            #print ("self.mode == 0")
             # Inactive. Do nothing unless enemy moves into room,
             # in which case go active
             if len(inRoom) > 0:
@@ -200,7 +200,7 @@ class Orc(Enemy):
             # Walk from the centre of room1 to the centre of room2.
             # If an enemy is found, blow whistle to make all teammates active
             # and go active
-            print ("self.mode == 2")
+            #print ("self.mode == 2")
             if len(inRoom) > 0:
                 self.mode = 1   
                 
@@ -219,7 +219,7 @@ class Orc(Enemy):
                     moveTo = moveTo[1]
         
         if self.mode == 1:
-            print ("self.mode == 1")
+            #print ("self.mode == 1")
             # Active. We want to be in the same room as the enemy, but at least 2 away
             # Ideally, this would take into account positioning to ensure a 
             # 'shooting solution'
@@ -246,7 +246,7 @@ class Orc(Enemy):
                     CharacterHit = [i for i in self.currentMap.characters if (i.x == hits[0]) and (i.y == hits[1]) and i.team != self.team]
                     if len(CharacterHit) > 0:
                         CanFire = True
-                        print ("CanFire = True")
+                        #print ("CanFire = True")
                     else:
                         # Try to reposition by moving towards enemy
                         moveTo = self.GetRoute((nearestEnemy.x, nearestEnemy.y))
@@ -269,7 +269,7 @@ class Orc(Enemy):
                 
         
         if self.mode == 3:
-            print ("self.mode == 3")
+            #print ("self.mode == 3")
             # Try to run away
             
             # This might be better as a max function rather then a find first which satisfies,
@@ -309,9 +309,9 @@ class Orc(Enemy):
             if len(moveTo) == 1:
                 moveTo = moveTo[0]
             if len(moveTo) > 1:
-                print ("mt:")
-                print (moveTo)
-                print (len(moveTo))
+                #print ("mt:")
+                #print (moveTo)
+               #print (len(moveTo))
                 self.tryMove(moveTo[0], moveTo[1])
             else:
                 self.Wait()

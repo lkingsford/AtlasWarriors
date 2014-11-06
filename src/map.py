@@ -616,7 +616,7 @@ class Map:
             curDanger = sum([i.danger() for i in self.characters if i.chartype != "PC"])
             self.Restock()
             self.RestockDangerPoints += sum([i.danger() for i in self.characters if i.chartype != "PC"]) - curDanger
-            print ('POINTS IS : ', self.RestockDangerPoints)
+            # print ('POINTS IS : ', self.RestockDangerPoints)
             
         #print (self.Turn)
         
