@@ -2,7 +2,7 @@
 Please forgive any typos or errors in the comments, I'll be cleaning them up as frequently as I can.
 
 
-Pygcurse v0.1 alpha
+Pygcurse v0.1 alpha (modified - see NOTE)
 
 Pygcurse (pronounced "pig curse") is a curses library emulator that runs on top of the Pygame framework. It provides an easy way to create text adventures, roguelikes, and console-style applications.
 
@@ -49,6 +49,16 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 The views and conclusions contained in the software and documentation are those of the
 authors and should not be interpreted as representing official policies, either expressed
 or implied, of Al Sweigart.
+
+
+NOTE:
+This has been modified to get see through characters. It may have unintended
+behaviour in some circumstances. I wouldn't use this version of the library
+without careful consideration. The changes are in the git repository for
+Atlas Warriors under the branch feature\ImageBackgrounds.
+
+    Lachlan
+
 """
 
 import copy
@@ -87,7 +97,7 @@ Note about flickering: If your program is experiencing a lot of flicker, than yo
 
 
 DEFAULTFGCOLOR = pygame.Color(164, 164, 164, 255) # default foreground color is gray (must be a pygame.Color object)
-DEFAULTBGCOLOR = pygame.Color(0, 0, 0, 255) # default background color is black (must be a pygame.Color object)
+DEFAULTBGCOLOR = pygame.Color(0, 0, 0, 0) # default background color is black (must be a pygame.Color object)
 ERASECOLOR = pygame.Color(0, 0, 0, 0) # erase color has 0 alpha level (must be a pygame.Color object)
 
 # Internally used constants:
@@ -431,7 +441,7 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
             return None, None
 
         fgcolor = (self._screenfgcolor[x][y] is None) and (DEFAULTFGCOLOR) or (self._screenfgcolor[x][y])
-        bgcolor = (self._screenbgcolor[x][y] is None) and (DEFAULTBGCOLOR) or (self._screenbgcolor[x][y])
+        bgcolor = ERASECOLOR if (self._screenbgcolor[x][y] is None) else (self._screenbgcolor[x][y])
 
         # NOTE - The ternary trick does work here, because the case where the wrong value of the two is used, both values are the same.
         rdelta = (self._screenRdelta[x][y] is not None) and (self._screenRdelta[x][y]) or (0)
@@ -455,7 +465,7 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
             displayedfgcolor = fgcolor
             displayedbgcolor = bgcolor
 
-        return displayedfgcolor, displayedbgcolor
+        return displayedfgcolor, ERASECOLOR if self._screenbgcolor[x][y] == None else displayedbgcolor
 
 
     def _repaintcell(self, x, y):
@@ -1052,7 +1062,7 @@ def pygprint(self, obj='', *objs, sep=' ', end='\n', fgcolor=None, bgcolor=None,
         if fgcolor is not None and self._screenfgcolor[x][y] != fgcolor:
             self._screenfgcolor[x][y] = getpygamecolor(fgcolor)
             self._screendirty[x][y] = True
-        if bgcolor is not None and self._screenbgcolor[x][y] != bgcolor:
+        if self._screenbgcolor[x][y] != bgcolor:
             self._screenbgcolor[x][y] = getpygamecolor(bgcolor)
             self._screendirty[x][y] = True
         if self._screenchar[x][y] != char[0]:
@@ -2442,7 +2452,9 @@ def _ismonofont(font):
 
 def getpygamecolor(value):
     """Returns a pygame.Color object of the argument passed in. The argument can be a RGB/RGBA tuple, pygame.Color object, or string in the colornames dict (such as 'blue' or 'gray')."""
-    if type(value) in (tuple, list):
+    if value == None:
+        return pygame.Color(0,0,0,0)
+    elif type(value) in (tuple, list):
         alpha = len(value) > 3 and value[3] or 255
         return pygame.Color(value[0], value[1], value[2], alpha)
     elif str(type(value)) in ("<class 'pygame.Color'>", "<type 'pygame.Color'>"):

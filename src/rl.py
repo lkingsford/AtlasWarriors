@@ -19,6 +19,7 @@ import Message
 import scores
 import difficulty
 import mainmenu
+import os
 
 from pygame.locals import *
      
@@ -154,9 +155,9 @@ def DrawChar(x, y):
     darkColor = pygame.Color(32,32,32)
     if (ShowMapCheat == True): vis = 2
     if vis == 0:
-        win.putchar(' ', x, y, 'black', 'black');
+        win.putchar(' ', x, y, 'black', pygame.Color(0,0,0,0));
     elif vis == 1:
-        win.putchar(PC.currentMap.Map[x][y].character, x, y, darkColor, 'black');
+        win.putchar(PC.currentMap.Map[x][y].character, x, y, darkColor, pygame.Color(0,0,0,0));
     elif vis == 2:
         win.putchar(PC.currentMap.Map[x][y].character, x, y, PC.currentMap.Map[x][y].forecolor, PC.currentMap.Map[x][y].backcolor);
 
@@ -223,6 +224,7 @@ for i in range(10):
         Maps[i].nextMap = Maps[i + 1]
     if (i != 0):
         Maps[i].lastMap = Maps[i - 1]
+    Maps[i].background = pygame.image.load(os.path.join('assets','back_level_'+str(i)+'.png'))
         
 PC = player_character.PlayerCharacter(messageLog, Maps[0], DefaultItems, difficulty)
 PC.x = Maps[0].startX
@@ -385,6 +387,8 @@ while True:
 
     #Draw Screen
     
+    # Draw Background
+    surface.blit(PC.currentMap.background, (0,0)) 
  
     
     #Draw Map   
@@ -402,7 +406,7 @@ while True:
     #Draw Items
     for item in PC.currentMap.Items:
         if (PC.currentMap.VisibilityStatus(item.x, item.y)) == 2 or ShowMapCheat:
-            win.putchar(item.Character, item.x, item.y, item.Color, 'black')
+            win.putchar(item.Character, item.x, item.y, item.Color, None)
     
     #Draw Characters
     for character in PC.currentMap.characters:
@@ -438,7 +442,7 @@ while True:
         newTint = (0,0,0)
         
     if newTint != currentTint:
-        win.settint(newTint[0], newTint[1], newTint[2],(0,0,40,20))
+        win.settint(newTint[0], newTint[1], newTint[2],(0,0,40,20))        
         currentTint = newTint
     
     #win.putchars('Score: ' + str(scores.CalculateScore(Maps, PC, 1, 0) ), 2, 17, 'red')
@@ -453,9 +457,7 @@ while True:
     
     
     
-    # Draw HUD
-    #  Clear HUD
-    pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 20, win._cellwidth * 40, win._pixelheight - win._cellheight * 21))  
+    # Draw HUD 
     
     # Draw Messages
     toHit = PC.ToHit()
