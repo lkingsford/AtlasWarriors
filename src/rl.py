@@ -196,8 +196,8 @@ win = pygcurse.PygcurseSurface(width=40, height=27, windowsurface=surface, shado
 win.font = pygame.font.Font("DejaVuSansMono.ttf", 20)
 
 # Can enable cheat mode by setting difficulty to 6, 7, 8 or 9 in the arguments 
-if action > 5:
-    action = action % 6
+if action > 6:
+    action = action % 7
     cheatMode = True
 else:
     cheatMode = False
@@ -233,7 +233,7 @@ DefaultItems = xml2object.parse('items.xml', item.Item)
 # Create maps
 Maps = []
 for i in range(10):
-    Maps.append(map.Map(i, messageLog, DefaultItems));
+    Maps.append(map.Map(i, messageLog, DefaultItems, difficulty));
 
 for i in range(10):
     if (i != 9):

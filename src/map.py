@@ -144,9 +144,11 @@ class Gateway:
 
 class Map:
     # Generate a new map
-    def __init__(self, level, messageLog, defaultItems):
+    def __init__(self, level, messageLog, defaultItems, difficulty):
         
         self.Turn = 0
+        
+        self.difficulty = difficulty
         
         # This is used for the scores
         self.RestockDangerPoints = 0
@@ -280,8 +282,19 @@ class Map:
                     self.AddZombies])()
         
         if level == 9:
-            for i in self.Rooms[2:22]:
-                random.choice([self.AddCritters,
+            # I don't know if this special case for difficulty should be
+            # here on in difficulty.py
+            #
+            
+            if difficulty.difficulty == 0:
+                for i in self.Rooms[2:14]:
+                    self.AddCritters(i)
+                for i in self.Rooms[14:16]:
+                    self.AddBandits(i)
+                for i in self.Rooms[16:18]:
+                    self.AddOrcs(i)
+                for i in self.Rooms[18:22]:
+                    random.choice([self.AddCritters,
                     self.AddBandits,
                     self.AddOrcs,
                     self.AddGoliath,
@@ -289,6 +302,64 @@ class Map:
                     self.AddAssassins,
                     self.AddDrake,
                     self.AddZombies])(i)
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+            elif difficulty.difficulty == 1:
+                for i in self.Rooms[2:10]:
+                    self.AddCritters(i)
+                for i in self.Rooms[10:14]:
+                    self.AddBandits(i)   
+                for i in self.Rooms[14:16]:
+                    self.AddOrcs(i)
+                for i in self.Rooms[16:22]:
+                   random.choice([self.AddCritters,
+                   self.AddBandits,
+                   self.AddOrcs,
+                   self.AddGoliath,
+                   #self.AddHealers,
+                   self.AddAssassins,
+                   self.AddDrake,
+                   self.AddZombies])(i)
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+            elif difficulty.difficulty == 2:
+                for i in self.Rooms[2:8]:
+                    self.AddCritters(i)
+                for i in self.Rooms[8:12]:
+                    self.AddBandits(i)
+                for i in self.Rooms[12:14]:
+                    self.AddOrcs(i)                    
+                for i in self.Rooms[14:22]:
+                   random.choice([self.AddCritters,
+                   self.AddBandits,
+                   self.AddOrcs,
+                   self.AddGoliath,
+                   #self.AddHealers,
+                   self.AddAssassins,
+                   self.AddDrake,
+                   self.AddZombies])(i)
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+            elif difficulty.difficulty == 3:
+                for i in self.Rooms[2:22]:
+                    random.choice([self.AddCritters,
+                    self.AddBandits,
+                    self.AddOrcs,
+                    self.AddGoliath,
+                    #self.AddHealers,
+                    self.AddAssassins,
+                    self.AddDrake,
+                    self.AddZombies])(i)
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+                self.AddGoliath(self.Rooms[1])
+            
             self.AddHealers(self.Rooms[1])
             self.AddHealers(self.Rooms[1])
             self.AddWarlord(self.Rooms[1])

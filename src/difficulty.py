@@ -3,6 +3,8 @@
 # current difficulty look to it. The default settings are for Normal.
 # I also wonder whether it would be worth adjusting the badass ratio
 # and/or damage and maybe xp requirements
+#
+# Difficulty adjustments for final level are in map.py
 
 class Difficulty():
     def __init__(self):
