@@ -207,7 +207,8 @@ class Map:
         self.characters = []
         
         # This is WAY to specific. This should be generalised one day.
-        
+       
+    
         if level == 0:
             while sum([i.danger() for i in self.characters]) < 20:
                 random.choice([self.AddCritters,

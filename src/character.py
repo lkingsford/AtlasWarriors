@@ -586,6 +586,10 @@ class Character:
         #      Fail to find the target square, and the open list is empty. In this case, there is no path.   
         # 3) Save the path. Working backwards from the target square, go from each square to its parent square until you reach the starting square. That is your path.
         
+        # This is to prevent bugs
+        if dest == None:
+            return None
+        
         # ORTH_DISTANCE and DIAG_DISTANCE are for weights of travelling between the cells orthogonally
         # and diagonally respectively. If diagoanal is further in game, then DIAG_DISTANCE should be 14
         # As the distances are the same in mine, they're weighted evenly
@@ -603,7 +607,7 @@ class Character:
         #   [4]: g (distance to get here from parent),
         #   [5]: h (heuristic distance to destination) )
         OpenList = [(self.x, self.y, self.x, self.y, 0, abs(self.x-dest[0]) + abs(self.y-dest[1]))]     
-        ClosedList = []
+        ClosedList = []                        
         
         Found = None
         

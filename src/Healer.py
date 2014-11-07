@@ -95,7 +95,9 @@ class Healer(Enemy):
 
         runPriority = 0
         attackPriority = 0
-        
+            
+        nearestAllyPos = None
+
         if (alliesInRoom == 0):
             # Find nearest allies
             allies = [i for i in currentMap.characters if i.team == self.team\
@@ -116,11 +118,12 @@ class Healer(Enemy):
                     runPriority = 5
                     
         # I get that this is not the best way to do this, but it will do for now
-        if (runPriority == 0 and attackPriority == 0 and movePriority == 0 and healPriority == 0):
+        if (runPriority == 0 and attackPriority == 0 and movePriority == 0 and\
+            healPriority == 0):
             self.Wait()
         
         elif (runPriority >= attackPriority) and (runPriority >= movePriority)\
-            and (runPriority >=  healPriority):
+            and (runPriority >=  healPriority) and (nearestAllyPos != None):
             moveTo = nearestAllyPos[1]
             self.tryMove(moveTo[0], moveTo[1])
         
@@ -133,28 +136,39 @@ class Healer(Enemy):
             and (movePriority >= attackPriority):
             moveTo = self.GetNearest(lambda i: (max(abs(i[0]-nearestEnemy.x),\
                 abs(i[1]-nearestEnemy.y))) > nearestEnemyDistance)
-            if moveTo == None:
+            if moveTo == None or len(moveTo) == 0:
                 # Blocked in, so move closer to enemy (possibly attacking)
                 moveTo = self.GetRoute([nearestEnemy.x, nearestEnemy.y])
-                if moveTo == None:
+                if moveTo == None or len(moveTo) == 0:
                     self.Wait()
                 else:
-                    moveTo = moveTo[1] 
+                    moveTo = moveTo[1]
+                    self.tryMove(moveTo[0], moveTo[1])
             else:
-                moveTo = moveTo[1]
-            self.tryMove(moveTo[0], moveTo[1])
+                moveTo = moveTo[1]                        
+                self.tryMove(moveTo[0], moveTo[1])
         
         elif (attackPriority >= runPriority) and (attackPriority >=\
             healPriority) and (attackPriorirty >= movePriorirty):
             moveTo = self.GetRoute([nearestEnemy.x, nearestEnemy.y])
-            if moveTo == None:
+            if moveTo == None or len(moveTo) == 0:
                 self.Wait()
             else:
                 moveTo = moveTo[1]
-            self.tryMove(moveTo[0], moveTo[1])
+                self.tryMove(moveTo[0], moveTo[1])
         
         else:
             self.Wait()
-        
+
+
+# BUGS IN HEALER:
+# E:\Documents\GitHub\AtlasWarriors\src>python rl.py
+# Traceback (most recent call last):
+  # File "rl.py", line 385, in <module>
+    # character.update()
+  # File "E:\Documents\GitHub\AtlasWarriors\src\Healer.py", line 124, in update
+    # moveTo = nearestAllyPos[1]
+# UnboundLocalError: local variable 'nearestAllyPos' referenced before assignment
+
  
                 
