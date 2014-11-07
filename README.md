@@ -1,8 +1,7 @@
 Atlas Warriors ================================================================= 
-
-Atlas Warriors is an in-development, playable,
-roguelike game. It is a roguelike with a minimalist philosphy inspired by Brogue
-and ADOM. I have been working on it since around August, 2014.
+Atlas Warriors is an in-development, playable, roguelike game by Lachlan
+Kingsford. It is a roguelike with a minimalist philosphy inspired by Brogue and
+ADOM. I have been working on it since around August, 2014.
 
 It is playable at this point, but it’s not finished. Most of the game play is
 implemented but it needs more bugfixing, balancing, polishing and maybe a little
