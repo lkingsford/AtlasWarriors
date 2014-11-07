@@ -70,7 +70,7 @@ class Healer(Enemy):
                     healPriority = 8 - healTarget.maxhp + healTarget.hp
         
         enemiesInRoom = [i for i in inRoom if (i.team != self.team)]
-        
+        nearestEnemy = None
         if len(enemiesInRoom) == 0:
             movePriority = 0
         else:
@@ -133,7 +133,7 @@ class Healer(Enemy):
             self.CastHeal(healTarget)
         
         elif (movePriority >= healPriority) and (movePriority >= runPriority)\
-            and (movePriority >= attackPriority):
+            and (movePriority >= attackPriority) and (nearestEnemy != None):
             moveTo = self.GetNearest(lambda i: (max(abs(i[0]-nearestEnemy.x),\
                 abs(i[1]-nearestEnemy.y))) > nearestEnemyDistance)
             if moveTo == None or len(moveTo) == 0:
