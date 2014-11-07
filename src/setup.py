@@ -7,7 +7,9 @@ from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need fine tuning.
 build_exe_options = {"packages": ["os"], "excludes": ["tkinter"], 'include_msvcr':True,
-"include_files": ["DejaVuSans.ttf", "DejaVuSansMono.ttf", "DejaVuSerif.ttf", "items.xml"]}
+"include_files": ["DejaVuSans.ttf", "DejaVuSansMono.ttf", "DejaVuSerif.ttf", "items.xml",
+"Assets\\back_level_0.png", "Assets\\back_level_1.png", "Assets\\back_level_2.png",
+"Assets\\back_level_3.png"]}
 
 # GUI applications require a different base on Windows (the default is for a
 # console application).
