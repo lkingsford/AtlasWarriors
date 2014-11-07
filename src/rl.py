@@ -184,6 +184,7 @@ hpFont = pygame.font.Font("DejaVuSerif.ttf", 20)
 clock = pygame.time.Clock()
 messageLog = []
 
+
 # This should be states or something. Add to the refactor list!
 # If a difficulty is in the command line arguments, start
 if len(sys.argv) > 1:
@@ -193,6 +194,13 @@ else:
 
 win = pygcurse.PygcurseSurface(width=40, height=27, windowsurface=surface, shadow=True)
 win.font = pygame.font.Font("DejaVuSansMono.ttf", 20)
+
+# Can enable cheat mode by setting difficulty to 6, 7, 8 or 9 in the arguments 
+if action > 5:
+    action = action % 6
+    cheatMode = True
+else:
+    cheatMode = False
 
 if action == 0:
     difficulty = difficulty.Easiest()
@@ -204,6 +212,7 @@ elif action == 3:
     difficulty = difficulty.Hardest()
 elif action == 5:
     sys.exit()
+
 
 win.colors = ('red', 'gray')
 cellx = 0
@@ -324,22 +333,24 @@ while True:
                 if event.key == pygame.K_5 or event.key == pygame.K_KP5:
                     PC.nextMove = 'wait'
                 
-                if event.key == pygame.K_F1:
-                    ShowMapCheat = not ShowMapCheat
-                    ForceDraw = True
+                if cheatMode == True: 
                     
-                if event.key == pygame.K_F2:
-                    code.interact(local=locals())
-                    
-                if event.key == pygame.K_F3:
-                    PC.ChangeMap(Maps[PC.currentMap.level-1])
-                    PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
-                    ForceDraw = True
-                    
-                if event.key == pygame.K_F4:
-                    PC.ChangeMap(Maps[PC.currentMap.level+1])
-                    PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
-                    ForceDraw = True
+                    if event.key == pygame.K_F1:
+                        ShowMapCheat = not ShowMapCheat
+                        ForceDraw = True
+                        
+                    if event.key == pygame.K_F2:
+                        code.interact(local=locals())
+                        
+                    if event.key == pygame.K_F3:
+                        PC.ChangeMap(Maps[PC.currentMap.level-1])
+                        PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
+                        ForceDraw = True
+                        
+                    if event.key == pygame.K_F4:
+                        PC.ChangeMap(Maps[PC.currentMap.level+1])
+                        PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
+                        ForceDraw = True
                     
                 if event.key == pygame.K_i:
                     dialog = inventoryDialog.InventoryDialog(PC)
