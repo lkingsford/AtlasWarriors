@@ -32,7 +32,8 @@ def MainMenu(win, screen, surface):
         win.putchars('Start Difficult Game', 2, 12, 'red' if selected == 2 else 'silver')
         win.putchars('Start Hardest Game', 2, 13, 'red' if selected == 3 else 'silver')
         win.putchars('Visit Website', 2, 14, 'red' if selected == 4 else 'silver')
-        win.putchars('Exit', 2, 15, 'red' if selected == 5 else 'silver')
+        win.putchars('Support Development', 2, 15, 'red' if selected == 5 else 'silver')             
+        win.putchars('Exit', 2, 16, 'red' if selected == 6 else 'silver')
         
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -42,20 +43,24 @@ def MainMenu(win, screen, surface):
                 if event.key == pygame.K_UP or event.key == pygame.K_8 or event.key == pygame.K_KP8:
                         selected -= 1
                         if selected == -1:
-                            selected = 5
+                            selected = 6
                         
                 if event.key == pygame.K_DOWN or event.key == pygame.K_2 or event.key == pygame.K_KP2:
                     selected += 1
-                    if selected == 6:
+                    if selected == 7:
                         selected = 0
                 
                 if event.key == pygame.K_SPACE or event.key == pygame.K_RETURN or event.key == pygame.K_KP_ENTER:
                     action = selected
                     
-        if action == 4:
-            # I want this to point to a donate page
+        if action == 4:            
             webbrowser.open_new_tab("http://www.nerdygentleman.com")
             action = -1
+            
+        if action == 5:
+            # I want this to point to a donate page
+            webbrowser.open_new_tab("https://pledgie.com/campaigns/27179")
+            action = -1        
                 
     win.erase()
     return action
