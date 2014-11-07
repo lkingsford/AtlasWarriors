@@ -210,7 +210,7 @@ elif action == 2:
     difficulty = difficulty.Hard()
 elif action == 3:
     difficulty = difficulty.Hardest()
-elif action == 5:
+elif action == 6:
     sys.exit()
 
 
