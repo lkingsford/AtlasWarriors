@@ -149,7 +149,7 @@ class Healer(Enemy):
                 self.tryMove(moveTo[0], moveTo[1])
         
         elif (attackPriority >= runPriority) and (attackPriority >=\
-            healPriority) and (attackPriorirty >= movePriorirty):
+            healPriority) and (attackPriority >= movePriority):
             moveTo = self.GetRoute([nearestEnemy.x, nearestEnemy.y])
             if moveTo == None or len(moveTo) == 0:
                 self.Wait()
