@@ -28,3 +28,5 @@ class Drake(Dragon):
     def update(self):           
         super().update()
 
+    def Attacked(self, damage, attacker):
+        super().super().attacked(damage, attacker)
