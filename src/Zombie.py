@@ -31,6 +31,10 @@ class Zombie(Enemy):
     def danger(self):
         return (5 + self.levelMod/2)
     
+                        
+    def RefreshZombies(self):
+        pass
+    
     def update(self):           
         super().update()
         try:
@@ -56,22 +60,5 @@ class Zombie(Enemy):
             return
         
         
-        # Update nearby DVs
-        for j in [i for i in self.currentMap.characters if i.chartype != "Zombie" and i.chartype != "Necromancer"]:
-            # Check for adjacent zombies
-            zombies = [i for i in self.currentMap.characters if (i.chartype == "Zombie")\
-                and (abs(i.x - j.x) < 2)\
-                and (abs(i.y - j.y) < 2)]
-            if len(zombies) > 0:
-                closedCount = len(zombies)
-                for x in range(j.x-1,j.x+2):
-                    for y in range(self.y-1,self.y+2):
-                        if self.currentMap.Map[x][y].walkable == False:                         
-                            closedCount += 1
-            else:
-                closedCount = 0
-            j.ZombieMod = closedCount
-            if j.ZombieMod > 4 and j.ZombieMod < 8:             
-                self.messageLog.append(Message.Message(j.name + " is almost surrounded by the undead!"))
-            if j.ZombieMod == 8:
-                self.messageLog.append(Message.Message(j.name + " has been overrun by the undead!"))
+        for i in self.currentMap.characters:
+            i.RefreshZombies()               

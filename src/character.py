@@ -65,6 +65,7 @@ class Character:
             
     
     def update(self):       
+        self.RefreshZombies()
         if self.burning:            
             if self.moved:
                 self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
@@ -557,6 +558,27 @@ class Character:
             self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
             self.messageLog.append(Message.Message(self.name + " is no longer on fire"))
     
+    # This is called when Zombies move, and when the character moves
+    # I don't know how efficient that is
+    def RefreshZombies(self):
+        adjacent_zombies = [i for i in self.currentMap.characters if (i.chartype == "Zombie"\
+            and (abs(i.x - self.x) < 2)\
+            and (abs(i.y - self.y) < 2))]
+        if len(adjacent_zombies) > 0:
+            closedCount = len(adjacent_zombies)
+            for x in range(self.x-1,self.x+2):
+                for y in range(self.y-1,self.y+2):
+                    if self.currentMap.Map[x][y].walkable == False:                         
+                        closedCount += 1
+        else:
+            closedCount = 0
+        if closedCount > self.ZombieMod:
+            if self.ZombieMod > 4 and self.ZombieMod < 8:             
+                self.messageLog.append(Message.Message(j.name + " is almost surrounded by the undead!"))
+            elif self.ZombieMod == 8:
+                self.messageLog.append(Message.Message(j.name + " has been overrun by the undead!"))
+        self.ZombieMod = closedCount            
+    
     def Stun(self):
         self.ticksUntilTurn += round(200/self.speed)
     
@@ -730,7 +752,7 @@ class Character:
                 CurSquare = [j for j in (OpenList+ClosedList) if j[0] == CurSquare[2] and j[1] == CurSquare[3]][0]
                 Route.insert(0, CurSquare)
             return Route
-                
-            
+
         
+    
                     
