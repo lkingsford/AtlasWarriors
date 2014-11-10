@@ -53,12 +53,26 @@ class Zombie(Enemy):
                 self.tryMove(self.x, self.y + dy)
             else:
                 self.Wait()
-            
-            
+                        
         except ValueError:
             self.Wait()
-            return
+            return        
+            
+            
+    # The altered versions of tryMove and Attacked are to allow the DV reduction
+
+    def tryMove(self, newX, newY):
+        lastX = self.x
+        lastY = self.y
+        super().tryMove(newX, newY)
+        self.currentMap.RemoveZombie((lastX, lastY))
+        self.currentMap.AddZombie((self.x, self.y))
+    
+    def Attacked(self, damage, attacker, melee = True):
+        killed = super().Attacked(damage, attacker, melee)
+        if killed:
+            self.currentMap.RemoveZombie((self.x, self.y))
+            return True
+        else:
+            return False
         
-        
-        for i in self.currentMap.characters:
-            i.RefreshZombies()               

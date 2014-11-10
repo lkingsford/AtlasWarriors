@@ -32,7 +32,6 @@ class Character:
         
         self.baseXPToLevel = 10
         self.ticksUntilTurn = random.randint(0,10)
-        self.ZombieMod = 0
         
         self.messageLog = messageLog
         
@@ -65,7 +64,6 @@ class Character:
             
     
     def update(self):       
-        self.RefreshZombies()
         if self.burning:            
             if self.moved:
                 self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
@@ -141,7 +139,8 @@ class Character:
                 return [(self.baseToHit + self.leftHandEquipped.ToHit + self.ToHitMod(self.leftHandEquipped.ItemClass) + self.ToHitMod(7), self.leftHandEquipped), \
                     (self.baseToHit + self.rightHandEquipped.ToHit + self.ToHitMod(self.rightHandEquipped.ItemClass) + self.ToHitMod(7), self.rightHandEquipped)]
                     
-            
+    def ZombieMod(self):
+        return self.currentMap.ZombieMod[self.x][self.y]
         
     def ToDefend(self):
         # This would have be changed in a different game - there is the special provision for zombie DV drain
@@ -150,7 +149,7 @@ class Character:
             ((self.rightHandEquipped.ToDefend + self.ToDefMod(self.rightHandEquipped.ItemClass)) if self.rightHandEquipped !=None else 0) +\
             ((self.ToDefMod(7) if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass < 6 and self.rightHandEquipped != None and self.rightHandEquipped.ItemClass < 6) else 0)) +\
             ((self.ToDefMod(0) if (self.leftHandEquipped == None) and (self.rightHandEquipped == None) else 0))                     
-        return toDefend - self.ZombieMod
+        return toDefend - self.ZombieMod()
         
     def Damage(self):
         return self.baseDamage  
@@ -491,7 +490,7 @@ class Character:
     def NextLevelHitsNeeded(self, currentLevel, skill):
         if skill == 6:
             # Shields will get inflated real quick otherwise
-            return round(30 * pow(1.3, currentLevel - 1))
+            return round(25 * pow(1.3, currentLevel - 1))
         if skill == 0:
             # Help unarmed to be a bit beter
             return round(7 * pow(1.3, currentLevel - 1))
@@ -558,26 +557,7 @@ class Character:
             self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
             self.messageLog.append(Message.Message(self.name + " is no longer on fire"))
     
-    # This is called when Zombies move, and when the character moves
-    # I don't know how efficient that is
-    def RefreshZombies(self):
-        adjacent_zombies = [i for i in self.currentMap.characters if (i.chartype == "Zombie"\
-            and (abs(i.x - self.x) < 2)\
-            and (abs(i.y - self.y) < 2))]
-        if len(adjacent_zombies) > 0:
-            closedCount = len(adjacent_zombies)
-            for x in range(self.x-1,self.x+2):
-                for y in range(self.y-1,self.y+2):
-                    if self.currentMap.Map[x][y].walkable == False:                         
-                        closedCount += 1
-        else:
-            closedCount = 0
-        if closedCount > self.ZombieMod:
-            if self.ZombieMod > 4 and self.ZombieMod < 8:             
-                self.messageLog.append(Message.Message(j.name + " is almost surrounded by the undead!"))
-            elif self.ZombieMod == 8:
-                self.messageLog.append(Message.Message(j.name + " has been overrun by the undead!"))
-        self.ZombieMod = closedCount            
+                   
     
     def Stun(self):
         self.ticksUntilTurn += round(200/self.speed)

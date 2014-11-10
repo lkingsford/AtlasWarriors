@@ -88,7 +88,7 @@ class Necromancer(Enemy):
         # Sort priorities in decreasing order
         Priorities.sort(key=lambda i: i[1], reverse=True)
         
-        print (Priorities)
+        # print (Priorities)
         
         if Priorities[0][0] == 0:
             # We wanna heal
@@ -158,8 +158,8 @@ class Necromancer(Enemy):
         
     def drainToHeal(self, target):
         self.hp += target.hp
-        self.maxhp = max(self.maxhp, self.hp)
-        target.hp = 0
+        self.maxhp = max(self.maxhp, self.hp)        
+        target.Attacked(target.hp, self, False)
         self.messageLog.append(Message.Message("The necromancer drains the lifeforce from the zombie"))
         self.messageLog.append(Message.Message("The zombie collapses!"))
         self.animations.append(animation.DrawNecromancerSpell(target, self, 'red'))
@@ -177,6 +177,7 @@ class Necromancer(Enemy):
     def drainToBoost(self, target):
         # Increases damage and ToHit by just increasing the skill of the unarmed weapon
         self.skills[0] = 0, self.skills[0][1] + 2
+        target.Attacked(target.hp, self, False)
         self.messageLog.append(Message.Message("The necromancer draws the tormented soul of the zombie into his bony fist"))
         self.messageLog.append(Message.Message("The zombie collapses!"))
         self.animations.append(animation.DrawNecromancerSpell(target, self, 'blue'))

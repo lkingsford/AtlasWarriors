@@ -484,7 +484,7 @@ while True:
             '    XP ' + str(PC.xp) + ' (' + str(int(PC.nextLevel)) + ')' \
             '   Hit ' + str(toHit[0][0]) +\
             (', ' + str(toHit[1][0]) if len(toHit) > 1 else '') + '  Def ' +\
-        str(PC.ToDefend()), True, (255,255 if PC.ZombieMod == 0 else 0,255 if PC.ZombieMod == 0 else 0, 255))]
+        str(PC.ToDefend()), True, (255,255 if PC.ZombieMod() == 0 else 0,255 if PC.ZombieMod() == 0 else 0, 255))]
     if len(messageLog) > 0: lines.append(messageFont.render(messageLog[len(messageLog)-1].text, True, (255, 255, 255, 255)))
     if len(messageLog) > 1: lines.append(messageFont.render(messageLog[len(messageLog)-2].text, True, (225, 225, 225, 255)))
     if len(messageLog) > 2: lines.append(messageFont.render(messageLog[len(messageLog)-3].text, True, (195, 195, 195, 255)))
@@ -517,31 +517,43 @@ while True:
     if dialog == None:  
         top =  mousePos[1] 
         #Draw descriptions if mouse over monster
-        for i in PC.currentMap.characters:
-            if mouseCellX == i.x and mouseCellY == i.y and (PC.currentMap.VisibilityStatus(i.x,i.y)) == 2:
-                lines = [descriptTitleFont.render('   ' + i.name, True, (255,0,0,255)),
-                     descriptTitleFont.render(str(id(i)), True, (0,0,0,255)),
-                     descriptTitleFont.render('Level ' + str(i.level), True, (0,0,0,255)),
-                     descriptTitleFont.render('HP ' + str(i.hp) + '/' + str(i.maxhp), True, (0,0,0,255))]
-                
-                for j in i.ToHit():
-                     lines.append(descriptFont.render("To hit: " + str(j[0]), True, (0,0,0,255)))
-                
-                lines.append(descriptFont.render("To defend: " + str(i.ToDefend()), True, (0,0,0,255)))
-                
-                for j in PC.ToHit():
-                     lines.append(descriptFont.render(str(round(PC.ChanceToHit(j[0], i.ToDefend()) * 100)) + '% chance to hit', True, (255,0,0,255)))
-                
-                spacing = 3
-                                        
-                widthNeeded = max(l.get_width() for l in lines ) + 6
-                heightNeeded = 3 * len(lines) + sum(l.get_height() for l in lines) + 12
-                top = top + heightNeeded
-                pygame.draw.rect(surface, pygcurse.colornames['yellow'], pygame.Rect(min(mousePos[0], surface.get_width()-widthNeeded), mousePos[1], (widthNeeded), (heightNeeded)))
-                curY = 3
-                for i in lines:
-                    surface.blit(i, (min(mousePos[0], surface.get_width() - widthNeeded) + 3, mousePos[1] + 3 + curY))
-                    curY += i.get_height() + spacing
+        if (False):
+            for i in PC.currentMap.characters:
+                if mouseCellX == i.x and mouseCellY == i.y and (PC.currentMap.VisibilityStatus(i.x,i.y)) == 2:
+                    lines = [descriptTitleFont.render('   ' + i.name, True, (255,0,0,255)),
+                         descriptTitleFont.render(str(id(i)), True, (0,0,0,255)),
+                         descriptTitleFont.render('Level ' + str(i.level), True, (0,0,0,255)),
+                         descriptTitleFont.render('HP ' + str(i.hp) + '/' + str(i.maxhp), True, (0,0,0,255))]
+                    
+                    for j in i.ToHit():
+                         lines.append(descriptFont.render("To hit: " + str(j[0]), True, (0,0,0,255)))
+                    
+                    lines.append(descriptFont.render("To defend: " + str(i.ToDefend()), True, (0,0,0,255)))
+                    
+                    for j in PC.ToHit():
+                         lines.append(descriptFont.render(str(round(PC.ChanceToHit(j[0], i.ToDefend()) * 100)) + '% chance to hit', True, (255,0,0,255)))
+                    
+                    spacing = 3
+                                            
+                    widthNeeded = max(l.get_width() for l in lines ) + 6
+                    heightNeeded = 3 * len(lines) + sum(l.get_height() for l in lines) + 12
+                    top = top + heightNeeded
+                    pygame.draw.rect(surface, pygcurse.colornames['yellow'], pygame.Rect(min(mousePos[0], surface.get_width()-widthNeeded), mousePos[1], (widthNeeded), (heightNeeded)))
+                    curY = 3
+                    for i in lines:
+                        surface.blit(i, (min(mousePos[0], surface.get_width() - widthNeeded) + 3, mousePos[1] + 3 + curY))
+                        curY += i.get_height() + spacing
+        
+        if mouseCellX <40 and mouseCellY <20:
+            lines = [descriptTitleFont.render(str(mouseCellX)+ ','+ str(mouseCellY)+ '='+ str(PC.currentMap.ZombieMod[mouseCellX][mouseCellY]), True, (255,0,0,255))]
+            widthNeeded = max(l.get_width() for l in lines) + 6
+            heightNeeded = 3 * len(lines) + sum(l.get_height() for l in lines) + 12
+            top = top + heightNeeded
+            curY = 6
+            pygame.draw.rect(surface, pygcurse.colornames['yellow'], pygame.Rect(min(mousePos[0], surface.get_width()-widthNeeded), mousePos[1], (widthNeeded), (heightNeeded)))
+            for i in lines:
+                surface.blit(i, (min(mousePos[0], surface.get_width() - widthNeeded) + 3, mousePos[1] + 3 + curY))
+                curY += i.get_height() + spacing
         
         itemLines = []
         for i in PC.currentMap.Items:

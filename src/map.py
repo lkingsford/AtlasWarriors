@@ -167,6 +167,20 @@ class Map:
             for y in range(20):
                 self.VisibilityMap[x][y] = 0
         
+        # These are for speeding up the zombie DV modifiers
+        # They are effected and altered by the AddZombie and RemoveZombie
+        # procedures
+        self.ZombieLocations = [[0 for y in range(20)] for x in range(40)]
+        for x in range(40):
+            for y in range(20):
+                self.ZombieLocations[x][y] = False
+        
+        self.ZombieMod = [[0 for y in range(20)] for x in range(40)]
+        for x in range(40):
+            for y in range(20):
+                self.ZombieMod[x][y] = 0
+        
+        
         #Build outside walls 
         for x in range(40):
             self.Map[x][0] = Cell('#', False, 'red')
@@ -674,7 +688,35 @@ class Map:
                 self.VisibilityMap[j[0]][j[1]] = max(i.seenStatus, self.VisibilityMap[j[0]][j[1]])
         
         return newlySeen
-                    
+                         
+    def RecalculateZombieMod(self, location):
+        # This performs the following calculation for each square adjacent to
+        # the location:
+        # The Zombie Mod = The amount of adjacent zombies + The amount of 
+        # not walkable tiles, if there are any adjacent zombies
+     
+        for ix in range(location[0] - 1, location[0] + 2):
+            for iy in range(location[1] - 1, location[1] + 2):
+                workingTotal = 0
+                for jx in range(max(0,ix-1), min(40, ix + 2)):
+                    for jy in range(max(0,iy-1), min(20, iy + 2)):                 
+                        if self.ZombieLocations[jx][jy] and not (jx == ix and jy == iy):
+                            workingTotal += 1
+                if workingTotal > 0:
+                    for jx in range(max(0,ix-1), min(40, ix + 2)):
+                            for jy in range(max(0,iy-1), min(20, iy + 2)):
+                                    if not self.Map[jx][jy].walkable:
+                                        workingTotal += 1
+                self.ZombieMod[ix][iy] = workingTotal                   
+                   
+    def AddZombie(self, location):
+        self.ZombieLocations[location[0]][location[1]] = True
+        self.RecalculateZombieMod(location)
+    
+    def RemoveZombie(self, location):
+        self.ZombieLocations[location[0]][location[1]] = False
+        self.RecalculateZombieMod(location)  
+                
     def Tick(self):
         # Measures how long since the last restock. Every 50-100 player turns on average,
         # adds more monsters
@@ -1099,7 +1141,8 @@ class Map:
             newCharacter.y = random.randint(room.y, room.y+room.h-1)
             while(len([i for i in self.characters if i.x == newCharacter.x and i.y == newCharacter.y]) > 0):            
                 newCharacter.x = random.randint(room.x, room.x+room.w-1)
-                newCharacter.y = random.randint(room.y, room.y+room.h-1)            
+                newCharacter.y = random.randint(room.y, room.y+room.h-1)          
+            self.AddZombie((newCharacter.x, newCharacter.y))
             self.characters.append(newCharacter)
     
     def AddNecromancer(self):
@@ -1125,7 +1168,8 @@ class Map:
             newCharacter.y = random.randint(room.y, room.y+room.h-1)
             while(len([i for i in self.characters if i.x == newCharacter.x and i.y == newCharacter.y]) > 0):            
                 newCharacter.x = random.randint(room.x, room.x+room.w-1)
-                newCharacter.y = random.randint(room.y, room.y+room.h-1)            
+                newCharacter.y = random.randint(room.y, room.y+room.h-1)  
+            self.AddZombie((newCharacter.x, newCharacter.y))
             self.characters.append(newCharacter)
             
     def AddDragon(self):
