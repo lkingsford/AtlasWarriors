@@ -52,11 +52,7 @@ def LoseGame (win):
     pygame.display.update()
     pygame.display.flip()
     pygcurse.waitforkeypress()  
-    pygcurse.waitforkeypress()  
-    pygame.quit()   
-    sys.exit()  
-    
-    
+    pygcurse.waitforkeypress()        
     
 # Spoiler warning!
 #
@@ -149,9 +145,7 @@ def WinGame (victoryCondition, win):
     pygame.display.flip()
     
     pygcurse.waitforkeypress()
-    pygcurse.waitforkeypress()      
-    pygame.quit()
-    sys.exit()  
+    pygcurse.waitforkeypress()       
     
     
 def DrawMap():
@@ -299,7 +293,9 @@ PC.ChangeMap(Maps[0])
 # Show introduction tutorial message if first run
 tutorial.TriggerMessage(TUTORIAL_FIRSTRUN)      
 
-while True: 
+running = True
+
+while running: 
 
     if len(dialog) != 0 and dialog[0].toClose == True:
         dialog.remove(dialog[0])
@@ -307,8 +303,7 @@ while True:
 
     for event in pygame.event.get():
         if event.type == QUIT:
-            pygame.quit()
-            sys.exit()
+            running = False
         if len(dialog) == 0:
             if event.type == MOUSEMOTION:
                 mouseCellX, mouseCellY = win.getcoordinatesatpixel(event.pos)
@@ -572,4 +567,8 @@ while True:
     #If Character is dead, you lose
     if (PC.dead()):
         LoseGame(win)
-        
+
+tutorial.close()
+pygame.quit()
+sys.exit() 
+
