@@ -190,6 +190,7 @@ hpFont = pygame.font.Font("DejaVuSerif.ttf", 20)
 clock = pygame.time.Clock()
 messageLog = []
 tutorial = Tutorial(messageBox.MessageBox, dialog);
+background = True
 
 # This should be states or something. Add to the refactor list!
 # If a difficulty is in the command line arguments, start
@@ -295,6 +296,9 @@ Animations = []
 
 PC.ChangeMap(Maps[0])
 
+# Show introduction tutorial message if first run
+tutorial.TriggerMessage(TUTORIAL_FIRSTRUN)      
+
 while True: 
 
     if len(dialog) != 0 and dialog[0].toClose == True:
@@ -336,32 +340,29 @@ while True:
                     
                 if event.key == pygame.K_5 or event.key == pygame.K_KP5:
                     PC.nextMove = 'wait'
-                
-                if event.key == pygame.K_q:
-                    tutorial.TriggerMessage(TUTORIAL_FIRSTRUN)             
-                
-                if cheatMode == True: 
-                    
-                    if event.key == pygame.K_F1:
-                        ShowMapCheat = not ShowMapCheat
-                        ForceDraw = True
-                        
-                    if event.key == pygame.K_F2:
-                        code.interact(local=locals())
-                        
-                    if event.key == pygame.K_F3:
-                        PC.ChangeMap(Maps[PC.currentMap.level-1])
-                        PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
-                        ForceDraw = True
-                        
-                    if event.key == pygame.K_F4:
-                        PC.ChangeMap(Maps[PC.currentMap.level+1])
-                        PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
-                        ForceDraw = True
                     
                 if event.key == pygame.K_i:
-                    dialog = inventoryDialog.InventoryDialog(PC)
+                    dialog.insert(0, inventoryDialog.InventoryDialog(PC))
                     
+                if event.key == pygame.K_s:
+                    dialog.insert(0, skillsDialog.SkillsDialog(PC))
+                    
+                if event.key == pygame.K_m:
+                    dialog.insert(0, messagesDialog.MessagesDialog(PC))
+                    
+                if event.key == pygame.K_a:
+                    PC.autopickup = not(PC.autopickup)
+                    if PC.autopickup:
+                        messageLog.append(Message.Message(\
+                            "Autopickup has been enabled"))
+                    else:
+                        messageLog.append(Message.Message(\
+                            "Autopickup has been disabled."))
+                    
+                if event.key == pygame.K_b:
+                    background = not(background)
+                    ForceDraw = True
+                        
         else:
             dialog[0].process(event)
         
@@ -413,7 +414,10 @@ while True:
     #Draw Screen
     
     # Draw Background
-    surface.blit(PC.currentMap.background, (0,0)) 
+    if background:
+        surface.blit(PC.currentMap.background, (0,0)) 
+    else:
+        surface.fill((0,0,0,255))
  
     
     #Draw Map   
@@ -441,14 +445,7 @@ while True:
         else:
             #Probably not where this should be
             PC.currentMap.characters.remove(character)          
-            
-    #Draw messages
-    # win.putchars(messages[len(messages)-1], 13, 24)
-    # win.putchars(messages[len(messages)-2], 13, 23)
-    # win.putchars(messages[len(messages)-3], 13, 22)
-    # win.putchars(messages[len(messages)-4], 13, 21)
-    # win.putchars(messages[len(messages)-5], 13, 20)
-    
+
     # Draw animations if there are any. 
     for i in Animations:
         if i.frame >= i.frames:

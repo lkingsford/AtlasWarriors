@@ -32,6 +32,7 @@ class PlayerCharacter(character.Character):
         self.chartype = "PC"    
         self.difficulty = difficulty
         self.tutorial = tutorial
+        self.autopickup = True
         
     def update(self):
         super().update();
@@ -85,10 +86,13 @@ class PlayerCharacter(character.Character):
         if (self.x == newX) and (self.y == newY):
             for i in self.currentMap.Items:
                 if i.x == self.x and i.y == self.y:
-                    if self.Pickup(i) == True:
+                    if self.Pickup(i) == True and self.autopickup:
                         self.messageLog.append(Message.Message("You picked up a " + i.Description()))
-                    else:
+                    elif self.autopickup:
+                        self.messageLog.append(Message.Message("There is a " + i.Description() + " on the ground."))
                         self.messageLog.append(Message.Message("Your backpack is full"))
+                    else:
+                        self.messageLog.append(Message.Message("There is a " + i.Description() + " on the ground."))
         newlySeen = self.currentMap.UpdateVisibility(self, self.x, self.y)
         
         # Heal on explore
