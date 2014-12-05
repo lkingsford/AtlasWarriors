@@ -91,13 +91,17 @@ class InventoryDialog(dialog.Dialog):
                     # Iterate through backpack, then through floor
                     curLetter = ord('b')
                     curY = 125
+                    print (curLetter, ' ', ord(event.unicode));
                     for i in self.PC.backpack:
                         curLetter += 1
+                        print (curLetter, i.Description());
                         if curLetter == ord(event.unicode):
+                            print('^^^')                            
                             self.Context = context.Context(300, curY)
                             self.Context.AddItem(('Equip in Right Hand', lambda: self.PC.Equip(i, 0)))
                             self.Context.AddItem(('Equip in Left Hand', lambda: self.PC.Equip(i, 1)))
                             self.Context.AddItem(('Drop', lambda: self.PC.Drop(i)))
+                            break
                         curY += 20
                     
                     curY = 275
@@ -109,6 +113,7 @@ class InventoryDialog(dialog.Dialog):
                             self.Context.AddItem(('Equip in Left Hand', lambda: self.PC.Equip(i, 1)))
                             if len(self.PC.backpack) < self.PC.backpackSize:
                                 self.Context.AddItem(('Pick up', lambda: self.PC.Pickup(i)))
+                            break
                         curY += 20
             
             if event.type == MOUSEBUTTONDOWN:
