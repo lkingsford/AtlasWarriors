@@ -45,18 +45,18 @@ def wrap_multi_line(text, font, maxwidth):
     return list(lines)
 
 class MessageBox(dialog.Dialog):
-    DEFAULT_MAX_WIDTH = 300
+    DEFAULT_MAX_WIDTH = 400
     
     def __init__(self, message, width = DEFAULT_MAX_WIDTH, ActiveDialog = None):     
         self.toClose = False
         self.TitleFont = pygame.font.Font("DejaVuSerif.ttf", 20) 
-        self.BodyFont = pygame.font.Font("DejaVuSerif.ttf", 12)     
+        self.BodyFont = pygame.font.Font("DejaVuSerif.ttf", 14)     
         self.width = width;        
         self.message = wrap_multi_line(message, self.BodyFont, width - 20)
         self.message_lines = list(map(lambda x: self.BodyFont.render(x, True,
             (255, 255, 255, 255)), self.message))
         self.height = 20 + len(self.message_lines) *\
-            self.BodyFont.get_linesize()
+            (self.BodyFont.get_linesize() + 3)
         self.line_size = self.BodyFont.get_linesize();        
         if ActiveDialog != None:
             ActiveDialog.insert(0, self)
@@ -68,7 +68,8 @@ class MessageBox(dialog.Dialog):
         pygame.draw.rect(win, (32,32,32,255), self.Box, 0)
         pygame.draw.rect(win, (128,128,128,255), self.Box, 1)
         for i in enumerate(self.message_lines):
-            win.blit(i[1], (self.left + 10, 10+self.top + i[0] * self.line_size))        
+            win.blit(i[1], (self.left + 10,
+                10+self.top + i[0] * (self.line_size + 3)))        
             
     def process(self, event):
         if event.type == KEYDOWN:            
