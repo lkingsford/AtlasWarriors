@@ -206,11 +206,10 @@ class Tutorial:
                 "Your hard work has paid off. You've accumulated enough " +\
                 "experience from slaying monsters to gain a level. This " +\
                 "means you get more health, and are fully healed! \n" +\
-                "You deal more damage to enemies who are a lower " +\
-                "level then you, and less to enemies who are a higher " +\
-                "level then you. Unfortunately, you also take more " +\
-                "damage from enemies that are a higher level then you " +\
-                "and less from enemies that are a lower level then you.\n"+\
+                "You deal more damage (and take less damage from) enemies " +\
+                "who are a lower level then you. You deal less damage (and "+\
+                "take more damage from) enemies who are a higher " +\
+                "level then you. \n"+\
                 "If you find an enemy that is more then a few levels higher "+\
                 "then you..."
                 )                
