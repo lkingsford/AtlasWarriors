@@ -176,3 +176,32 @@ class Tutorial:
             self.message_dialog_function(output,
                 ActiveDialog = self.activate_dialog)
             self.tutorial_settings[TUTORIAL_WEAPONLVL] = True
+            
+        if message == TUTORIAL_LEVEL and\
+            not (self.tutorial_settings[TUTORIAL_LEVEL]):
+            
+            # See earlier comment that multiple dialogs need
+            # to be in reverse order
+            
+            output = (
+                "...RUN!"
+                )                
+            self.message_dialog_function(output,                
+                ActiveDialog = self.activate_dialog)
+            
+            output = (
+                "Your hard work has paid off. You've accumulated enough " +\
+                "experience from slaying monsters to gain a level. This " +\
+                "means you get more health, and are fully healed! \n" +\
+                "You deal more damage to enemies who are a lower " +\
+                "level then you, and less to enemies who are a higher " +\
+                "level then you. Unfortunately, you also take more " +\
+                "damage from enemies that are a higher level then you " +\
+                "and less from enemies that are a lower level then you.\n"+\
+                "If you find an enemy that is more then a few levels higher "+\
+                "then you..."
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_LEVEL] = True

@@ -157,3 +157,7 @@ class PlayerCharacter(character.Character):
         if newLevel > oldLevel:
             self.tutorial.TriggerMessage(tutorial.TUTORIAL_WEAPONLVL)  
 
+    # Custom version to allow tutorial
+    def LevelUp(self, supress = False):
+        super().LevelUp(supress)
+        self.tutorial.TriggerMessage(tutorial.TUTORIAL_LEVEL)
