@@ -55,9 +55,8 @@ class SkillsDialog(dialog.Dialog):
             win.blit(self.BodyFont.render(str(self.PC.DmgMod(i[0])), True, (255, 255, 255, 255)), (370, 65 + 15 * i[0]))
     
     def process(self, event):
-        if event.type == KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-                self.toClose = True
+        if event.type == KEYDOWN:            
+            self.toClose = True
         
         elif event.type == MOUSEBUTTONDOWN:
             if not self.Box.collidepoint(event.pos):
