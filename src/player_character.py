@@ -161,3 +161,10 @@ class PlayerCharacter(character.Character):
     def LevelUp(self, supress = False):
         super().LevelUp(supress)
         self.tutorial.TriggerMessage(tutorial.TUTORIAL_LEVEL)
+        
+    # Custom version to allow tutorial
+    def Equip(self, item, slot):
+        super().Equip(item, slot)
+        self.tutorial.TriggerMessage(item.ItemClass)
+        if self.GetTwoHanded():
+            self.tutorial.TriggerMessage(tutorial.TUTORIAL_TWOHANDED)    

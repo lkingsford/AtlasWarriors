@@ -1,20 +1,25 @@
 import json
 
 TUTORIAL_FIRSTRUN   = 0
-TUTORIAL_SWORD      = 1
-TUTORIAL_POLEARM    = 2
-TUTORIAL_BLUNT      = 3
+# These consts match the ItemClasses. Do not change as will break
+# player_character.py - Equip.
+TUTORIAL_BLUNT      = 1
+TUTORIAL_SWORD      = 2
+TUTORIAL_POLEARM    = 3
 TUTORIAL_DAGGER     = 4
 TUTORIAL_AXE        = 5
 TUTORIAL_SHIELD     = 6
-TUTORIAL_ATTACK     = 7
-TUTORIAL_DEFEND     = 8
-TUTORIAL_FIRE       = 9
-TUTORIAL_DEATH      = 10
-TUTORIAL_SECONDWIND = 11
-TUTORIAL_LEVEL      = 12
-TUTORIAL_WEAPONLVL  = 13
-TUTORIAL_ATTACKED   = 14
+TUTORIAL_TWOHANDED  = 7
+# Further tutorials
+TUTORIAL_ATTACK     = 8
+TUTORIAL_DEFEND     = 9
+TUTORIAL_FIRE       = 10
+TUTORIAL_DEATH      = 11
+TUTORIAL_SECONDWIND = 12
+TUTORIAL_LEVEL      = 13
+TUTORIAL_WEAPONLVL  = 14
+TUTORIAL_ATTACKED   = 15
+
 
 class Tutorial:
     def __init__(self, messageDialogFunction, activateDialog):
@@ -31,7 +36,7 @@ class Tutorial:
             # Needed because keys are strings from json
             self.tutorial_settings = dict([(int(i[0]),i[1]) for i in tutorial_settings_temp.items()])
         except FileNotFoundError:
-            self.tutorial_settings = dict([(i, False) for i in range(15)])
+            self.tutorial_settings = dict([(i, False) for i in range(16)])
         
         self.message_dialog_function = messageDialogFunction
         self.activate_dialog = activateDialog
@@ -217,3 +222,112 @@ class Tutorial:
                 ActiveDialog = self.activate_dialog)
 
             self.tutorial_settings[TUTORIAL_LEVEL] = True
+            
+        if message == TUTORIAL_BLUNT and\
+            not (self.tutorial_settings[TUTORIAL_BLUNT]):
+
+            output = (
+                "You've just equipped a blunt force trauma weapon\n"+\
+                "Blunt weapons will stun enemies when you hit them, "+\
+                "preventing them from moving or attacking for a turn"
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_BLUNT] = True
+        
+        if message == TUTORIAL_SWORD and\
+            not (self.tutorial_settings[TUTORIAL_SWORD]):
+
+            output = (
+                "You've just equipped a sword.\n"+\
+                "When you have a sword equipped, you will sometimes parry "+\
+                "attacks by enemies - preventing them from attacking you, "+\
+                "and getting a free attack on them!"
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_SWORD] = True            
+
+        if message == TUTORIAL_POLEARM and\
+            not (self.tutorial_settings[TUTORIAL_POLEARM]):
+
+            output = (
+                "You've just equipped a polearm.\n"+\
+                "When you attack with a polearm, you will also attack any "+\
+                "enemies directly behind the enemy you're attacking.\n"+\
+                "You also can skewer them when they walk towards you, "+\
+                "or lunge at them when you walk towards them."
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_POLEARM] = True  
+
+        if message == TUTORIAL_DAGGER and\
+            not (self.tutorial_settings[TUTORIAL_DAGGER]):
+
+            output = (
+                "You've just equipped a dagger.\n"+\
+                "If you get attacked while you're weilding a dagger, "+\
+                "you get a free counterattack with a very high "+\
+                "chance of hitting. It's time for revenge!"
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_DAGGER] = True    
+                            
+        if message == TUTORIAL_AXE and\
+            not (self.tutorial_settings[TUTORIAL_AXE]):
+
+            output = (
+                "Axes High!\n"+\
+                "You've just equipped an axe.\n"+\
+                "When you attack with an axe, you'll also attack any enemies "+\
+                "who are next to them in a 90 degree arc. So, if you attack "+\
+                "to the North, you'll also attack to the North-East and the "+\
+                "North-West."
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_AXE] = True
+
+        if message == TUTORIAL_SHIELD and\
+            not (self.tutorial_settings[TUTORIAL_SHIELD]):
+
+            output = (
+                "Survival ahoy!\n"+\
+                "You've just equipped a shield.\n"+\
+                "Shields allow you to block enemy attacks. They also can "+\
+                "block you from scorching flames and prevent you being "+\
+                "ignited.\n"
+                "I'd put that last sentence in your memory.\n"
+                "It may significantly assist you in the later levels!"
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_SHIELD] = True
+            
+        if message == TUTORIAL_TWOHANDED and\
+            not (self.tutorial_settings[TUTORIAL_TWOHANDED]):
+
+            output = (
+                "So - feel like wrecking havoc with two weapons at once do "+\
+                "you?\n"+\
+                "When you have two weapons equipped, you attack with both at "+\
+                "once. This is undoubtably awesome. \n"+\
+                "But:\n"+\
+                "You do get a significant penalty in your chance to hit with "+\
+                "each weapon. This penalty can be reduced by practicing "+\
+                "weilding two weapons at once. You can see your skill "+\
+                "with two weapons in the skill screen with the weapon "+\
+                "skills."
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_TWOHANDED] = True

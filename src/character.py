@@ -97,6 +97,36 @@ class Character:
                         self.ChangeMap(self.currentMap.nextMap,  self.currentMap.nextMap.startX, self.currentMap.nextMap.startY)
                 self.currentMap.Map[newX][newY].OnWalk(self)
                 self.ticksUntilTurn = round(100/self.speed)
+            
+                # Spear skewer if walk towards spear, or enemy if holding one
+                dx = self.x - self.lastx
+                dy = self.y - self.lasty
+                monsterInNextSquare = [i for i in self.currentMap.characters if
+                    (i.x == (self.x + dx)) and (i.y == (self.y + dy))]
+                print (self.name, dx , ' ', dy, monsterInNextSquare)
+                for i in monsterInNextSquare:
+                    i.Skewer(i)
+                    self.Lunge(i)
+                    
+    # Skewer if an enemy walks towards while self is holding a spear 
+    def Skewer(self, enemy):
+            if (self.leftHandEquipped != None) and (self.leftHandEquipped.ItemClass == ItemClass.polearm):
+                self.messageLog.append(Message.Message(self.name + " skewers " + enemy.name + " with the " + self.leftHandEquipped.Name))
+                self.AttackWithWeapon(enemy, [self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
+                
+            if (self.rightHandEquipped != None) and (self.rightHandEquipped.ItemClass == ItemClass.polearm):
+                self.messageLog.append(Message.Message(self.name + " skewers " + enemy.name + " with the " + self.rightHandEquipped.Name))
+                self.AttackWithWeapon(enemy, [self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
+
+    def Lunge(self, enemy):
+            if (self.leftHandEquipped != None) and (self.leftHandEquipped.ItemClass == ItemClass.polearm):
+                self.messageLog.append(Message.Message(self.name + " lunges towards " + enemy.name + " with the " + self.leftHandEquipped.Name))
+                self.AttackWithWeapon(enemy, [self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
+                
+            if (self.rightHandEquipped != None) and (self.rightHandEquipped.ItemClass == ItemClass.polearm):
+                self.messageLog.append(Message.Message(self.name + " lunges towards " + enemy.name + " with the " + self.rightHandEquipped.Name))
+                self.AttackWithWeapon(enemy, [self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
+    
 
     def ChangeMap(self, newMap, x = 0, y = 0):
         self.currentMap.characters.remove(self)
