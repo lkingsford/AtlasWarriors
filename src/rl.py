@@ -54,6 +54,7 @@ def LoseGame (win):
     pygcurse.waitforkeypress()  
     pygcurse.waitforkeypress()        
     
+
 # Spoiler warning!
 #
 #
@@ -163,6 +164,22 @@ def DrawChar(x, y):
         win.putchar(PC.currentMap.Map[x][y].character, x, y, darkColor, pygame.Color(0,0,0,0));
     elif vis == 2:
         win.putchar(PC.currentMap.Map[x][y].character, x, y, PC.currentMap.Map[x][y].forecolor, PC.currentMap.Map[x][y].backcolor);
+
+# This is here for dialogs that show during times the game loop isn't running
+# to be able to be used.
+#
+# There is a bug that it can't be closed in this state
+def DialogOnlyLoop(dialog, surface):    
+    while (len(dialog) > 0):
+        for event in pygame.event.get():                
+            dialog[0].process(event)
+        dialog[0].draw(surface)
+        screen.blit(surface,(0,0))
+        pygame.display.update()
+        pygame.display.flip()
+        if dialog[0].toClose:
+            dialog.remove(dialog[0])
+        
 
 # This needs to be a list so it can be immutable and be passed by reference.
 # This has the side effect of allowing multiple dialogs.
@@ -563,10 +580,15 @@ while running:
     #If Lachlan is dead, you win
     if (EndBoss.Victory() != 0):
         WinGame(EndBoss.Victory(), win)
+        running = False
     
     #If Character is dead, you lose
     if (PC.dead()):
+        tutorial.TriggerMessage(TUTORIAL_DEATH)
+        DialogOnlyLoop(dialog, surface)
         LoseGame(win)
+        running = False
+        
 
 tutorial.close()
 pygame.quit()
