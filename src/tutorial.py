@@ -227,7 +227,7 @@ class Tutorial:
             not (self.tutorial_settings[TUTORIAL_BLUNT]):
 
             output = (
-                "You've just equipped a blunt force trauma weapon\n"+\
+                "You've just equipped a blunt force trauma weapon.\n"+\
                 "Blunt weapons will stun enemies when you hit them, "+\
                 "preventing them from moving or attacking for a turn"
                 )                
