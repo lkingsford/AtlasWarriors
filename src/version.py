@@ -1,2 +1,2 @@
 def Version():
-    return "Alpha 2"
+    return "Alpha 3"
