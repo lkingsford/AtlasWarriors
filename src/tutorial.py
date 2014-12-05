@@ -14,9 +14,12 @@ class Tutorial:
     def __init__(self, messageDialogFunction, activateDialog):
         self.message_dialog_function = messageDialogFunction
         self.activate_dialog = activateDialog
-        
-        
+                
     def TriggerMessage (self, message):
+        output = ""
         if message == TUTORIAL_FIRSTRUN:
-            self.message_dialog_function("Welcome to Atlas Warriors",
-                ActiveDialog = self.activate_dialog)
+            output = ("Welcome to Atlas Warriors")
+        if message == TUTORIAL_DEATH:
+            output = ("")
+        self.message_dialog_function(output,
+            ActiveDialog = self.activate_dialog)

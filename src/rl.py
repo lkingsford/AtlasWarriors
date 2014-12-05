@@ -515,8 +515,8 @@ while True:
     
     pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
     pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
-    surface.blit(win.font.render('  Skills  ', True, (255, 255, 255, 255)), (win._cellwidth * 18, win._cellheight * 26))         
-    
+    surface.blit(win.font.render('  Skills  ', True, (255, 255, 255, 255)), (win._cellwidth * 18, win._cellheight * 26))                 
+        
     if len(dialog) == 0:  
         top =  mousePos[1] 
         #Draw descriptions if mouse over monster
