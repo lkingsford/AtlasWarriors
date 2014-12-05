@@ -88,12 +88,25 @@ class Tutorial:
                 "defence, XP and level are on the bottom of the screen"
                 )
             self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+            output = (
+                "This game is still in Alpha and unfinished, but I really " +\
+                "appreciate you playing it.\n"+\
+                "Feedback is fantastic. If you think that the game could be "+\
+                "improved in some way, please let me know!\n"+\
+                "If the game crashes on you, I'd really appreciate you "+\
+                "logging the bug on " +\
+                "https://github.com/lkingsford/AtlasWarriors/issues " +\
+                "with as much information as you can tell me. I can't " +\
+                "fix bugs I don't know about."                
+                )
+            self.message_dialog_function(output,
                 ActiveDialog = self.activate_dialog)            
             output = (
                 "Welcome to Atlas Warriors\n"+\
                 "You, Hunter, have been conscripted in the fight against the "+\
                 "mighty warlord. Within you will face monsters, hordes of "+\
-                "undead, and dragons taken from the pages of myth.\n"              
+                "undead, and dragons taken from the pages of myth.\n"           
                 )
             self.message_dialog_function(output,
                 ActiveDialog = self.activate_dialog)
