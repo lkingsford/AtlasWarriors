@@ -20,7 +20,9 @@ import scores
 import difficulty
 import mainmenu
 import os
+import messageBox
 
+from tutorial import *
 from pygame.locals import *
      
 # Get chance to hit
@@ -168,6 +170,10 @@ def DrawChar(x, y):
     elif vis == 2:
         win.putchar(PC.currentMap.Map[x][y].character, x, y, PC.currentMap.Map[x][y].forecolor, PC.currentMap.Map[x][y].backcolor);
 
+# This needs to be a list so it can be immutable and be passed by reference.
+# This has the side effect of allowing multiple dialogs.
+dialog = []
+lastDialog = None
 
 # Main function
 
@@ -183,7 +189,7 @@ messageFont = pygame.font.Font("DejaVuSerif.ttf", 12)
 hpFont = pygame.font.Font("DejaVuSerif.ttf", 20) 
 clock = pygame.time.Clock()
 messageLog = []
-
+tutorial = Tutorial(messageBox.MessageBox, dialog);
 
 # This should be states or something. Add to the refactor list!
 # If a difficulty is in the command line arguments, start
@@ -242,7 +248,7 @@ for i in range(10):
         Maps[i].lastMap = Maps[i - 1]
     Maps[i].background = pygame.image.load(os.path.join('assets','back_level_'+str(i % 4)+'.png'))
         
-PC = player_character.PlayerCharacter(messageLog, Maps[0], DefaultItems, difficulty)
+PC = player_character.PlayerCharacter(messageLog, Maps[0], DefaultItems, difficulty, tutorial)
 PC.x = Maps[0].startX
 PC.y = Maps[0].startY
 Maps[0].UpdateVisibility(PC, PC.x, PC.y)
@@ -262,8 +268,6 @@ win.autoupdate = False # THIS DISABLES THE AUTOUPDATE FEATURE
 win._autodisplayupdate = False
 pygame.key.set_repeat(300,30);
 
-dialog = None
-lastDialog  = None
 
 ForceDraw = False
 
@@ -293,15 +297,15 @@ PC.ChangeMap(Maps[0])
 
 while True: 
 
-    if dialog != None and dialog.toClose == True:
-        dialog = None
+    if len(dialog) != 0 and dialog[0].toClose == True:
+        dialog.remove(dialog[0])
         ForceDraw = True
 
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
             sys.exit()
-        if dialog == None:
+        if len(dialog) == 0:
             if event.type == MOUSEMOTION:
                 mouseCellX, mouseCellY = win.getcoordinatesatpixel(event.pos)
                 mousePos = event.pos
@@ -333,6 +337,9 @@ while True:
                 if event.key == pygame.K_5 or event.key == pygame.K_KP5:
                     PC.nextMove = 'wait'
                 
+                if event.key == pygame.K_q:
+                    tutorial.TriggerMessage(TUTORIAL_FIRSTRUN)             
+                
                 if cheatMode == True: 
                     
                     if event.key == pygame.K_F1:
@@ -356,18 +363,18 @@ while True:
                     dialog = inventoryDialog.InventoryDialog(PC)
                     
         else:
-            dialog.process(event)
+            dialog[0].process(event)
         
         if event.type == MOUSEBUTTONDOWN:           
             mouseCellX, mouseCellY = win.getcoordinatesatpixel(event.pos)
             #print(win.getcoordinatesatpixel(event.pos))
             if mouseCellY == 26:
                 if mouseCellX < 9:                  
-                    dialog = messagesDialog.MessagesDialog(messageLog)
+                    dialog.insert(0, messagesDialog.MessagesDialog(messageLog))
                 if mouseCellX >= 9 and mouseCellX < 18:
-                    dialog = inventoryDialog.InventoryDialog(PC)
+                    dialog.insert(0, inventoryDialog.InventoryDialog(PC))
                 if mouseCellX >= 18 and mouseCellX < 27:
-                    dialog = skillsDialog.SkillsDialog(PC)                              
+                    dialog.insert(0, skillsDialog.SkillsDialog(PC))                           
             
 #           if mouseCellX > 0 and mouseCellY > 0 and mouseCellX < 39 and mouseCellY < 19:
                 #Animations.append(animation.DrawNecromancerSpell(PC.currentMap.characters[2], PC, 'red'))
@@ -375,7 +382,7 @@ while True:
     if len(Animations) == 0:
         
         #Update characters if no current animations 
-        if (dialog == None) and not(PC.nextMove == 'none' and PC.ticksUntilTurn <= 0):          
+        if (len(dialog) == 0) and not(PC.nextMove == 'none' and PC.ticksUntilTurn <= 0):          
             # Update Characters
             
             # This seems hacky, but it's to prevent the monsters
@@ -465,16 +472,12 @@ while True:
     
     #win.putchars('Score: ' + str(scores.CalculateScore(Maps, PC, 1, 0) ), 2, 17, 'red')
     
-    if dialog != None:
-        dialog.draw(surface)
+    if len(dialog) != 0:
+        dialog[0].draw(surface)
         screen.blit(surface,(0,0))
     else:
         win.update() # THIS IS THE NEW CALL TO THE UPDATE() METHOD
-
-        
-    
-    
-    
+     
     # Draw HUD 
     
     # Draw Messages
@@ -514,7 +517,7 @@ while True:
     pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(win._cellwidth * 18, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
     surface.blit(win.font.render('  Skills  ', True, (255, 255, 255, 255)), (win._cellwidth * 18, win._cellheight * 26))         
     
-    if dialog == None:  
+    if len(dialog) == 0:  
         top =  mousePos[1] 
         #Draw descriptions if mouse over monster
         for i in PC.currentMap.characters:

@@ -9,7 +9,7 @@ from item import  ItemClass
 
 #PC Specific stuff
 class PlayerCharacter(character.Character):
-    def __init__(self, messageLog, currentMap, defaultItems, difficulty):
+    def __init__(self, messageLog, currentMap, defaultItems, difficulty, tutorial):
         super(PlayerCharacter, self).__init__(messageLog, currentMap)
         self.nextMove = "none"; 
         self.team = 0
@@ -31,6 +31,7 @@ class PlayerCharacter(character.Character):
         self.secondWindTimeLeft = 0     
         self.chartype = "PC"    
         self.difficulty = difficulty
+        self.tutorial = tutorial
         
     def update(self):
         super().update();
