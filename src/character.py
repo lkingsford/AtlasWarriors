@@ -103,7 +103,6 @@ class Character:
                 dy = self.y - self.lasty
                 monsterInNextSquare = [i for i in self.currentMap.characters if
                     (i.x == (self.x + dx)) and (i.y == (self.y + dy))]
-                print (self.name, dx , ' ', dy, monsterInNextSquare)
                 for i in monsterInNextSquare:
                     i.Skewer(i)
                     self.Lunge(i)

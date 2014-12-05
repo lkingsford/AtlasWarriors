@@ -67,7 +67,7 @@
   <ToDefend>0</ToDefend>
   <Damage>4</Damage>
   <TwoHanded>false</TwoHanded>
-  <Character>\</Character>
+  <Character>|</Character>
   <Color>white</Color>
 </Item>
 <Item>
