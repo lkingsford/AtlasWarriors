@@ -59,3 +59,4 @@ target/
 
 LICENSE~
 *.py#
+src/tutorial.json
