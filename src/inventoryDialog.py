@@ -91,12 +91,9 @@ class InventoryDialog(dialog.Dialog):
                     # Iterate through backpack, then through floor
                     curLetter = ord('b')
                     curY = 125
-                    print (curLetter, ' ', ord(event.unicode));
                     for i in self.PC.backpack:
                         curLetter += 1
-                        print (curLetter, i.Description());
-                        if curLetter == ord(event.unicode):
-                            print('^^^')                            
+                        if curLetter == ord(event.unicode):                       
                             self.Context = context.Context(300, curY)
                             self.Context.AddItem(('Equip in Right Hand', lambda: self.PC.Equip(i, 0)))
                             self.Context.AddItem(('Equip in Left Hand', lambda: self.PC.Equip(i, 1)))
