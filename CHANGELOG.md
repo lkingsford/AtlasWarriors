@@ -21,6 +21,7 @@ ALPHA 3 - 6/12/2014
 	- Healer AI bug
 	- Drake bug
 	- Zombie defence
+	- Prevented crash on winning screen
 
 ALPHA 2 - 8/11/2014
 - Added messages dialog
