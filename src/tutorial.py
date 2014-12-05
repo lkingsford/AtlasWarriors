@@ -323,7 +323,7 @@ class Tutorial:
                 "But:\n"+\
                 "You do get a significant penalty in your chance to hit with "+\
                 "each weapon. This penalty can be reduced by practicing "+\
-                "weilding two weapons at once. You can see your skill "+\
+                "wielding two weapons at once. You can see your skill "+\
                 "with two weapons in the skill screen with the weapon "+\
                 "skills."
                 )                
