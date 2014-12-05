@@ -148,4 +148,12 @@ class PlayerCharacter(character.Character):
                 self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
                 
         return False
+        
+    # Custom version to allow tutorial
+    def RegisterSkillHit(self, skill):
+        oldHits, oldLevel = self.skills[skill]
+        super().RegisterSkillHit(skill)
+        newHits, newLevel = self.skills[skill]
+        if newLevel > oldLevel:
+            self.tutorial.TriggerMessage(tutorial.TUTORIAL_WEAPONLVL)  
 

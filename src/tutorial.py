@@ -158,3 +158,21 @@ class Tutorial:
             self.message_dialog_function(output,
                 ActiveDialog = self.activate_dialog)
             self.tutorial_settings[TUTORIAL_ATTACKED] = True
+            
+        if message == TUTORIAL_WEAPONLVL and\
+            not (self.tutorial_settings[TUTORIAL_WEAPONLVL]):
+                
+            output = (
+                "It's not just how big the sword is, it's how you use it.\n"+\
+                "You've just gained a weapon skill! Check it out by looking "+\
+                "at the Skills screen by clicking the skills button or "+\
+                "pushing 's'.\n"+\
+                "By using weapons or fisticuffs, you train Skills. When you "+\
+                "get more skilled at using something, you'll hit harder " +\
+                "(damage increase), increase you chance of hitting (hit " +\
+                "increase), and decrease the chance enemies will hit you ("+\
+                "defence increase).\n"
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+            self.tutorial_settings[TUTORIAL_WEAPONLVL] = True
