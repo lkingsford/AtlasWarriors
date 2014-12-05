@@ -4,6 +4,7 @@ import math
 import animation
 import Message
 import random
+import tutorial
 
 from item import  ItemClass 
 
@@ -126,7 +127,10 @@ class PlayerCharacter(character.Character):
         
     def Attacked(self, damage, attacker, melee = True):
         self.hp -= round(damage)
+        if self.hp > 0:
+            self.tutorial.TriggerMessage(tutorial.TUTORIAL_ATTACKED)            
         if not self.secondWind and self.hp <= 0:
+            self.tutorial.TriggerMessage(tutorial.TUTORIAL_SECONDWIND)
             self.secondWind = True
             self.secondWindTimeLeft = self.secondWindTime
             self.messageLog.append(Message.Message("KILL OR BE KILLED! - " + str(self.secondWindTimeLeft) + " turns left"))

@@ -11,7 +11,10 @@ TUTORIAL_ATTACK     = 7
 TUTORIAL_DEFEND     = 8
 TUTORIAL_FIRE       = 9
 TUTORIAL_DEATH      = 10
-TUTORIAL_LASTCHANCE = 11
+TUTORIAL_SECONDWIND = 11
+TUTORIAL_LEVEL      = 12
+TUTORIAL_WEAPONLVL  = 13
+TUTORIAL_ATTACKED   = 14
 
 class Tutorial:
     def __init__(self, messageDialogFunction, activateDialog):
@@ -28,7 +31,7 @@ class Tutorial:
             # Needed because keys are strings from json
             self.tutorial_settings = dict([(int(i[0]),i[1]) for i in tutorial_settings_temp.items()])
         except FileNotFoundError:
-            self.tutorial_settings = dict([(i, False) for i in range(11)])
+            self.tutorial_settings = dict([(i, False) for i in range(15)])
         
         self.message_dialog_function = messageDialogFunction
         self.activate_dialog = activateDialog
@@ -38,7 +41,7 @@ class Tutorial:
         # Saves settings to tutorial.json 
         tutorial_settings_file = open("tutorial.json", mode='w')
         json.dump(self.tutorial_settings, tutorial_settings_file);
-        tutorial_settings_file.close()
+        tutorial_settings_file.close()                             
     
     def TriggerMessage (self, message):
         output = ""
@@ -80,7 +83,9 @@ class Tutorial:
                 "keypad.\n"+\
                 "You can attack monsters by moving into them.\n"+\
                 "You can move your mouse over monsters and items to see what "+\
-                "they are."
+                "they are.\n"+\
+                "You can see what your health, current attack, current "+\
+                "defence, XP and level are on the bottom of the screen"
                 )
             self.message_dialog_function(output,
                 ActiveDialog = self.activate_dialog)            
@@ -111,3 +116,45 @@ class Tutorial:
                 ActiveDialog = self.activate_dialog)
             self.tutorial_settings[TUTORIAL_DEATH] = True
 
+        if message == TUTORIAL_SECONDWIND and\
+            not (self.tutorial_settings[TUTORIAL_SECONDWIND]):
+                
+            output = (
+                "So - the bad news is, you have got no health left.\n"+\
+                "The good news is that you have a chance to save your soul "+\
+                "in KILL OR BE KILLED!\n"+\
+                "KILL OR BE KILLED gives you an opportunity to find a "+\
+                "second wind and come back alive, providing you kill "+\
+                "something in the next few turns.\n"+\
+                "If you fail, then your story will end here.\n"+\
+                "On Easiest, you have 8 turns and will regain 75% of your " +\
+                "health.\n"+\
+                "On Normal, you have 6 turns and will regain 75% of your " +\
+                "health.\n"+\
+                "On Hard, you have 5 turns and will regain 50% of your " +\
+                "health.\n"+\
+                "On Hardest, you have 4 turns and will regain 25% of your "+\
+                "health.\n"
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+            self.tutorial_settings[TUTORIAL_SECONDWIND] = True
+        
+        if message == TUTORIAL_ATTACKED and\
+            not (self.tutorial_settings[TUTORIAL_ATTACKED]):
+                
+            output = (
+                "Ouch! That attack hit you and you've lost some health!\n"+\
+                "You're not going to regain it just by standing around "+\
+                "and waiting to heal.\n"+\
+                "You can heal yourself by exploring places you haven't "+\
+                "seen yet.\n"+\
+                "You can also be fully healed by gaining a level after "+\
+                "killing some enemies.\n"+\
+                "Finally, you can regain some of your health by killing "+\
+                "a monster in KILL OR BE KILLED whilst you're on the brink "+\
+                "of death."
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+            self.tutorial_settings[TUTORIAL_ATTACKED] = True
