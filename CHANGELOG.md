@@ -2,26 +2,26 @@ CHANGELOG
 --------------------------------------------------------------------------------
 ALPHA 3 - 6/12/2014
 - Enhancements
-	- Keyboard control of inventory
-	- Tutorial messages for
-		- First run
-		- Death
-		- Kill or be killed
-		- All weapons
-		- Attacked
-		- Duel wielding
-		- Levelling
-		- Levelling weapon skill
-	- Option for disabling autopickup
-	- Option for disabling background.
-	- Added polearm skewering and lunging
-	
+  - Keyboard control of inventory
+  - Tutorial messages for
+    - First run
+    - Death
+    - Kill or be killed
+    - All weapons
+    - Attacked
+    - Duel wielding
+    - Levelling
+    - Levelling weapon skill
+  - Option for disabling autopickup
+  - Option for disabling background.
+  - Added polearm skewering and lunging
+  
 - Bugfixes
-	- Closing issue #10
-	- Healer AI bug
-	- Drake bug
-	- Zombie defence
-	- Prevented crash on winning screen
+  - Closing issue #10
+  - Healer AI bug
+  - Drake bug
+  - Zombie defence
+  - Prevented crash on winning screen
 
 ALPHA 2 - 8/11/2014
 - Added messages dialog
