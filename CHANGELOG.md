@@ -1,5 +1,12 @@
 CHANGELOG
 --------------------------------------------------------------------------------
+ALPHA 4 - 6/12/2014
+- Enhancements
+  - Tutorial message for Fire
+- Bug fixed
+  - Fixed errors with cheat mode
+  - Closed #15
+
 ALPHA 3 - 6/12/2014
 - Enhancements
   - Keyboard control of inventory
