@@ -46,7 +46,7 @@ class Character:
         
         self.burning = False
         self.burnDamage = 0
-        self.DEFAULT_BURN_WAIT_TURNS = 3
+        self.DEFAULT_BURN_WAIT_TURNS = 2
         
         self.RetaliateBonus = 4
         

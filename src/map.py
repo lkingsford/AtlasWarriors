@@ -300,7 +300,7 @@ class Map:
             # here on in difficulty.py
             #
             
-            if difficulty.difficulty == 0:
+            if self.difficulty == 0:
                 for i in self.Rooms[2:14]:
                     self.AddCritters(i)
                 for i in self.Rooms[14:16]:
@@ -318,7 +318,7 @@ class Map:
                     self.AddZombies])(i)
                 self.AddGoliath(self.Rooms[1])
                 self.AddGoliath(self.Rooms[1])
-            elif difficulty.difficulty == 1:
+            elif self.difficulty == 1:
                 for i in self.Rooms[2:10]:
                     self.AddCritters(i)
                 for i in self.Rooms[10:14]:
@@ -337,7 +337,7 @@ class Map:
                 self.AddGoliath(self.Rooms[1])
                 self.AddGoliath(self.Rooms[1])
                 self.AddGoliath(self.Rooms[1])
-            elif difficulty.difficulty == 2:
+            elif self.difficulty == 2:
                 for i in self.Rooms[2:8]:
                     self.AddCritters(i)
                 for i in self.Rooms[8:12]:
@@ -357,7 +357,7 @@ class Map:
                 self.AddGoliath(self.Rooms[1])
                 self.AddGoliath(self.Rooms[1])
                 self.AddGoliath(self.Rooms[1])
-            elif difficulty.difficulty == 3:
+            elif self.difficulty == 3:
                 for i in self.Rooms[2:22]:
                     random.choice([self.AddCritters,
                     self.AddBandits,
