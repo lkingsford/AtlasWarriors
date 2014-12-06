@@ -486,15 +486,15 @@ class Character:
             self.Drop(self.backpack[-1])
         
     def Drop(self, item):
+        if (self.rightHandEquipped == item):
+            self.Equip(None, 0)
+        if (self.leftHandEquipped == item):
+            self.Equip(None, 1)
         if item in self.backpack:
             self.backpack.remove(item)
             item.x = self.x
             item.y = self.y
             self.currentMap.Items.append(item)
-        if (self.rightHandEquipped == item):
-            self.Equip(None, 0)
-        if (self.leftHandEquipped == item):
-            self.Equip(None, 1)
     
     def Pickup(self, item):
         if len(self.backpack) < self.backpackSize:
