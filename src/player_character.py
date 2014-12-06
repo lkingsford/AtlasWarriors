@@ -143,7 +143,7 @@ class PlayerCharacter(character.Character):
                 self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.leftHandEquipped.Name))
                 self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
                 
-            if (self.rightHandEquipped != None) and (self.rightHandEqipped.ItemClass == ItemClass.dagger):
+            if (self.rightHandEquipped != None) and (self.rightHandEquipped.ItemClass == ItemClass.dagger):
                 self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.rightHandEquipped.Name))
                 self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
                 
