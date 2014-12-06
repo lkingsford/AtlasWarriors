@@ -148,7 +148,7 @@ class PlayerCharacter(character.Character):
                 self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
                 
         return False
-        
+     
     # Custom version to allow tutorial
     def RegisterSkillHit(self, skill):
         oldHits, oldLevel = self.skills[skill]
@@ -168,3 +168,11 @@ class PlayerCharacter(character.Character):
         self.tutorial.TriggerMessage(item.ItemClass)
         if self.GetTwoHanded():
             self.tutorial.TriggerMessage(tutorial.TUTORIAL_TWOHANDED)    
+            
+    # Custom version to allow tutorial
+    def Ignite(self, chance, damage, source):
+        result = super().Ignite(chance, damage, source)
+        if result[0]:
+            self.tutorial.TriggerMessage(tutorial.TUTORIAL_FIRE)
+        return result
+        

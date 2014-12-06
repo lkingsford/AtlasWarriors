@@ -374,6 +374,24 @@ while running:
                 if event.key == pygame.K_b:
                     background = not(background)
                     ForceDraw = True
+                
+                if cheatMode == True:                              
+                    if event.key == pygame.K_F1:
+                        ShowMapCheat = not ShowMapCheat
+                        ForceDraw = True
+
+                    if event.key == pygame.K_F2:
+                        code.interact(local=locals())
+                        
+                    if event.key == pygame.K_F3:
+                        PC.ChangeMap(Maps[PC.currentMap.level-1])
+                        PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
+                        ForceDraw = True
+                        
+                    if event.key == pygame.K_F4:
+                        PC.ChangeMap(Maps[PC.currentMap.level+1])
+                        PC.currentMap.UpdateVisibility(PC, PC.x, PC.y)
+                        ForceDraw = True
                         
         else:
             dialog[0].process(event)

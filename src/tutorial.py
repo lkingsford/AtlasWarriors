@@ -331,3 +331,20 @@ class Tutorial:
                 ActiveDialog = self.activate_dialog)
 
             self.tutorial_settings[TUTORIAL_TWOHANDED] = True
+            
+            
+        if message == TUTORIAL_FIRE and\
+            not (self.tutorial_settings[TUTORIAL_FIRE]):
+
+            output = (
+                "Something smells good. Are you cooking something?\n"+\
+                "Oh. It's you.\n"+\
+                "So - you've caught fire. You're going to take some damage "+\
+                "until you're extinguished. To extinguish yourself, you have "+\
+                "to stand still (push '5') for 3 turns in a row.\n"+\
+                "Piece of cake."
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+
+            self.tutorial_settings[TUTORIAL_FIRE] = True            
