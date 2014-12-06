@@ -1,5 +1,9 @@
 CHANGELOG
 --------------------------------------------------------------------------------
+ALPHA 5 - 7/12/2014
+- Bug fixed
+ - PC couldn't drop item
+
 ALPHA 4 - 6/12/2014
 - Enhancements
   - Tutorial message for Fire
