@@ -569,8 +569,6 @@ while running:
                 surface.blit(i, (min(mousePos[0], surface.get_width() - widthNeeded) + 3, top + curY))
                 curY += i.get_height() + spacing            
         
-    
-        
     # Draw Screen
     screen.blit(surface,(0,0))
     pygame.display.update()

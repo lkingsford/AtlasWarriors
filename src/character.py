@@ -330,30 +330,31 @@ class Character:
         #Did it crit?
         crit = random.random() < chanceToCrit
         
-        if hit:
-            damage = ((self.Damage() if ToHit[1] == None else ToHit[1].Damage) + self.DmgMod(0 if ToHit[1] == None else ToHit[1].ItemClass)) * self.GetDamageMultiplier(self.level - target.level) * (self.CritMult() if crit else 1)
-            target.Attacked(damage, self)
-            if crit:
-                self.messageLog.append(Message.Message(self.name + " crits " + target.name + " (" + str(target.hp) + ")"));
+        if not(target.dead()):
+            if hit:
+                damage = ((self.Damage() if ToHit[1] == None else ToHit[1].Damage) + self.DmgMod(0 if ToHit[1] == None else ToHit[1].ItemClass)) * self.GetDamageMultiplier(self.level - target.level) * (self.CritMult() if crit else 1)
+                target.Attacked(damage, self)
+                if crit:
+                    self.messageLog.append(Message.Message(self.name + " crits " + target.name + " (" + str(target.hp) + ")"));
+                else:
+                    self.messageLog.append(Message.Message(self.name + " attacks " + target.name+ " (" + str(target.hp) + ")"));
+                if (target.dead()):
+                    self.messageLog.append(Message.Message(target.name + " has been killed!"));
+                    self.Killed(target)
+                if (ToHit[1] != None):              
+                    self.RegisterSkillHit(ToHit[1].ItemClass)
+                    if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass < 6 and self.rightHandEquipped != None and self.rightHandEquipped.ItemClass < 6):
+                        self.RegisterSkillHit(7)
+                    stunned = False
+                    if ToHit[1].ItemClass == ItemClass.blunt:
+                        stunned = True
+                        target.Stun();
+                else:
+                    self.RegisterSkillHit(0)
+                    
             else:
-                self.messageLog.append(Message.Message(self.name + " attacks " + target.name+ " (" + str(target.hp) + ")"));
-            if (target.dead()):
-                self.messageLog.append(Message.Message(target.name + " has been killed!"));
-                self.Killed(target)
-            if (ToHit[1] != None):              
-                self.RegisterSkillHit(ToHit[1].ItemClass)
-                if (self.leftHandEquipped != None and self.leftHandEquipped.ItemClass < 6 and self.rightHandEquipped != None and self.rightHandEquipped.ItemClass < 6):
-                    self.RegisterSkillHit(7)
-                stunned = False
-                if ToHit[1].ItemClass == ItemClass.blunt:
-                    stunned = True
-                    target.Stun();
-            else:
-                self.RegisterSkillHit(0)
-                
-        else:
-            damage = 0
-            target.Missed(ToHit[0], self)           
+                damage = 0
+                target.Missed(ToHit[0], self)           
             
         """print (self.name, '->', target.name, ' ToHit - ToDefend = ', 
             self.ToHit() - target.ToDefend(), ' chanceToHit ', 
