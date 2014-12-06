@@ -85,12 +85,12 @@ class Goliath(Enemy):
                         # Collided with enemy
                         for i in enemiesInSquare:
                             self.messageLog.append(Message.Message(target.name + " crashes into " + i.name));
-                            dead = i.Attacked(force, self)  
+                            dead = i.Attacked(force, self, False)  
                             if dead:
                                 self.messageLog.append(Message.Message(i.name + " was killed by the impact"));
                                 self.Killed(i)
                         if not(dead):
-                            dead = target.Attacked(force, self) 
+                            dead = target.Attacked(force, self, False) 
                             if dead:
                                 self.Killed(target) 
                                 self.messageLog.append(Message.Message(target.name + " was killed by the impact"));
@@ -98,12 +98,10 @@ class Goliath(Enemy):
                     else:
                         # Collided with wall
                         self.messageLog.append(Message.Message(target.name + " crashes into the wall"));
-                        dead = target.Attacked(force, self) 
-                        if not(dead):
-                            dead = target.Attacked(force, self)  
-                            if dead:
-                                self.Killed(target)
-                                self.messageLog.append(Message.Message(target.name + " was killed by the impact"));
+                        dead = target.Attacked(force, self, False) 
+                        if dead:
+                            self.Killed(target)
+                            self.messageLog.append(Message.Message(target.name + " was killed by the impact"));
                     force = 0
             self.animations.append(animation.BigPunchAnimation(route, target))
             
