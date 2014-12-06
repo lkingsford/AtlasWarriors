@@ -87,7 +87,7 @@ class InventoryDialog(dialog.Dialog):
                         self.Context.AddItem(('Drop', lambda: self.PC.Drop(self.PC.leftHandEquipped)))    
 
                 # Change inventory or floor
-                elif ord(event.unicode) > ord('b') and ord(event.unicode) < (ord('b') + len(self.PC.backpack) + 1):
+                elif len(event.unicode) > 0 and ord(event.unicode) > ord('b') and ord(event.unicode) < (ord('b') + len(self.PC.backpack) + 1):
                     # Iterate through backpack, then through floor
                     curY = 125
                     curLetter = ord('b')
@@ -101,7 +101,7 @@ class InventoryDialog(dialog.Dialog):
                             break
                         curY += 20
                     
-                elif ord(event.unicode) > ord('b') and ord(event.unicode) < ord('z'):  
+                elif len(event.unicode) > 0 and ord(event.unicode) > ord('b') and ord(event.unicode) < ord('z'):  
                     curLetter = ord('b') + len(self.PC.backpack)
                     curY = 275
                     for i in self.FloorItems:
@@ -152,7 +152,4 @@ class InventoryDialog(dialog.Dialog):
             self.Context.process(event)
             self.refreshFloorItems()
             if self.Context.toClose == True:
-                self.Context = None
-                
-     
-        
+                self.Context = None                
