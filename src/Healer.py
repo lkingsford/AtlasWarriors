@@ -101,8 +101,8 @@ class Healer(Enemy):
                 
         # Try to stay two away
         if (nearestEnemy != None):
-            route = self.GetNearest(lambda i: (max(abs(i[0]-nearestEnemy.x,
-                i[1]-nearestEnemy.y)) >= 2))
+            route = self.GetNearest(lambda i: (max(abs(i[0]-nearestEnemy.x),
+                (i[1]-nearestEnemy.y)) >= 2))
             if route != None and len(route)>1:
                 self.tryMove(route[1][0], route[1][1])
                 return
