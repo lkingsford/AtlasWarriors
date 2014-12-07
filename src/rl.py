@@ -621,7 +621,7 @@ while running or len(Animations) > 0:
         
 if EndBoss.Victory() != 0:
     WinGame(EndBoss.Victory(), win)
-else:
+elif PC.dead():
     LoseGame(win)
     
 tutorial.close()
