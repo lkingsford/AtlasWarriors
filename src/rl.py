@@ -78,8 +78,10 @@ def WinGame (victoryCondition, win):
     if victoryCondition == 1:
         win.setscreencolors('lime', 'black', clear=True)    
         win.putchars('Congratulations!', 1, 2, 'white', 'black')
-        win.putchars('You have slain the the mighty warlord', 1, 3, 'white', 'black')
-        win.update()
+        win.putchars('The mighty warlord has been slain', 1, 3, 'white', 'black')
+        win.putchars('at last!', 1, 4, 'white', 'black')
+        win.putchars('It may not last, but peace is upon', 1, 5, 'white', 'black')
+        win.putchars('this part of Atlas.', 1, 6, 'white', 'black')
         
     elif victoryCondition == 2:
         win.setscreencolors('lime', 'black', clear=True)    
@@ -88,7 +90,6 @@ def WinGame (victoryCondition, win):
         win.putchars('It may not have been by your hand, but', 1, 4, 'white', 'black')
         win.putchars('this part of Atlas is at least for now,', 1, 5, 'white', 'black')
         win.putchars('in peace.', 1, 6, 'white', 'black')
-        win.update()
     
     elif victoryCondition == 3:
         win.setscreencolors('lime', 'black', clear=True)    
@@ -98,7 +99,6 @@ def WinGame (victoryCondition, win):
         win.putchars('unholy beast unleashes hell upon', 1, 6, 'white', 'black')
         win.putchars('Atlas.', 1, 7, 'white', 'black')
         win.putchars('Doom awaits those who survive.', 1, 7, 'white', 'black')
-        win.update()
     
     elif victoryCondition == 4:
         win.setscreencolors('lime', 'black', clear=True)    
@@ -112,7 +112,6 @@ def WinGame (victoryCondition, win):
         win.putchars('You achieved your goal of', 1, 10, 'white', 'black')
         win.putchars('bringing peace to Atlas.', 1, 11, 'white', 'black')
         win.putchars('You have done so eternally.', 1, 12, 'white', 'black')
-        win.update()
         
     elif victoryCondition == 5:
         win.setscreencolors('lime', 'black', clear=True)    
@@ -126,7 +125,6 @@ def WinGame (victoryCondition, win):
         win.putchars('The second age of Eon will', 1, 10, 'white', 'black')
         win.putchars('come.', 1, 11, 'white', 'black')
         win.putchars('The sons of Eon will reign.', 1, 12, 'white', 'black')     
-        win.update()
         
     elif victoryCondition == 6:
         win.setscreencolors('lime', 'black', clear=True)    
@@ -139,11 +137,10 @@ def WinGame (victoryCondition, win):
         win.putchars('the Necromancer enslaves', 1, 9, 'white', 'black')
         win.putchars('Atlas. And what of his body?', 1, 10, 'white', 'black')
         win.putchars('Bodies are for mortal men.', 1, 11, 'white', 'black')
-        win.update()
     
     score = scores.CalculateScore(Maps, PC, difficulty, victoryCondition)   
     win.putchars('Score: ' + str(score), 2, 17, 'red')
-    
+    win.update();
     screen.blit(surface,(0,0))
     pygame.display.update()
     pygame.display.flip()
@@ -331,7 +328,7 @@ tutorial.TriggerMessage(TUTORIAL_FIRSTRUN)
 
 running = True
 
-while running: 
+while running or len(Animations) > 0: 
 
     if len(dialog) != 0 and dialog[0].toClose == True:
         dialog.remove(dialog[0])
@@ -500,10 +497,13 @@ while running:
         if i.frame >= i.frames:
             Animations.remove(i)
             ForceDraw = True
+            print ('r')
         else:
             i.update(win)
+            print (i.frame, ' ', i.frames)
             #pygame.image.save(win._windowsurface, "c:\\ss\\%05d" % ssframe + ".bmp")
             #ssframe += 1
+            print ("len ", len(Animations))
     
 
     # Draw redenning if in Second Wind
@@ -614,17 +614,19 @@ while running:
     
     #If Lachlan is dead, you win
     if (EndBoss.Victory() != 0):
-        WinGame(EndBoss.Victory(), win)
         running = False
     
     #If Character is dead, you lose
     if (PC.dead()):
         tutorial.TriggerMessage(TUTORIAL_DEATH)
         DialogOnlyLoop(dialog, surface)
-        LoseGame(win)
         running = False
         
-
+if EndBoss.Victory() != 0:
+    WinGame(EndBoss.Victory(), win)
+else:
+    LoseGame(win)
+    
 tutorial.close()
 pygame.quit()
 sys.exit() 
