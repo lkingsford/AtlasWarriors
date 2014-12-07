@@ -16,6 +16,9 @@ class Warlord(Enemy):
         self.baseToDefend = 15
         self.color = "fuchsia"      
         self.chartype = "endboss"
+        # died is used to prevent healers rehealing the dead warlord back to
+        # life.
+        self.died = False
         
     
     def danger(self):       
@@ -41,6 +44,10 @@ class Warlord(Enemy):
         if dead:
             self.killedBy = attacker
             self.animations.append(animation.DrawWarlordDeath((self.x,self.y)))
+            self.died = True
+
+    def dead(self):
+        return self.died;
 
     def Victory(self):
         # Returns 0 if game still going
@@ -50,7 +57,7 @@ class Warlord(Enemy):
         # Returns 4 if killed by an apocolyptic goliath
         # Returns 5 if killed by the true dragon
         # Returns 6 if killed by the necromancer
-        if self.dead():
+        if self.died:
             if self.killedBy.chartype == "PC":
                 return 1
             elif self.killedBy.chartype == "Goliath" and self.killedBy.badass == 9:
