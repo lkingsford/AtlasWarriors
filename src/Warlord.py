@@ -7,7 +7,7 @@ class Warlord(Enemy):
     def __init__(self, messageLog, currentMap = None):
         super().__init__(messageLog, currentMap)
         self.name = "High Warlord"
-        self.level = 20             
+        self.level = 15           
         self.character = "W"        
         self.speed = 20
         self.hp = self.maxhp = 40
