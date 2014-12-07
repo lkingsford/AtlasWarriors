@@ -68,7 +68,8 @@ class Necromancer(Enemy):
         
         ZombiesInRoom =  [i for i in self.currentMap.characters\
             if (i.team == self.team) and\
-            len(self.currentMap.Map[self.x][self.y].rooms & self.currentMap.Map[i.x][i.y].rooms) > 0]
+                i.chartype == "Zombie" and\
+                len(self.currentMap.Map[self.x][self.y].rooms & self.currentMap.Map[i.x][i.y].rooms) > 0]
             
         # Priority list is tuplets of (priority, number)
         HealPriority = -1 * (self.hp/3 - EnemyAverageDamage)
@@ -157,6 +158,7 @@ class Necromancer(Enemy):
                 self.tryMove(moveTo[0], moveTo[1])
         
     def drainToHeal(self, target):
+        print ('Draining ', target, target.name)
         self.hp += target.hp
         self.maxhp = max(self.maxhp, self.hp)        
         target.Attacked(target.hp, self, False)
