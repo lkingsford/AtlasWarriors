@@ -298,8 +298,7 @@ class Map:
         if level == 9:
             # I don't know if this special case for difficulty should be
             # here on in difficulty.py
-            #
-            print (self.difficulty.difficulty)
+            #            
             if self.difficulty.difficulty == 0:
                 for i in self.Rooms[2:14]:
                     self.AddCritters(i)
@@ -718,15 +717,14 @@ class Map:
         self.RecalculateZombieMod(location)  
                 
     def Tick(self):
-        # Measures how long since the last restock. Every 50-100 player turns on average,
-        # adds more monsters
+        # Measures how long since the last restock.
         self.Turn += 1
         
         if self.NextTurn == None:
-            self.NextTurn = self.Turn + random.randrange(600,1200)              
+            self.NextTurn = self.Turn + random.randrange(300,600)              
         
         if self.NextTurn <= self.Turn:
-            self.NextTurn = self.Turn + random.randrange(600,1200)
+            self.NextTurn = self.Turn + random.randrange(300,600)
             curDanger = sum([i.danger() for i in self.characters if i.chartype != "PC"])
             self.Restock()
             self.RestockDangerPoints += sum([i.danger() for i in self.characters if i.chartype != "PC"]) - curDanger
