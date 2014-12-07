@@ -255,6 +255,8 @@ class Character:
             TotalDV += self.rightHandEquipped.ToDefend
         return TotalDV
     
+    def UpdateVisibility(self):
+        pass
             
     def Attack(self, pos):
         self.moved = True
