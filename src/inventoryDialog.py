@@ -70,7 +70,10 @@ class InventoryDialog(dialog.Dialog):
             if event.type == KEYDOWN:
                 # Close window
                 if event.key == pygame.K_ESCAPE:
-                    self.toClose = True                
+                    self.toClose = True         
+                
+                if event.key == pygame.K_SPACE:
+                    self.toClose = True
                     
                 # Change right hand equipped
                 elif event.unicode == 'a':
