@@ -1,8 +1,24 @@
 CHANGELOG
 --------------------------------------------------------------------------------
+ALPHA 7 - 7/12/2014
+- Enhancements
+  - Crashing now creates an error log file
+  - Space can exit inventory dialog
+  - Difficulty adjustments
+  - Complete new Healer AI
+  
+- Bug fixes 
+  - New Healer AI closes Issue #18
+  - Goliath Superpunch doesn't attack as many times
+  - Inventory screen no longer crashes with non alpha-numeric key (Closes #17)
+
+ALPHA 6 - 7/12/2014
+- Bug fixes
+  - Fixed plethora of bugs for inventory screen with keyboard
+
 ALPHA 5 - 7/12/2014
 - Bug fixed
- - PC couldn't drop item
+  - PC couldn't drop item
 
 ALPHA 4 - 6/12/2014
 - Enhancements
