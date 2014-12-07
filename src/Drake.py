@@ -1,6 +1,7 @@
 from enemy import *
 from Dragon import *
 import Message
+import enemy
 
 # The dragon is a special and unique enemy, hence these values are hardcoded
 
@@ -29,4 +30,4 @@ class Drake(Dragon):
         super().update()
 
     def Attacked(self, damage, attacker):
-        super().super().attacked(damage, attacker)
+        enemy.Enemy.Attacked(self, damage, attacker)
