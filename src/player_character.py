@@ -93,7 +93,10 @@ class PlayerCharacter(character.Character):
                         self.messageLog.append(Message.Message("There is a " + i.Description() + " on the ground."))
                         self.messageLog.append(Message.Message("Your backpack is full"))
                     else:
-                        self.messageLog.append(Message.Message("There is a " + i.Description() + " on the ground."))
+                        self.messageLog.append(Message.Message("There is a " + i.Description() + " on the ground."))  
+        self.UpdateVisibility()
+        
+    def UpdateVisibility(self):
         newlySeen = self.currentMap.UpdateVisibility(self, self.x, self.y)
         
         # Heal on explore
@@ -102,8 +105,7 @@ class PlayerCharacter(character.Character):
             if self.hpAccumulated > 1:
                 self.hp += round(self.hpAccumulated)
                 self.hpAccumulated -= round(self.hpAccumulated)
-                self.hp = min(self.hp, self.maxhp)  
-        
+                self.hp = min(self.hp, self.maxhp)
             
     def Killed(self, target):               
         super().Killed(target)

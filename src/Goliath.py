@@ -78,6 +78,8 @@ class Goliath(Enemy):
                     target.y = newY
                     force -= 1
                     route.append([newX, newY])
+                    self.currentMap.Map[newX][newY].OnWalk(target)
+                    target.UpdateVisibility();
                 else:
                     # Find if collided with wall or enemy
                     enemiesInSquare = [i for i in self.currentMap.characters if (i.x == newX and i.y == newY)]
