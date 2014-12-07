@@ -379,7 +379,7 @@ while running:
                     dialog.insert(0, skillsDialog.SkillsDialog(PC))
                     
                 if event.key == pygame.K_m:
-                    dialog.insert(0, messagesDialog.MessagesDialog(PC))
+                    dialog.insert(0, messagesDialog.MessagesDialog(messageLog))
                     
                 if event.key == pygame.K_a:
                     PC.autopickup = not(PC.autopickup)
