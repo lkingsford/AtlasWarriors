@@ -1,5 +1,9 @@
 CHANGELOG
 --------------------------------------------------------------------------------
+ALPHA 8 - 7/12/2014
+- Bug fixes
+  - Small fix to healer
+
 ALPHA 7 - 7/12/2014
 - Enhancements
   - Crashing now creates an error log file

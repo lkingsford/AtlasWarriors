@@ -109,7 +109,7 @@ class Healer(Enemy):
         
         # Try to attack
         route = self.GetRoute((nearestEnemy.x, nearestEnemy.y))
-        if route != None:
+        if route != None and len(route)>1:
             self.tryMove(route[1][0], route[1][1])
             return
             
