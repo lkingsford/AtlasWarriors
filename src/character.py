@@ -54,7 +54,7 @@ class Character:
         
         self.chartype = ""
         
-        self.nextLevel =  self.baseXPToLevel * (self.level ** .69897)
+        self.nextLevel =  self.baseXPToLevel * (self.level ** .5)
         
         # See comment before def RegisterHit for how this list is used
         self.skills = [(0, 0) for i in range(8)]    
@@ -523,7 +523,7 @@ class Character:
             return round(25 * pow(1.3, currentLevel - 1))
         if skill == 0:
             # Help unarmed to be a bit beter
-            return round(7 * pow(1.3, currentLevel - 1))
+            return round(5 * pow(1.3, currentLevel - 1))
         else:
             return round(10 * pow(1.3, currentLevel - 1))
     
