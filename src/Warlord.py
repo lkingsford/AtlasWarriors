@@ -34,8 +34,8 @@ class Warlord(Enemy):
             self.Wait()
         
 
-    def Attacked(self, damage, attacker):
-        dead = super().Attacked(damage, attacker)
+    def Attacked(self, damage, attacker, melee = True):
+        dead = super().Attacked(damage, attacker, melee)
         
         # Big death animation explosion!
         if dead:

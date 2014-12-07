@@ -221,7 +221,7 @@ class Dragon(Enemy):
                 return
     
 
-    def Attacked(self, damage, attacker):
+    def Attacked(self, damage, attacker, melee = True):
         dead = super().Attacked(damage, attacker)
         
         # Give the player the best weapon for them

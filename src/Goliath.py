@@ -92,7 +92,7 @@ class Goliath(Enemy):
                                 self.messageLog.append(Message.Message(i.name + " was killed by the impact"));
                                 self.Killed(i)
                         if not(dead):
-                            dead = target.Attacked(force, self, False) 
+                            dead = target.Attacked(force, self, False)
                             if dead:
                                 self.Killed(target) 
                                 self.messageLog.append(Message.Message(target.name + " was killed by the impact"));

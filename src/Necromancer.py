@@ -190,12 +190,12 @@ class Necromancer(Enemy):
     def RegisterSkillHit(self, skill):
         self.skills[skill] = 0,0
 
-    def Attacked(self, damage, attacker):
+    def Attacked(self, damage, attacker, melee = True):
         dead = super().Attacked(damage, attacker)
         
         # Kill all zombies!
         if dead:
-            self.animations.append(animation.DrawNecromancerDeath(self.x,self.y))
+            self.animations.append(animation.DrawNecromancerDeath((self.x,self.y)))
             Zombies = [i for i in self.currentMap.characters if i.chartype == "Zombie"]
             if len(Zombies) > 0:
                 for i in Zombies:

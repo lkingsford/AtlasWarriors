@@ -29,5 +29,5 @@ class Drake(Dragon):
     def update(self):           
         super().update()
 
-    def Attacked(self, damage, attacker):
+    def Attacked(self, damage, attacker, melee = True):
         enemy.Enemy.Attacked(self, damage, attacker)
