@@ -7,7 +7,7 @@ class Critter(Enemy):
         super().__init__(messageLog, currentMap)
         self.name = "Critter"
         self.levelMod = random.choice([-2,-1,0,0,0,0,0,1,1,2])
-        self.level = currentMap.level + self.levelMod               
+        self.level = currentMap.dangerLevel + self.levelMod              
         self.character = "c"        
         self.speed = 15
         self.hp = self.maxhp = round(4 * (max(1,self.level)) ** 0.4)

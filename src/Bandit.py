@@ -8,7 +8,7 @@ class Bandit(Enemy):
         super().__init__(messageLog, currentMap)
         self.name = "Bandit"
         self.levelMod = random.choice([-2,-1,0,0,0,0,0,1,1,2])
-        self.level = currentMap.level + self.levelMod               
+        self.level = currentMap.dangerLevel + self.levelMod               
         self.character = "b"        
         self.speed = 15
         self.hp = self.maxhp = round(5 * (max(1,self.level) ** 0.4))

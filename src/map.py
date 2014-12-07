@@ -191,7 +191,11 @@ class Map:
             self.Map[0][y] = Cell('#', False, 'red')
             self.Map[39][y] = Cell('#', False, 'red')
         
+        # Level is the current level number
         self.level = level      
+        # Danger level is the current monsters level generated.
+        # Increases over time
+        self.dangerLevel = level
     
         self.Items = [] 
         if level == 7:
@@ -730,10 +734,8 @@ class Map:
             self.Restock()
             self.RestockDangerPoints += sum([i.danger() for i in self.characters if i.chartype != "PC"]) - curDanger
             # print ('POINTS IS : ', self.RestockDangerPoints)
-        
-        print (self.Turn, '/', self.NextTurn)
-            
-        #print (self.Turn)
+            self.dangerLevel += 1
+                
         
     def Restock(self):
         level = self.level

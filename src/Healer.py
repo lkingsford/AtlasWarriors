@@ -6,7 +6,7 @@ class Healer(Enemy):
     def __init__(self, messageLog, currentMap = None):
         super().__init__(messageLog, currentMap)
         self.levelMod = random.choice([-2,-1,0,0,0,0,0,1,1,2])
-        self.level = currentMap.level + self.levelMod
+        self.level = currentMap.dangerLevel + self.levelMod
         self.character = "h"
         self.name = "Healer"
         self.speed = 12

@@ -10,7 +10,7 @@ class Drake(Dragon):
         super().__init__(messageLog, currentMap)
         self.name = "Drake"
         self.levelMod = random.choice([-2,-1,0,0,0,0,0,1,1,2])
-        self.level = currentMap.level + self.levelMod
+        self.level = currentMap.dangerLevel + self.levelMod
         self.character = "d"        
         self.speed = 10
         self.hp = self.maxhp = round(12 * (max(1,self.level - 4) ** 0.4))

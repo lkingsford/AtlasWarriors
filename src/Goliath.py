@@ -8,7 +8,7 @@ class Goliath(Enemy):
         super().__init__(messageLog, currentMap)
         self.name = "Goliath"
         self.levelMod = random.choice([-2,-1,0,0,0,0,0,1,1,2])
-        self.level = currentMap.level + self.levelMod               
+        self.level = currentMap.dangerLevel + self.levelMod               
         self.character = "g"        
         self.speed = 7
         self.hp = self.maxhp = self.starthp = round(20 * (max(1,self.level - 2) ** 0.4))
@@ -20,18 +20,18 @@ class Goliath(Enemy):
             self.badass = badass 
         else:
             self.badass = 0
-            if currentMap.level <= 5:
+            if currentMap.dangerLevel  <= 5:
                 self.badass = badass if badass != -1 else 0
-            if currentMap.level > 5:
+            if currentMap.dangerLevel > 5:
                 if random.random() < 0.3:
                     self.LevelUp(True)
-            if currentMap.level > 6:
+            if currentMap.dangerLevel > 6:
                 if random.random() < 0.3:
                     self.LevelUp(True)
-            if currentMap.level > 7:
+            if currentMap.dangerLevel > 7:
                 if random.random() < 0.3:
                     self.LevelUp(True)
-            if currentMap.level > 8:
+            if currentMap.dangerLevel > 8:
                 if random.random() < 0.3:
                     self.LevelUp(True)
         
