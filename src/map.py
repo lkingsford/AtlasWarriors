@@ -299,8 +299,8 @@ class Map:
             # I don't know if this special case for difficulty should be
             # here on in difficulty.py
             #
-            
-            if self.difficulty == 0:
+            print (self.difficulty.difficulty)
+            if self.difficulty.difficulty == 0:
                 for i in self.Rooms[2:14]:
                     self.AddCritters(i)
                 for i in self.Rooms[14:16]:
