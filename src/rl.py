@@ -21,6 +21,9 @@ import difficulty
 import mainmenu
 import os
 import messageBox
+import sys
+import logging
+import traceback
 
 from tutorial import *
 from pygame.locals import *
@@ -180,6 +183,14 @@ def DialogOnlyLoop(dialog, surface):
         if dialog[0].toClose:
             dialog.remove(dialog[0])
         
+def log_uncaught_exceptions(ex_cls, ex, tb):
+
+    logging.critical(''.join(traceback.format_tb(tb)))
+    logging.critical('{0}: {1}'.format(ex_cls, ex))
+    
+    print(''.join(traceback.format_tb(tb)))
+    print('{0}: {1}'.format(ex_cls, ex))
+
 
 # This needs to be a list so it can be immutable and be passed by reference.
 # This has the side effect of allowing multiple dialogs.
@@ -189,6 +200,14 @@ lastDialog = None
 # Main function
 
 # Init
+
+# Store log of errors
+sys.excepthook = log_uncaught_exceptions
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename='error.log',
+    filemode='w')
+
 screen = pygame.display.set_mode((520,648))
 pygame.display.set_caption('Atlas Warriors')
 surface = pygame.Surface((520, 648))
