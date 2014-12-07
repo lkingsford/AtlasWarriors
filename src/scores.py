@@ -3,8 +3,9 @@ def CalculateScore(Maps, PC, Difficulty, Victory):
     score = 0
     score += PC.totalxp
     # This is to ensure that you gain slightly fewer points by just hanging
-    # around
-    score -= sum([i.RestockDangerPoints for i in Maps]) * 1.1
+    # around 
+    # CANCELLED for now - I'm going to make more monsters get tougher
+    # score -= sum([i.RestockDangerPoints for i in Maps]) * 1.1
     score = round(score)
     if Victory != 0:
         for i in Maps:

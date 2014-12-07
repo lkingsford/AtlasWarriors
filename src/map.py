@@ -15,6 +15,7 @@ import Drake
 import Healer
 import Zombie
 import Warlord
+import Message
 
 # The cells of the map
 class Cell:
@@ -721,14 +722,16 @@ class Map:
         self.Turn += 1
         
         if self.NextTurn == None:
-            self.NextTurn = self.Turn + random.randrange(300,600)              
+            self.NextTurn = self.Turn + random.randrange(50,100)              
         
         if self.NextTurn <= self.Turn:
-            self.NextTurn = self.Turn + random.randrange(300,600)
+            self.NextTurn = self.Turn + random.randrange(50,100)
             curDanger = sum([i.danger() for i in self.characters if i.chartype != "PC"])
             self.Restock()
             self.RestockDangerPoints += sum([i.danger() for i in self.characters if i.chartype != "PC"]) - curDanger
             # print ('POINTS IS : ', self.RestockDangerPoints)
+        
+        print (self.Turn, '/', self.NextTurn)
             
         #print (self.Turn)
         
@@ -856,6 +859,9 @@ class Map:
                 newCharacter.y = random.randint(room.y, room.y+room.h-1)            
             self.characters.append(newCharacter)
         
+        if restock:
+            self.messageLog.append(Message.Message("You hear muffled scratching"))
+        
     def AddBandits(self, forcedRoom = None, restock = False):
         space = 0
                 
@@ -922,6 +928,9 @@ class Map:
             
         for i in team:
             i.teamMates = team
+            
+        if restock:
+            self.messageLog.append(Message.Message("You hear a distant whistle"))
         
     def AddOrcs(self, forcedRoom = None, restock = False):
         space = 0
@@ -984,6 +993,9 @@ class Map:
                 newCharacter.x = random.randint(room.x, room.x+room.w-1)
                 newCharacter.y = random.randint(room.y, room.y+room.h-1)            
             self.characters.append(newCharacter)
+        
+        if restock:
+            self.messageLog.append(Message.Message("You hear shots in the distance"))
     
     def AddGoliath(self, forcedRoom = None, restock = False):
         space = 0
@@ -1012,6 +1024,9 @@ class Map:
             newCharacter.x = random.randint(room.x, room.x+room.w-1)
             newCharacter.y = random.randint(room.y, room.y+room.h-1)            
         self.characters.append(newCharacter)
+        
+        if restock:
+            self.messageLog.append(Message.Message("You feel a small earthquake"))
         
     def AddHealers(self, forcedRoom = None, restock = False):
         space = 0
@@ -1065,6 +1080,9 @@ class Map:
                 newCharacter.x = random.randint(room.x, room.x+room.w-1)
                 newCharacter.y = random.randint(room.y, room.y+room.h-1)            
             self.characters.append(newCharacter)
+        
+        if restock:
+            self.messageLog.append(Message.Message("You smell antiseptics"))
 
     def AddAssassins(self, forcedRoom = None, restock = False):
         space = 0
@@ -1092,6 +1110,8 @@ class Map:
                 newCharacter.y = random.randint(room.y, room.y+room.h-1)            
             self.characters.append(newCharacter)
             
+        if restock:    
+            self.messageLog.append(Message.Message("You hear nothing"))            
         
     def AddDrake(self, forcedRoom = None, restock = False):
         space = 0
@@ -1115,6 +1135,9 @@ class Map:
             newCharacter.x = random.randint(room.x, room.x+room.w-1)
             newCharacter.y = random.randint(room.y, room.y+room.h-1)            
         self.characters.append(newCharacter)
+        
+        if restock:    
+            self.messageLog.append(Message.Message("You smell sulpher"))
         
     def AddZombies(self, forcedRoom = None, restock = False):
         space = 0       
@@ -1142,6 +1165,9 @@ class Map:
                 newCharacter.y = random.randint(room.y, room.y+room.h-1)          
             self.AddZombie((newCharacter.x, newCharacter.y))
             self.characters.append(newCharacter)
+            
+        if restock:    
+            self.messageLog.append(Message.Message("You smell rotting flesh"))
     
     def AddNecromancer(self):
         space = 0
@@ -1169,7 +1195,7 @@ class Map:
                 newCharacter.y = random.randint(room.y, room.y+room.h-1)  
             self.AddZombie((newCharacter.x, newCharacter.y))
             self.characters.append(newCharacter)
-            
+
     def AddDragon(self):
         space = 0
                 
@@ -1217,4 +1243,5 @@ class Map:
             newCharacter.x = random.randint(room.x, room.x+room.w-1)
             newCharacter.y = random.randint(room.y, room.y+room.h-1)            
         self.characters.append(newCharacter)
+
 
