@@ -158,7 +158,7 @@ class Necromancer(Enemy):
                 self.tryMove(moveTo[0], moveTo[1])
         
     def drainToHeal(self, target):
-        print ('Draining ', target, target.name)
+        # print ('Draining ', target, target.name)
         self.hp += target.hp
         self.maxhp = max(self.maxhp, self.hp)        
         target.Attacked(target.hp, self, False)
