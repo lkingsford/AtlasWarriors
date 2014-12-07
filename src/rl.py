@@ -139,7 +139,7 @@ def WinGame (victoryCondition, win):
         win.putchars('Bodies are for mortal men.', 1, 11, 'white', 'black')
     
     score = scores.CalculateScore(Maps, PC, difficulty, victoryCondition)   
-    win.putchars('Score: ' + str(score), 2, 17, 'red')
+    win.putchars('Score: ' + str(score), 2, 17, 'red', 'black')
     win.update();
     screen.blit(surface,(0,0))
     pygame.display.update()
@@ -497,13 +497,10 @@ while running or len(Animations) > 0:
         if i.frame >= i.frames:
             Animations.remove(i)
             ForceDraw = True
-            print ('r')
         else:
             i.update(win)
-            print (i.frame, ' ', i.frames)
             #pygame.image.save(win._windowsurface, "c:\\ss\\%05d" % ssframe + ".bmp")
             #ssframe += 1
-            print ("len ", len(Animations))
     
 
     # Draw redenning if in Second Wind

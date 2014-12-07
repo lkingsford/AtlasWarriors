@@ -298,7 +298,7 @@ class DrawWarlordDeath(Animation):
         # Store the screen
         self.beforeScreen = None
 
-        self.frames = 157
+        self.frames = 172
 
     def update(self, window):       
         super().update(window)
