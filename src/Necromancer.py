@@ -200,6 +200,7 @@ class Necromancer(Enemy):
             if len(Zombies) > 0:
                 for i in Zombies:
                     i.hp = 0
+                    attacker.Killed(i)                    
                 self.messageLog.append(Message.Message("The necromancer explodes into a shower of light"))
                 self.messageLog.append(Message.Message("You feel the peace of a thousand lost souls being freed"))
                 self.curDanger += i.danger()
