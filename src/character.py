@@ -456,8 +456,14 @@ class Character:
         
     def Equip(self, item, slot):        
         if slot == 0:
+            # Unequip if two handed in other hand
+            if (self.leftHandEquipped != None) and\
+                (self.leftHandEquipped.TwoHanded == True):
+                self.Equip(None, 1)
+            # Unequip
             if (self.rightHandEquipped != None):
                 self.backpack.append(self.rightHandEquipped)
+                
             self.rightHandEquipped = item
             if (item != None and item.TwoHanded):
                 if (self.leftHandEquipped != None):
@@ -465,8 +471,14 @@ class Character:
                     self.leftHandEquipped = None                    
                     
         if slot == 1:
-            if (self.leftHandEquipped != None):
+            # Unequip if two handed in other hand
+            if (self.rightHandEquipped != None) and\
+                    (self.rightHandEquipped.TwoHanded == True):
+                    self.Equip(None, 0)
+            # Unequip
+            if (self.leftHandEquipped != None):                
                 self.backpack.append(self.leftHandEquipped)
+                
             self.leftHandEquipped = item
             if (item != None and item.TwoHanded):
                 if (self.rightHandEquipped != None):
