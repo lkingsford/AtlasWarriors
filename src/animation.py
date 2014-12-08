@@ -15,7 +15,7 @@ class Animation:
         # it can be skipped otherwise.
         self.updated = False     
         self.window = window
-        while (not(self.updated) and (self.frame <= self.frames)):
+        while (not(self.updated) and (self.frame < self.frames)):
             self.frame += 1            
             self.update(window, level)
         
@@ -49,13 +49,13 @@ class HealAnimation(Animation):
 class LevelUpAnimation(Animation):
     def __init__(self, position):
         super().__init__()
-        self.frames = 5
+        self.frames = 10
         self.position = position
 
     def update(self, window, level):
         super().update(window, level)
         fore = 'silver'     
-        back = pygame.Color(self.frame * 32, self.frame * 32, 0)
+        back = pygame.Color(self.frame * 16, self.frame * 16, 0)
         if self.frame >= self.frames:
             back == None
         self.putchar("@", x = self.position[0], y = self.position[1], fgcolor = fore, bgcolor = back)
@@ -67,14 +67,14 @@ class LevelUpAnimation(Animation):
 class BigPunchAnimation(Animation):
     def __init__(self, route, character):
         super().__init__()
-        self.frames = len(route) + 1
+        self.frames = (len(route)*2) + 1
         self.route = route
         self.character = character
         self.lastData = ((route[0][0], route[0][1]), '.', 'gray', None)
         
     def update(self, window, level):
         super().update(window, level)      
-        curFrame = min(self.frame, len(self.route) - 1)
+        curFrame = min((self.frame/2), (len(self.route)/2) - 1)
         fore = self.character.color 
         back = None
         if self.frame >= self.frames:

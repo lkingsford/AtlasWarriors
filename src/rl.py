@@ -453,7 +453,7 @@ while running or len(Animations) > 0:
                 Animations.extend(character.animations)
                 character.animations.clear()
     else:
-        clock.tick(20)
+        clock.tick(50)
         #pygame.image.save(win._windowsurface, "ss\\%05d" % ssframe + ".png")
         #ssframe += 1
 
