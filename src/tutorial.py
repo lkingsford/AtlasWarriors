@@ -364,5 +364,5 @@ class Tutorial:
                 )                
             self.message_dialog_function(output,
                 ActiveDialog = self.activate_dialog)
-            self.tutorial_settings[TUTORIAL_UNARMEDF] = True
+            self.tutorial_settings[TUTORIAL_UNARMED] = True
         
