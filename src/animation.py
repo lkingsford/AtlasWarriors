@@ -270,8 +270,8 @@ class DrawNecromancerDeath(Animation):
 
         self.frames = 30
 
-    def update(self, window):
-        super().update(window)  
+    def update(self, window, level):
+        super().update(window, level)  
         if self.beforeScreen == None:
             self.beforeScreen = [[0 for y in range(20)] for x in range(40)]
             for x in range(40):
@@ -322,8 +322,8 @@ class DrawWarlordDeath(Animation):
 
         self.frames = 172
 
-    def update(self, window):       
-        super().update(window)
+    def update(self, window, level):       
+        super().update(window, level)
         #print (self.frame)     
         iteration = self.frame // 40
         if self.beforeScreen == None:
