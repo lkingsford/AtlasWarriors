@@ -85,7 +85,7 @@ class Enemy(character.Character):
         self.mp -= self.FlameBreathMPCost(radius, distance)
             
         #Draw animation
-        self.messageLog.append(Message.Message(self.name + " breathes burning flame", (self.x, self.y)))
+        self.messageLog.append(Message.Message(self.name + " breathes burning flame", [(self.x, self.y)]))
         frames = []
         for i in range(distance):
             frames.append(self.CastFlame_(self.x, self.y, target[0], target[1], radius, i))
