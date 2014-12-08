@@ -1,2 +1,2 @@
 def Version():
-    return "Alpha 8"
+    return "Alpha 9 - Confirmed Winnable Edition"
