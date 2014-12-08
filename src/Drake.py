@@ -14,7 +14,7 @@ class Drake(Dragon):
         self.character = "d"        
         self.speed = 10
         self.hp = self.maxhp = round(12 * (max(1,self.level - 4) ** 0.4))
-        self.mp = self.maxmp = round(8 * (max(1,self.level - 4) ** 0.4))
+        self.mp = self.maxmp = round(10 * (max(1,self.level - 4) ** 0.4))
         self.mpChargeRate = 1
         self.baseDamage =  round(6 * (max(1,self.level - 4) ** 0.2))
         self.baseToHit =  round(8 * (max(1,self.level - 4) ** 0.2))

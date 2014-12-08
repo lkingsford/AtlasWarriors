@@ -314,7 +314,7 @@ class Map:
                 for i in self.Rooms[18:22]:
                     random.choice([self.AddCritters,
                     self.AddBandits,
-                    self.AddOrcs,
+                    #self.AddOrcs,
                     self.AddGoliath,
                     #self.AddHealers,
                     self.AddAssassins,
@@ -332,7 +332,7 @@ class Map:
                 for i in self.Rooms[16:22]:
                    random.choice([self.AddCritters,
                    self.AddBandits,
-                   self.AddOrcs,
+                   #self.AddOrcs,
                    self.AddGoliath,
                    #self.AddHealers,
                    self.AddAssassins,
@@ -351,7 +351,7 @@ class Map:
                 for i in self.Rooms[14:22]:
                    random.choice([self.AddCritters,
                    self.AddBandits,
-                   self.AddOrcs,
+                   #self.AddOrcs,
                    self.AddGoliath,
                    #self.AddHealers,
                    self.AddAssassins,
