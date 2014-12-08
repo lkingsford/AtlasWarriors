@@ -130,14 +130,14 @@ class Orc(Enemy):
                 damage = toDamage * (self.CritMult() if crit else 1)
                 i.Attacked(damage, self, False)
                 if crit:
-                    self.messageLog.append(Message.Message(self.name + " fires at " + i.name + " and crits! (" + str(i.hp) + ")"));
+                    self.messageLog.append(Message.Message(self.name + " fires at " + i.name + " and crits! (" + str(i.hp) + ")",[(self.x, self.y),(i.x,i.y)]));
                 else:
-                    self.messageLog.append(Message.Message(self.name + " fires at " + i.name+ "  and hits! (" + str(i.hp) + ")"));
+                    self.messageLog.append(Message.Message(self.name + " fires at " + i.name+ "  and hits! (" + str(i.hp) + ")",[(self.x, self.y),(i.x,i.y)]));
                 if (i.dead()):
-                    self.messageLog.append(Message.Message(i.name + " has been killed!"));
+                    self.messageLog.append(Message.Message(i.name + " has been killed!",[(i.x,i.y)]));
                     self.Killed(i)
             else:
-                self.messageLog.append(Message.Message(self.name + " fires at " + i.name+ "  but misses"))
+                self.messageLog.append(Message.Message(self.name + " fires at " + i.name+ "  but misses", [(self.x, self.y),(i.x,i.y)]))
         
         # This will make firing quicker for higher level characters. Needs balancing.
         if self.badass == 0:
@@ -262,9 +262,9 @@ class Orc(Enemy):
             if self.hp < self.runAwayAt:
                 moveTo = self.GetNearest(lambda i: (max(abs(i[0]-nearestEnemy.x),abs(i[1]-nearestEnemy.y))) > 5)
                 if moveTo == []:
-                    self.messageLog.append(Message.Message(self.name + " turns to run away but is blocked!"))
+                    self.messageLog.append(Message.Message(self.name + " turns to run away but is blocked!",[(self.x, self.y)]))
                 else:
-                    self.messageLog.append(Message.Message(self.name + " turns to run away!"))
+                    self.messageLog.append(Message.Message(self.name + " turns to run away!",[(self.x, self.y)]))
                     self.mode = 3
                 
         

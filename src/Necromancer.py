@@ -162,8 +162,8 @@ class Necromancer(Enemy):
         self.hp += target.hp
         self.maxhp = max(self.maxhp, self.hp)        
         target.Attacked(target.hp, self, False)
-        self.messageLog.append(Message.Message("The necromancer drains the lifeforce from the zombie"))
-        self.messageLog.append(Message.Message("The zombie collapses!"))
+        self.messageLog.append(Message.Message("The necromancer drains the lifeforce from the zombie",[(self.x, self.y),(target.x, target.y)]))
+        self.messageLog.append(Message.Message("The zombie collapses!",[(self.x, self.y),(target.x, target.y)]))
         self.animations.append(animation.DrawNecromancerSpell(target, self, 'red'))
         self.ticksUntilTurn += round(100/self.speed)
     
@@ -171,8 +171,8 @@ class Necromancer(Enemy):
         speedIncrease = min(3, target.speed - 1)
         target.speed -= speedIncrease
         self.speed += speedIncrease
-        self.messageLog.append(Message.Message("The necromancer drains speed from the zombie"))
-        self.messageLog.append(Message.Message("The zombie stiffens"))
+        self.messageLog.append(Message.Message("The necromancer drains speed from the zombie",[(self.x, self.y),(target.x, target.y)]))
+        self.messageLog.append(Message.Message("The zombie stiffens",[(self.x, self.y),(target.x, target.y)]))
         self.animations.append(animation.DrawNecromancerSpell(target, self, 'green'))
         self.ticksUntilTurn += round(100/self.speed)
     
@@ -180,8 +180,8 @@ class Necromancer(Enemy):
         # Increases damage and ToHit by just increasing the skill of the unarmed weapon
         self.skills[0] = 0, self.skills[0][1] + 2
         target.Attacked(target.hp, self, False)
-        self.messageLog.append(Message.Message("The necromancer draws the tormented soul of the zombie into his bony fist"))
-        self.messageLog.append(Message.Message("The zombie collapses!"))
+        self.messageLog.append(Message.Message("The necromancer draws the tormented soul of the zombie into his bony fist",[(self.x, self.y),(target.x, target.y)]))
+        self.messageLog.append(Message.Message("The zombie collapses!",[(self.x, self.y),(target.x, target.y)]))
         self.animations.append(animation.DrawNecromancerSpell(target, self, 'blue'))
         self.ticksUntilTurn += round(100/self.speed)
 
@@ -201,10 +201,10 @@ class Necromancer(Enemy):
                 for i in Zombies:
                     i.hp = 0
                     attacker.Killed(i)                    
-                self.messageLog.append(Message.Message("The necromancer explodes into a shower of light"))
-                self.messageLog.append(Message.Message("You feel the peace of a thousand lost souls being freed"))
+                self.messageLog.append(Message.Message("The necromancer explodes into a shower of light",[(self.x, self.y)]))
+                self.messageLog.append(Message.Message("You feel the peace of a thousand lost souls being freed",[(self.x, self.y)]))
                 self.curDanger += i.danger()
             else:
-                self.messageLog.append(Message.Message("The necromancer explodes into a shower of light"))
-                self.messageLog.append(Message.Message("You feel nothing"))
+                self.messageLog.append(Message.Message("The necromancer explodes into a shower of light",[(self.x, self.y)]))
+                self.messageLog.append(Message.Message("You feel nothing",[(self.x, self.y)]))
                 

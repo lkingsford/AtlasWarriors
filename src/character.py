@@ -72,9 +72,9 @@ class Character:
                 self.burnWaitTurns -= 1
                 if self.burnWaitTurns == 0:
                     self.Extinguish()
-            self.messageLog.append(Message.Message(self.name + " is burning!"))
+            self.messageLog.append(Message.Message(self.name + " is burning!",[(self.x, self.y)]))
             if self.Attacked(self.burnDamage, self.burnSource):
-                self.messageLog.append(Message.Message(self.name + " burns to death"))
+                self.messageLog.append(Message.Message(self.name + " burns to death",[(self.x, self.y)]))
                 self.burnSource.Killed(self)
         self.moved = False
         
@@ -111,20 +111,20 @@ class Character:
     # Skewer if an enemy walks towards while self is holding a spear 
     def Skewer(self, enemy):
             if (self.leftHandEquipped != None) and (self.leftHandEquipped.ItemClass == ItemClass.polearm):
-                self.messageLog.append(Message.Message(self.name + " skewers " + enemy.name + " with the " + self.leftHandEquipped.Name))
+                self.messageLog.append(Message.Message(self.name + " skewers " + enemy.name + " with the " + self.leftHandEquipped.Name,[(self.x, self.y)]))
                 self.AttackWithWeapon(enemy, [self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
                 
             if (self.rightHandEquipped != None) and (self.rightHandEquipped.ItemClass == ItemClass.polearm):
-                self.messageLog.append(Message.Message(self.name + " skewers " + enemy.name + " with the " + self.rightHandEquipped.Name))
+                self.messageLog.append(Message.Message(self.name + " skewers " + enemy.name + " with the " + self.rightHandEquipped.Name,[(self.x, self.y)]))
                 self.AttackWithWeapon(enemy, [self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
 
     def Lunge(self, enemy):
             if (self.leftHandEquipped != None) and (self.leftHandEquipped.ItemClass == ItemClass.polearm):
-                self.messageLog.append(Message.Message(self.name + " lunges towards " + enemy.name + " with the " + self.leftHandEquipped.Name))
+                self.messageLog.append(Message.Message(self.name + " lunges towards " + enemy.name + " with the " + self.leftHandEquipped.Name,[(self.x, self.y)]))
                 self.AttackWithWeapon(enemy, [self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
                 
             if (self.rightHandEquipped != None) and (self.rightHandEquipped.ItemClass == ItemClass.polearm):
-                self.messageLog.append(Message.Message(self.name + " lunges towards " + enemy.name + " with the " + self.rightHandEquipped.Name))
+                self.messageLog.append(Message.Message(self.name + " lunges towards " + enemy.name + " with the " + self.rightHandEquipped.Name,[(self.x, self.y)]))
                 self.AttackWithWeapon(enemy, [self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
     
 
@@ -230,7 +230,7 @@ class Character:
         self.hp = self.maxhp        
         self.animations.append(animation.LevelUpAnimation((self.x, self.y)))
         if not(suppress):
-            self.messageLog.append(Message.Message(self.name + " levels up!"));
+            self.messageLog.append(Message.Message(self.name + " levels up!",[(self.x, self.y)]));
     
     def ChanceToHit(self, toHit, toDefend):
         return (math.atan(0.6 * (toHit - toDefend) - 1) + math.pi/2) / math.pi
@@ -325,7 +325,8 @@ class Character:
                                 result > 0):                                
                                 self.messageLog.append(Message.Message(\
                                     self.name + " pummels " +\
-                                    monsterInSquare[0].name + "!"))
+                                    monsterInSquare[0].name + "!",\
+                                    [(self.x, self.y)]))
                                 pummelMod += 1
                                 result = self.AttackWithWeapon(\
                                     monsterInSquare[0], (i[0]+pummelMod, i[1]))
@@ -351,11 +352,11 @@ class Character:
                 damage = ((self.Damage() if ToHit[1] == None else ToHit[1].Damage) + self.DmgMod(0 if ToHit[1] == None else ToHit[1].ItemClass)) * self.GetDamageMultiplier(self.level - target.level) * (self.CritMult() if crit else 1)
                 target.Attacked(damage, self)
                 if crit:
-                    self.messageLog.append(Message.Message(self.name + " crits " + target.name + " (" + str(target.hp) + ")"));
+                    self.messageLog.append(Message.Message(self.name + " crits " + target.name + " (" + str(target.hp) + ")",[(self.x, self.y)]));
                 else:
-                    self.messageLog.append(Message.Message(self.name + " attacks " + target.name+ " (" + str(target.hp) + ")"));
+                    self.messageLog.append(Message.Message(self.name + " attacks " + target.name+ " (" + str(target.hp) + ")",[(self.x, self.y)]));
                 if (target.dead()):
-                    self.messageLog.append(Message.Message(target.name + " has been killed!"));
+                    self.messageLog.append(Message.Message(target.name + " has been killed!",[(self.x, self.y)]));
                     self.Killed(target)
                 if (ToHit[1] != None):              
                     self.RegisterSkillHit(ToHit[1].ItemClass)
@@ -394,11 +395,11 @@ class Character:
             if (self.leftHandEquipped != None) and (self.leftHandEquipped.ItemClass == ItemClass.dagger):
                 # Retalliate attack if got dagger
                 # Retalliate attack does 4 extra ToHit
-                self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.leftHandEquipped.Name))
+                self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.leftHandEquipped.Name,[(self.x, self.y)]))
                 self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
                 
             if (self.rightHandEquipped != None) and (self.rightHandEquipped.ItemClass == ItemClass.dagger):
-                self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.rightHandEquipped.Name))
+                self.messageLog.append(Message.Message(self.name + " counterattacks " + attacker.name + " with the " + self.rightHandEquipped.Name,[(self.x, self.y)]))
                 self.AttackWithWeapon(attacker, [self.RetaliateBonus + self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])         
                 
         if self.hp <= 0:
@@ -444,30 +445,30 @@ class Character:
         v = random.random()
         if v < shieldBlockChance:
             # Blocked with shield
-            self.messageLog.append(Message.Message(self.name + " deflects " + attacker.name + "'s attack with the shield"))
+            self.messageLog.append(Message.Message(self.name + " deflects " + attacker.name + "'s attack with the shield",[(self.x, self.y),(attacker.x, attacker.y)]))
             pass
         elif v < weaponBlockLeftChance:
             # Blocked (or else) with left hand item
             if self.leftHandEquipped.ItemClass == item.ItemClass.sword:
                 # Parry if a sword
-                self.messageLog.append(Message.Message(self.name + " parried " + attacker.name + "'s attack with the " + self.leftHandEquipped.Name))               
+                self.messageLog.append(Message.Message(self.name + " parried " + attacker.name + "'s attack with the " + self.leftHandEquipped.Name,[(self.x, self.y),(attacker.x, attacker.y)]))               
                 self.AttackWithWeapon(attacker, [self.GetWeaponToHit(self.leftHandEquipped) + self.ToHitMod(self.leftHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.leftHandEquipped])
             else:
-                self.messageLog.append(Message.Message(self.name + " blocks " + attacker.name + "'s attack with the " + self.leftHandEquipped.Name))
+                self.messageLog.append(Message.Message(self.name + " blocks " + attacker.name + "'s attack with the " + self.leftHandEquipped.Name,[(self.x, self.y),(attacker.x, attacker.y)]))
 
                 
         elif v < weaponBlockRightChance:
             # Blocked (or else) with right hand item
             if self.rightHandEquipped.ItemClass == item.ItemClass.sword:
                 # Parry if a sword
-                self.messageLog.append(Message.Message(self.name + " parried " + attacker.name + "'s attack with the " + self.rightHandEquipped.Name))              
+                self.messageLog.append(Message.Message(self.name + " parried " + attacker.name + "'s attack with the " + self.rightHandEquipped.Name,[(self.x, self.y),(attacker.x, attacker.y)]))              
                 self.AttackWithWeapon(attacker, [self.GetWeaponToHit(self.rightHandEquipped) + self.ToHitMod(self.rightHandEquipped.ItemClass) + 0 if not self.GetTwoHanded() else self.ToHitMod(7), self.rightHandEquipped])
             else:
-                self.messageLog.append(Message.Message(self.name + " blocks " + attacker.name+ "'s attack with the " + self.rightHandEquipped.Name))
+                self.messageLog.append(Message.Message(self.name + " blocks " + attacker.name+ "'s attack with the " + self.rightHandEquipped.Name,[(self.x, self.y),(attacker.x, attacker.y)]))
                 
         else:
             # Dodged            
-            self.messageLog.append(Message.Message(self.name + " dodges " + attacker.name + "'s attack "))
+            self.messageLog.append(Message.Message(self.name + " dodges " + attacker.name + "'s attack ",[(self.x, self.y),(attacker.x, attacker.y)]))
             pass
         
         #print ("Shield Chance:", shieldBlockChance, " Weapon Block Left Chance:", weaponBlockLeftChance, " Weapon Black Right Chance:", weaponBlockRightChance)
@@ -624,9 +625,8 @@ class Character:
             self.burnDamage = 0
             self.burnSource = None
             self.burnWaitTurns = self.DEFAULT_BURN_WAIT_TURNS
-            self.messageLog.append(Message.Message(self.name + " is no longer on fire"))
-    
-                   
+            self.messageLog.append(Message.Message(self.name + " is no longer on fire",[(self.x, self.y)]))
+
     
     def Stun(self):
         self.ticksUntilTurn += round(200/self.speed)

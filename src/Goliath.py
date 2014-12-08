@@ -58,13 +58,13 @@ class Goliath(Enemy):
             dead = target.Attacked(damage, self)
             route = [(target.x, target.y)]
             if crit:
-                self.messageLog.append(Message.Message(self.name + " crits " + target.name + " (" + str(target.hp) + ")"));
+                self.messageLog.append(Message.Message(self.name + " crits " + target.name + " (" + str(target.hp) + ")",[(self.x, self.y),(target.x, target.y)]));
             else:
-                self.messageLog.append(Message.Message(self.name + " attacks " + target.name+ " (" + str(target.hp) + ")"));
+                self.messageLog.append(Message.Message(self.name + " attacks " + target.name+ " (" + str(target.hp) + ")",[(self.x, self.y),(target.x, target.y)]));
 
             if dead:
                 self.Killed(target)
-                self.messageLog.append(Message.Message(self.name + " was killed by the blow"))
+                self.messageLog.append(Message.Message(self.name + " was killed by the blow",[(self.x, self.y),(target.x, target.y)]))
             # This dx/dy is opposite the update() version - dx and dy are the direction the target
             # is being punched in
             dx = 0 if target.x == self.x else (1 if target.x > self.x else -1)
@@ -87,24 +87,24 @@ class Goliath(Enemy):
                     if len(enemiesInSquare) > 0:
                         # Collided with enemy
                         for i in enemiesInSquare:
-                            self.messageLog.append(Message.Message(target.name + " crashes into " + i.name));
+                            self.messageLog.append(Message.Message(target.name + " crashes into " + i.name,[(self.x, self.y),(target.x, target.y),(i.x, i.y)]));
                             dead = i.Attacked(force, self, False)  
                             if dead:
-                                self.messageLog.append(Message.Message(i.name + " was killed by the impact"));
+                                self.messageLog.append(Message.Message(i.name + " was killed by the impact",[(self.x, self.y),(target.x, target.y),(i.x, i.y)]));
                                 self.Killed(i)
                         if not(dead):
                             dead = target.Attacked(force, self, False)
                             if dead:
                                 self.Killed(target) 
-                                self.messageLog.append(Message.Message(target.name + " was killed by the impact"));
+                                self.messageLog.append(Message.Message(target.name + " was killed by the impact",[(self.x, self.y),(target.x, target.y),(i.x, i.y)]));
                             
                     else:
                         # Collided with wall
-                        self.messageLog.append(Message.Message(target.name + " crashes into the wall"));
+                        self.messageLog.append(Message.Message(target.name + " crashes into the wall",[(self.x, self.y),(target.x, target.y)]));
                         dead = target.Attacked(force, self, False) 
                         if dead:
                             self.Killed(target)
-                            self.messageLog.append(Message.Message(target.name + " was killed by the impact"));
+                            self.messageLog.append(Message.Message(target.name + " was killed by the impact",[(self.x, self.y),(target.x, target.y)]));
                     force = 0
             self.animations.append(animation.BigPunchAnimation(route, target))
             

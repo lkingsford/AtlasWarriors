@@ -215,7 +215,7 @@ descriptTitleFont = pygame.font.Font("DejaVuSansMono.ttf", 12)
 messageFont = pygame.font.Font("DejaVuSerif.ttf", 12)
 hpFont = pygame.font.Font("DejaVuSerif.ttf", 20) 
 clock = pygame.time.Clock()
-messageLog = []
+messageLog = Message.MessageLog(None)
 tutorial = Tutorial(messageBox.MessageBox, dialog);
 background = False
 
@@ -280,6 +280,8 @@ PC = player_character.PlayerCharacter(messageLog, Maps[0], DefaultItems, difficu
 PC.x = Maps[0].startX
 PC.y = Maps[0].startY
 Maps[0].UpdateVisibility(PC, PC.x, PC.y)
+
+messageLog.PC = PC
 
 currentTint = (0,0,0,0)
 

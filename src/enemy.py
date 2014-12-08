@@ -67,9 +67,9 @@ class Enemy(character.Character):
         target.hp += self.level+1
         target.hp = min(target.hp, target.maxhp)
         if self != target:
-            self.messageLog.append(Message.Message(self.name + " heals " + target.name))
+            self.messageLog.append(Message.Message(self.name + " heals " + target.name, [(self.x, self.y),(target.x, target.y)]))
         else:
-            self.messageLog.append(Message.Message(self.name + " heals himself"))
+            self.messageLog.append(Message.Message(self.name + " heals himself", [(self.x, self.y)]))
         self.ticksUntilTurn = round(200/self.speed)
         self.animations.append(animation.HealAnimation((target.x, target.y)))
         
@@ -85,7 +85,7 @@ class Enemy(character.Character):
         self.mp -= self.FlameBreathMPCost(radius, distance)
             
         #Draw animation
-        self.messageLog.append(Message.Message(self.name + " breathes burning flame"))
+        self.messageLog.append(Message.Message(self.name + " breathes burning flame", (self.x, self.y)))
         frames = []
         for i in range(distance):
             frames.append(self.CastFlame_(self.x, self.y, target[0], target[1], radius, i))
@@ -113,9 +113,9 @@ class Enemy(character.Character):
                             #   (0 if (k.leftHandEquipped == None) or (k.leftHandEquipped.ItemClass != 6) else k.leftHandEquipped.ToDefend) - \
                             #   (0 if (k.rightHandEquipped == None) or (k.rightHandEquipped.ItemClass != 6) else k.rightHandEquipped.ToDefend))) + "%")
                             if igniteResult[0]:
-                                self.messageLog.append(Message.Message(k.name + " is ignited by the scorching flame!"))
+                                self.messageLog.append(Message.Message(k.name + " is ignited by the scorching flame!", [(self.x, self.y),(k.x, k.y)]))
                             if igniteResult[1]:
-                                self.messageLog.append(Message.Message(k.name + " has been prematurely cremated!"))
+                                self.messageLog.append(Message.Message(k.name + " has been prematurely cremated!", [(self.x, self.y),(k.x, k.y)]))
                                 self.Killed(k)
         self.ticksUntilTurn = round(100/self.speed)
         

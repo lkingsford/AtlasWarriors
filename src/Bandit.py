@@ -175,10 +175,10 @@ class Bandit(Enemy):
                 moveTo = self.GetNearest(lambda i: (max(abs(i[0]-nearestEnemy.x),abs(i[1]-nearestEnemy.y))) > 5)
                 if moveTo == []:
                     self.mode = 4
-                    self.messageLog.append(Message.Message(self.name + " turns to run away but is blocked!"))
-                    self.messageLog.append(Message.Message(self.name + " decides to fight for his life!"))
+                    self.messageLog.append(Message.Message(self.name + " turns to run away but is blocked!",[(self.x, self.y)]))
+                    self.messageLog.append(Message.Message(self.name + " decides to fight for his life!",[(self.x, self.y)]))
                 else:
-                    self.messageLog.append(Message.Message(self.name + " turns to run away!"))
+                    self.messageLog.append(Message.Message(self.name + " turns to run away!",[(self.x, self.y)]))
                     self.mode = 3
                 
         
@@ -186,7 +186,7 @@ class Bandit(Enemy):
             # Try to run away
             if self.hp < 3:
                 self.mode = 4
-                self.messageLog.append(Message.Message(self.name + " decides to fight for his life!"))
+                self.messageLog.append(Message.Message(self.name + " decides to fight for his life!",[(self.x, self.y)]))
             
             # This might be better as a max function rather then a find first which satisfies,
             # but I'm concerned about speed
@@ -197,7 +197,7 @@ class Bandit(Enemy):
             
             if moveTo == None:
                 self.mode = 4
-                self.messageLog.append(Message.Message(self.name + " decides to fight for his life!"))
+                self.messageLog.append(Message.Message(self.name + " decides to fight for his life!",[(self.x, self.y)]))
             else:
                 moveTo = moveTo[1]
         
@@ -223,7 +223,7 @@ class Bandit(Enemy):
         
         if activateTeam:
             activateTeam = False
-            self.messageLog.append(Message.Message(self.name + " loudly blows a tiny whistle!"))
+            self.messageLog.append(Message.Message(self.name + " loudly blows a tiny whistle!",[(self.x, self.y)]))
             for i in self.teamMates:
                 i.mode = 1
                     
