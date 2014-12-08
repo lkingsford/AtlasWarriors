@@ -290,27 +290,27 @@ class DrawNecromancerDeath(Animation):
                 dy = iy - self.start[1]
                 value = max(0, -1 * abs(math.hypot(dx,dy)-(self.frame*1.5))+3)
                 if value <= 0:
-                    self.putchar(self.beforeScreen[ix][iy][0], x = ix, y = iy,\
+                    window.putchar(self.beforeScreen[ix][iy][0], x = ix, y = iy,\
                         fgcolor = self.beforeScreen[ix][iy][1],\
                         bgcolor = self.beforeScreen[ix][iy][2])
                 elif value <= 0.6:
-                    self.putchar(".", x = ix, y = iy,\
+                    window.putchar(".", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'black')
                 elif value <= 1.2:
-                    self.putchar("o", x = ix, y = iy,\
+                    window.putchar("o", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'gray')
                 elif value <= 1.8:
-                    self.putchar("O", x = ix, y = iy,\
+                    window.putchar("O", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'silver')
                 elif value  <= 2.4:
-                    self.putchar("O", x = ix, y = iy,\
+                    window.putchar("O", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'white')
                 else:
-                    self.putchar("O", x = ix, y = iy,\
+                    window.putchar("O", x = ix, y = iy,\
                         fgcolor = 'white',\
                         bgcolor = 'white')
                     
@@ -347,37 +347,38 @@ class DrawWarlordDeath(Animation):
                     -1 * abs(math.hypot(dx,dy)-((self.frame % 40)*1.5))+1+(4*(iteration/4)),
                     -1 * abs(math.hypot(dx,dy)-((self.frame % 20)*2))+1+(4*(iteration/3)))
                 if value <= 0:
-                    self.putchar(self.beforeScreen[ix][iy][0], x = ix, y = iy,\
+                    window.putchar(self.beforeScreen[ix][iy][0], x = ix, y = iy,\
                         fgcolor = self.beforeScreen[ix][iy][1],\
                         bgcolor = self.beforeScreen[ix][iy][2])
                 elif value <= 1:
-                    self.putchar(".", x = ix, y = iy,\
+                    window.putchar(".", x = ix, y = iy,\
                         fgcolor = 'red',\
                         bgcolor = 'black')
                 elif value <= 1.5:
-                    self.putchar("o", x = ix, y = iy,\
+                    window.putchar("o", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'gray')                   
                 elif value <= 2.5:
-                    self.putchar("o", x = ix, y = iy,\
+                    window.putchar("o", x = ix, y = iy,\
                         fgcolor = 'red',\
                         bgcolor = 'gray')
                 elif value <= 3:
-                    self.putchar("O", x = ix, y = iy,\
+                    window.putchar("O", x = ix, y = iy,\
                         fgcolor = 'red',\
                         bgcolor = 'silver')
                 elif value  <= 4:
-                    self.putchar("0", x = ix, y = iy,\
+                    window.putchar("0", x = ix, y = iy,\
                         fgcolor = 'black',\
                         bgcolor = 'red')
                 elif value  <= 4.5:
-                    self.putchar("O", x = ix, y = iy,\
+                    window.putchar("O", x = ix, y = iy,\
                         fgcolor = 'red',\
                         bgcolor = 'black')
                 else:
-                    self.putchar("O", x = ix, y = iy,\
+                    window.putchar("O", x = ix, y = iy,\
                         fgcolor = 'black',\
                         bgcolor = 'black')
+        self.updated = True
 
 
 # Useful for debugging
