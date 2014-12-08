@@ -426,7 +426,10 @@ while running or len(Animations) > 0:
 #           if mouseCellX > 0 and mouseCellY > 0 and mouseCellX < 39 and mouseCellY < 19:
                 #Animations.append(animation.DrawNecromancerSpell(PC.currentMap.characters[2], PC, 'red'))
                 
-    if len(Animations) == 0:
+    # This slightly odd line means that animations will run more simulateously
+    # if not entirely. That will make the last level a lot less of a pain
+    # in the butt.
+    if not(len(Animations) > 0 and (PC.ticksUntilTurn == 0)):
         
         #Update characters if no current animations 
         if (len(dialog) == 0) and not(PC.nextMove == 'none' and PC.ticksUntilTurn <= 0):          
@@ -493,14 +496,15 @@ while running or len(Animations) > 0:
             PC.currentMap.characters.remove(character)          
 
     # Draw animations if there are any. 
-    for i in Animations:
-        if i.frame >= i.frames:
-            Animations.remove(i)
-            ForceDraw = True
-        else:
-            i.tick(win, PC.currentMap)
-            #pygame.image.save(win._windowsurface, "c:\\ss\\%05d" % ssframe + ".bmp")
-            #ssframe += 1
+    if (PC.ticksUntilTurn == 0):
+        for i in Animations:
+            if i.frame >= i.frames:
+                Animations.remove(i)
+                ForceDraw = True
+            else:
+                i.tick(win, PC.currentMap)
+                #pygame.image.save(win._windowsurface, "c:\\ss\\%05d" % ssframe + ".bmp")
+                #ssframe += 1
     
 
     # Draw redenning if in Second Wind
