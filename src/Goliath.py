@@ -12,10 +12,11 @@ class Goliath(Enemy):
         self.character = "g"        
         self.speed = 7
         self.hp = self.maxhp = self.starthp = round(20 * (max(1,self.level - 2) ** 0.4))
-        self.baseDamage = self.startDamage = round(5 * (max(1,self.level - 2) ** 0.2))
-        self.baseToHit =  round(8 * (max(1,self.level - 3)  ** 0.2))
+        self.baseDamage = self.startDamage = round(6 * (max(1,self.level - 2) ** 0.2))
+        self.baseToHit =  round(9 * (max(1,self.level - 3)  ** 0.2))
         self.baseToDefend = round(7 * (max(1,self.level - 3) ** 0.2))
         self.color = "silver"
+        self.baseXPToLevel = 8
         if badass != -1:
             self.badass = badass 
         else:
@@ -261,9 +262,7 @@ class Goliath(Enemy):
             self.color = "white"
             self.messageLog.append(Message.Message("The Godliath seems to have ascended"))
             self.messageLog.append(Message.Message("You suddenly realise this is tremendously bad"))
-            self.speed = 15
+            self.speed = 15                        
             
-            
-            
-        self.hp = self.maxhp = self.starthp * (1.4 ** self.badass)
+        self.hp = self.maxhp = self.starthp * (1.1 ** self.badass)
         self.baseDamage = self.startDamage * (1.3 ** self.badass)
