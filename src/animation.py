@@ -26,7 +26,10 @@ class Animation:
     
     # The modified putchar doesn't show animations if out of sight
     def putchar(self, character, x=0, y=0, fgcolor=None, bgcolor=None):
-        seen = self.level.VisibilityMap[x][y]
+        if (x > 0) and (x < 40) and (y > 0) and (y < 40):
+            seen = self.level.VisibilityMap[x][y]
+        else:
+            seen = 0
         if seen == 2:
             self.window.putchar(character, x, y, fgcolor, bgcolor)
             self.updated = True
