@@ -19,6 +19,7 @@ TUTORIAL_SECONDWIND = 12
 TUTORIAL_LEVEL      = 13
 TUTORIAL_WEAPONLVL  = 14
 TUTORIAL_ATTACKED   = 15
+TUTORIAL_UNARMED    = 16
 
 
 class Tutorial:
@@ -36,7 +37,7 @@ class Tutorial:
             # Needed because keys are strings from json
             self.tutorial_settings = dict([(int(i[0]),i[1]) for i in tutorial_settings_temp.items()])
         except FileNotFoundError:
-            self.tutorial_settings = dict([(i, False) for i in range(16)])
+            self.tutorial_settings = dict([(i, False) for i in range(17)])
         
         self.message_dialog_function = messageDialogFunction
         self.activate_dialog = activateDialog
@@ -64,8 +65,7 @@ class Tutorial:
             output = (
                 "By default, you pick up all items you walk over. You can "+\
                 "change this by pushing 'a'.\n"+\
-                "If you find the map difficult to read, you can disable "+\
-                "the background by pushing 'b'.\n"
+                "You can enable the background by pushing 'b'.\n"
                 )
             self.message_dialog_function(output,
                 ActiveDialog = self.activate_dialog)
@@ -74,7 +74,7 @@ class Tutorial:
                 "Inventory button (or push 'i'), you can equip a weapon if "+\
                 "you so wish. Alternatively, you can rely on good ol' "+\
                 "fisticuffs to extinguish the threats in the domain of the "+\
-                "warlord.\n"+\
+                "warlord. It's up to you.\n"+\
                 "Each weapon has unique abilities that will aid you in your "+\
                 "quest. You can review these from the inventory screen.\n"+\
                 "You will gain experience with weapons (and fisticuffs) "+\
@@ -348,3 +348,21 @@ class Tutorial:
                 ActiveDialog = self.activate_dialog)
 
             self.tutorial_settings[TUTORIAL_FIRE] = True            
+            
+        if message == TUTORIAL_UNARMED and\
+            not (self.tutorial_settings[TUTORIAL_UNARMED]):
+                
+            output = (
+                "Fisticuffs eh? Good for you.\n"+\
+                "When you successfully hit somebody while you're unarmed, "+\
+                "you can sometimes give them a pummelling! This means that "+\
+                "you get a free attack on them, with a slightly higher "+\
+                "chance to hit.\n"+\
+                "You also gain unarmed skills a bit faster then other "+\
+                "weapons, and get bigger bonuses to your attack and damage "+\
+                "as you get more skilled with yours fists."
+                )                
+            self.message_dialog_function(output,
+                ActiveDialog = self.activate_dialog)
+            self.tutorial_settings[TUTORIAL_UNARMEDF] = True
+        

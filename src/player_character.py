@@ -179,4 +179,12 @@ class PlayerCharacter(character.Character):
         if result[0]:
             self.tutorial.TriggerMessage(tutorial.TUTORIAL_FIRE)
         return result
-        
+    
+    # Custom version to allow tutorial for unarmed
+    def Attack(self, pos):
+        super().Attack(pos)
+        if ((self.leftHandEquipped == None) or (self.leftHandEquipped != None\
+            and self.leftHandEquipped.IsWeapon() == False ))\
+            and ((self.rightHandEquipped == None) or (self.rightHandEquipped\
+            != None and self.rightHandEquipped.IsWeapon() == False )):
+                self.tutorial.TriggerMessage(tutorial.TUTORIAL_UNARMED)

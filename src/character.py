@@ -317,7 +317,6 @@ class Character:
                 if len(monsterInSquare) > 0:
                     if (monsterInSquare[0].team != self.team):          
                         result = self.AttackWithWeapon(monsterInSquare[0], i)
-                        print (result)
                         if (
                             (i[1] == None) or i[1].ItemClass == ItemClass.none)\
                             and (self.canPummel):
