@@ -498,7 +498,7 @@ while running or len(Animations) > 0:
             Animations.remove(i)
             ForceDraw = True
         else:
-            i.update(win)
+            i.tick(win, PC.currentMap)
             #pygame.image.save(win._windowsurface, "c:\\ss\\%05d" % ssframe + ".bmp")
             #ssframe += 1
     

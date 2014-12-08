@@ -9,8 +9,29 @@ class Animation:
         self.frame = -1
         self.frames = 0
         
-    def update(self, window):
-        self.frame += 1
+    def tick(self, window, level):
+        self.level = level
+        # Updated is whether it's been updated this frame. The idea is that
+        # it can be skipped otherwise.
+        self.updated = False     
+        self.window = window
+        while (not(self.updated) and (self.frame <= self.frames)):
+            self.frame += 1            
+            self.update(window, level)
+        
+    # window is where to draw to
+    # level is the current level for visibility
+    def update(self, window, level):
+        pass
+    
+    # The modified putchar doesn't show animations if out of sight
+    def putchar(self, character, x=0, y=0, fgcolor=None, bgcolor=None):
+        seen = self.level.VisibilityMap[x][y]
+        if seen == 2:
+            self.window.putchar(character, x, y, fgcolor, bgcolor)
+            self.updated = True
+        
+
         
 class HealAnimation(Animation):
     def __init__(self, position):
@@ -18,11 +39,12 @@ class HealAnimation(Animation):
         self.frames = 5
         self.position = position
         
-    def update(self, window):
-        super().update(window)
+    def update(self, window, level):
+        super().update(window, level)
         fore = pygame.Color(self.frame * 24,self.frame * 24,self.frame * 32)        
-        back = pygame.Color(self.frame * 16, self.frame * 16, self.frame * 32)
-        window.putchar("*", x = self.position[0], y = self.position[1], fgcolor = fore, bgcolor = back)
+        back = pygame.Color(self.frame * 16, self.frame * 16, self.frame * 32)        
+        
+        self.putchar("*", x = self.position[0], y = self.position[1], fgcolor = fore, bgcolor = back)
         
 class LevelUpAnimation(Animation):
     def __init__(self, position):
@@ -30,17 +52,17 @@ class LevelUpAnimation(Animation):
         self.frames = 5
         self.position = position
 
-    def update(self, window):
-        super().update(window)
+    def update(self, window, level):
+        super().update(window, level)
         fore = 'silver'     
         back = pygame.Color(self.frame * 32, self.frame * 32, 0)
         if self.frame >= self.frames:
             back == None
-        window.putchar("@", x = self.position[0], y = self.position[1], fgcolor = fore, bgcolor = back)
-        window.putchar(" ", x = self.position[0] - 1, y = self.position[1], fgcolor = fore, bgcolor = back)
-        window.putchar(" ", x = self.position[0] + 1, y = self.position[1], fgcolor = fore, bgcolor = back)
-        window.putchar(" ", x = self.position[0] , y = self.position[1] - 1, fgcolor = fore, bgcolor = back)
-        window.putchar(" ", x = self.position[0] , y = self.position[1] + 1, fgcolor = fore, bgcolor = back)        
+        self.putchar("@", x = self.position[0], y = self.position[1], fgcolor = fore, bgcolor = back)
+        self.putchar(" ", x = self.position[0] - 1, y = self.position[1], fgcolor = fore, bgcolor = back)
+        self.putchar(" ", x = self.position[0] + 1, y = self.position[1], fgcolor = fore, bgcolor = back)
+        self.putchar(" ", x = self.position[0] , y = self.position[1] - 1, fgcolor = fore, bgcolor = back)
+        self.putchar(" ", x = self.position[0] , y = self.position[1] + 1, fgcolor = fore, bgcolor = back)        
 
 class BigPunchAnimation(Animation):
     def __init__(self, route, character):
@@ -50,8 +72,8 @@ class BigPunchAnimation(Animation):
         self.character = character
         self.lastData = ((route[0][0], route[0][1]), '.', 'gray', None)
         
-    def update(self, window):
-        super().update(window)      
+    def update(self, window, level):
+        super().update(window, level)      
         curFrame = min(self.frame, len(self.route) - 1)
         fore = self.character.color 
         back = None
@@ -63,14 +85,14 @@ class BigPunchAnimation(Animation):
         dy = start[1] - end[1]      
         # Draw previous character
         if self.lastData != None:
-            window.putchar(self.lastData[1], x=self.lastData[0][0], y = self.lastData[0][1], fgcolor = self.lastData[2], bgcolor = self.lastData[3])
+            self.putchar(self.lastData[1], x=self.lastData[0][0], y = self.lastData[0][1], fgcolor = self.lastData[2], bgcolor = self.lastData[3])
         # Store this character
         self.lastData = (self.route[curFrame],\
             window._screenchar[self.route[curFrame][0]][self.route[curFrame][1]],\
             window._screenfgcolor[self.route[curFrame][0]][self.route[curFrame][1]],\
             window._screenbgcolor[self.route[curFrame][0]][self.route[curFrame][1]])
         # Draw dude
-        window.putchar(self.character.character, x = self.route[curFrame][0], y = self.route[curFrame][1], fgcolor = fore, bgcolor = back)
+        self.putchar(self.character.character, x = self.route[curFrame][0], y = self.route[curFrame][1], fgcolor = fore, bgcolor = back)
 
 class DragonsBreathAnimation(Animation):
     def __init__(self,  position, flameSpreadFrames):
@@ -100,8 +122,8 @@ class DragonsBreathAnimation(Animation):
         self.position = position
         self.frames = len(self.flameSpreadFrames ) - 1
     
-    def update(self, window):
-        super().update(window)
+    def update(self, window, level):
+        super().update(window, level)
         
         # TODO: Insert part to copy screen if frame == 0, and paint that
         # character if flameSpreadFrames        
@@ -115,23 +137,23 @@ class DragonsBreathAnimation(Animation):
                 if (baseX + i > 0) and (baseX + i < window._width) and (baseY + j > 0) and (baseY + j < window._height):
                     #improve this
                     if (self.flameSpreadFrames[self.frame][i][j] > 3):
-                        window.putchar("O", x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,255,0))
+                        self.putchar("O", x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,255,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] > 2):
-                        window.putchar("*", x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,255,0))
+                        self.putchar("*", x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,255,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] > 1):
-                        window.putchar(random.choice(['*','+',';','\"']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,128,0))
+                        self.putchar(random.choice(['*','+',';','\"']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,128,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] > 0.75):
-                        window.putchar(random.choice(['"','o']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,128,0), bgcolor = pygame.Color(128,0,0))
+                        self.putchar(random.choice(['"','o']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,128,0), bgcolor = pygame.Color(128,0,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] > 0.5):
-                        window.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,128,0), bgcolor = pygame.Color(96,0,0))
+                        self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,128,0), bgcolor = pygame.Color(96,0,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] > 0.25):
-                        window.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,64,0), bgcolor = pygame.Color(64,0,0))
+                        self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,64,0), bgcolor = pygame.Color(64,0,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] > 0.15):
-                        window.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,32,0), bgcolor = pygame.Color(32,0,0))
+                        self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,32,0), bgcolor = pygame.Color(32,0,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] > 0):
-                        window.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,0,0), bgcolor = pygame.Color(32,0,0))
+                        self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,0,0), bgcolor = pygame.Color(32,0,0))
                     elif (self.flameSpreadFrames[self.frame][i][j] == 0):
-                        window.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,0,0), bgcolor = None)
+                        self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,0,0), bgcolor = None)
 
 class DrawArrowAnimation(Animation):
     def __init__(self, route):
@@ -142,8 +164,8 @@ class DrawArrowAnimation(Animation):
         # It is ( (x, y), char, fgcolor, bgcolor )
         self.lastData = None
         
-    def update(self, window):
-        super().update(window)      
+    def update(self, window, level):
+        super().update(window, level)      
         curFrame = min(self.frame, len(self.route) - 1)
         fore = pygame.Color(165,42,42)      
         back = None
@@ -162,14 +184,14 @@ class DrawArrowAnimation(Animation):
         
         # Draw previous character
         if self.lastData != None:
-            window.putchar(self.lastData[1], x=self.lastData[0][0], y = self.lastData[0][1], fgcolor = self.lastData[2], bgcolor = self.lastData[3])
+            self.putchar(self.lastData[1], x=self.lastData[0][0], y = self.lastData[0][1], fgcolor = self.lastData[2], bgcolor = self.lastData[3])
         # Store this character
         self.lastData = (self.route[curFrame],\
             window._screenchar[self.route[curFrame][0]][self.route[curFrame][1]],\
             window._screenfgcolor[self.route[curFrame][0]][self.route[curFrame][1]],\
             window._screenbgcolor[self.route[curFrame][0]][self.route[curFrame][1]])
         # Draw arrow
-        window.putchar(char, x = self.route[curFrame][0], y = self.route[curFrame][1], fgcolor = fore, bgcolor = back)
+        self.putchar(char, x = self.route[curFrame][0], y = self.route[curFrame][1], fgcolor = fore, bgcolor = back)
 
 class DrawNecromancerSpell(Animation):      
     def __init__(self, target, dest, color):
@@ -181,8 +203,8 @@ class DrawNecromancerSpell(Animation):
         self.lastData = None
         self.color = color
         
-    def update(self, window):
-        super().update(window)      
+    def update(self, window, level):
+        super().update(window, level)      
         curFrame = min(self.frame, len(self.route) - 1)
         fore = pygame.Color(165,42,42)      
         back = None
@@ -192,14 +214,14 @@ class DrawNecromancerSpell(Animation):
         dy = start[1] - end[1]      
         # Draw previous character
         if self.lastData != None:
-            window.putchar(self.lastData[1], x=self.lastData[0][0], y = self.lastData[0][1], fgcolor = self.lastData[2], bgcolor = self.lastData[3])
+            self.putchar(self.lastData[1], x=self.lastData[0][0], y = self.lastData[0][1], fgcolor = self.lastData[2], bgcolor = self.lastData[3])
         # Store this character
         self.lastData = (self.route[curFrame],\
             window._screenchar[self.route[curFrame][0]][self.route[curFrame][1]],\
             window._screenfgcolor[self.route[curFrame][0]][self.route[curFrame][1]],\
             window._screenbgcolor[self.route[curFrame][0]][self.route[curFrame][1]])
         # Draw arrow
-        window.putchar("*", x = self.route[curFrame][0], y = self.route[curFrame][1], fgcolor = self.color, bgcolor = back)
+        self.putchar("*", x = self.route[curFrame][0], y = self.route[curFrame][1], fgcolor = self.color, bgcolor = back)
     
     # I said in orc.py if this was needed elsewhere then I'd move it out of orc.py
     # It's needed elsewhere, and I've just copied it here too
@@ -265,27 +287,27 @@ class DrawNecromancerDeath(Animation):
                 dy = iy - self.start[1]
                 value = max(0, -1 * abs(math.hypot(dx,dy)-(self.frame*1.5))+3)
                 if value <= 0:
-                    window.putchar(self.beforeScreen[ix][iy][0], x = ix, y = iy,\
+                    self.putchar(self.beforeScreen[ix][iy][0], x = ix, y = iy,\
                         fgcolor = self.beforeScreen[ix][iy][1],\
                         bgcolor = self.beforeScreen[ix][iy][2])
                 elif value <= 0.6:
-                    window.putchar(".", x = ix, y = iy,\
+                    self.putchar(".", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'black')
                 elif value <= 1.2:
-                    window.putchar("o", x = ix, y = iy,\
+                    self.putchar("o", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'gray')
                 elif value <= 1.8:
-                    window.putchar("O", x = ix, y = iy,\
+                    self.putchar("O", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'silver')
                 elif value  <= 2.4:
-                    window.putchar("O", x = ix, y = iy,\
+                    self.putchar("O", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'white')
                 else:
-                    window.putchar("O", x = ix, y = iy,\
+                    self.putchar("O", x = ix, y = iy,\
                         fgcolor = 'white',\
                         bgcolor = 'white')
                     
@@ -322,35 +344,35 @@ class DrawWarlordDeath(Animation):
                     -1 * abs(math.hypot(dx,dy)-((self.frame % 40)*1.5))+1+(4*(iteration/4)),
                     -1 * abs(math.hypot(dx,dy)-((self.frame % 20)*2))+1+(4*(iteration/3)))
                 if value <= 0:
-                    window.putchar(self.beforeScreen[ix][iy][0], x = ix, y = iy,\
+                    self.putchar(self.beforeScreen[ix][iy][0], x = ix, y = iy,\
                         fgcolor = self.beforeScreen[ix][iy][1],\
                         bgcolor = self.beforeScreen[ix][iy][2])
                 elif value <= 1:
-                    window.putchar(".", x = ix, y = iy,\
+                    self.putchar(".", x = ix, y = iy,\
                         fgcolor = 'red',\
                         bgcolor = 'black')
                 elif value <= 1.5:
-                    window.putchar("o", x = ix, y = iy,\
+                    self.putchar("o", x = ix, y = iy,\
                         fgcolor = 'silver',\
                         bgcolor = 'gray')                   
                 elif value <= 2.5:
-                    window.putchar("o", x = ix, y = iy,\
+                    self.putchar("o", x = ix, y = iy,\
                         fgcolor = 'red',\
                         bgcolor = 'gray')
                 elif value <= 3:
-                    window.putchar("O", x = ix, y = iy,\
+                    self.putchar("O", x = ix, y = iy,\
                         fgcolor = 'red',\
                         bgcolor = 'silver')
                 elif value  <= 4:
-                    window.putchar("0", x = ix, y = iy,\
+                    self.putchar("0", x = ix, y = iy,\
                         fgcolor = 'black',\
                         bgcolor = 'red')
                 elif value  <= 4.5:
-                    window.putchar("O", x = ix, y = iy,\
+                    self.putchar("O", x = ix, y = iy,\
                         fgcolor = 'red',\
                         bgcolor = 'black')
                 else:
-                    window.putchar("O", x = ix, y = iy,\
+                    self.putchar("O", x = ix, y = iy,\
                         fgcolor = 'black',\
                         bgcolor = 'black')
 
@@ -368,7 +390,7 @@ class DrawRouteAnimation(Animation):
         fore = pygame.Color(128,196,255)        
         back = None
         for i in range(curFrame):           
-            window.putchar("*", x = self.route[i][0], y = self.route[i][1], fgcolor = fore, bgcolor = back)
+            self.putchar("*", x = self.route[i][0], y = self.route[i][1], fgcolor = fore, bgcolor = back)
         
 class DrawAttackAnimation(Animation):
     def __init__(self, route):
@@ -381,6 +403,6 @@ class DrawAttackAnimation(Animation):
         fore = pygame.Color(128,196,255)        
         back = None
         for i in self.route:            
-            window.putchar("*", x = i[0], y = i[1], fgcolor = fore, bgcolor = back)
+            self.putchar("*", x = i[0], y = i[1], fgcolor = fore, bgcolor = back)
 
 
