@@ -496,7 +496,7 @@ while running or len(Animations) > 0:
             PC.currentMap.characters.remove(character)          
 
     # Draw animations if there are any. 
-    if (PC.ticksUntilTurn == 0):
+    if (PC.ticksUntilTurn == 0 or EndBoss.Victory() != 0):
         for i in Animations:
             if i.frame >= i.frames:
                 Animations.remove(i)

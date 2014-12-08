@@ -34,8 +34,6 @@ class Animation:
             self.window.putchar(character, x, y, fgcolor, bgcolor)
             self.updated = True
         
-
-        
 class HealAnimation(Animation):
     def __init__(self, position):
         super().__init__()
@@ -313,6 +311,7 @@ class DrawNecromancerDeath(Animation):
                     window.putchar("O", x = ix, y = iy,\
                         fgcolor = 'white',\
                         bgcolor = 'white')
+        self.updated = True
                     
 
 class DrawWarlordDeath(Animation):
