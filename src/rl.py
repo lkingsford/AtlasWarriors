@@ -156,7 +156,7 @@ def DrawMap():
 
 def DrawChar(x, y): 
     vis = PC.currentMap.VisibilityStatus(x,y)
-    darkColor = pygame.Color(32,32,32)
+    darkColor = pygame.Color(48,48,48)
     if (ShowMapCheat == True): vis = 2
     if vis == 0 :
         win.putchar(' ', x, y, 'black', pygame.Color(0,0,0,0));
@@ -217,7 +217,7 @@ hpFont = pygame.font.Font("DejaVuSerif.ttf", 20)
 clock = pygame.time.Clock()
 messageLog = []
 tutorial = Tutorial(messageBox.MessageBox, dialog);
-background = True
+background = False
 
 # This should be states or something. Add to the refactor list!
 # If a difficulty is in the command line arguments, start
