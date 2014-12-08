@@ -25,8 +25,9 @@ class Character:
         self.baseCritMult = 4
         self.living = True
         self.name = 'Character'     
-        self.xp = 0
-        
+        self.xp = 0         
+        # Whether can attack multiple times with fists. Only PC can.
+        self.canPummel = False                      
         # This is for the score (but only used by the Player Character)
         self.totalxp = 0
         
@@ -308,14 +309,26 @@ class Character:
                     if (dx == -1 and dy == 1):
                         attackSquares = [pos, (self.x - 1, self.y), (self.x, self.y + 1)]
                     if (dx == 1 and dy == 1):
-                        attackSquares = [pos, (self.x + 1, self.y), (self.x, self.y + 1)]                               
+                        attackSquares = [pos, (self.x + 1, self.y), (self.x, self.y + 1)]                                
             
             for j in attackSquares:
                 # self.animations.append(animation.DrawAttackAnimation(attackSquares))              
                 monsterInSquare = [c for c in self.currentMap.characters if (c.x == j[0]) and (c.y == j[1])]
                 if len(monsterInSquare) > 0:
                     if (monsterInSquare[0].team != self.team):          
-                        self.AttackWithWeapon(monsterInSquare[0], i)
+                        result = self.AttackWithWeapon(monsterInSquare[0], i)
+                        print (result)
+                        if (
+                            (i[1] == None) or i[1].ItemClass == ItemClass.none)\
+                            and (self.canPummel):
+                            while(not(monsterInSquare[0].dead()) and\
+                                result > 0):
+                                self.messageLog.append(Message.Message(\
+                                    self.name + " pummels " +\
+                                    monsterInSquare[0].name + "!"))                                
+                                result = self.AttackWithWeapon(\
+                                    monsterInSquare[0], i)
+                                
                         
         self.ticksUntilTurn = round(max(map(lambda i:100 if i[1] == None else i[1].Speed, Weapons))/self.speed)
     
@@ -364,6 +377,14 @@ class Character:
             hit, ' crit ', crit, ' DamageMultiplyer ', 
             self.GetDamageMultiplier(self.level-target.level),
             ' damage done ', damage)"""                 
+        
+        if hit:
+            if crit:
+                return 2
+            else:
+                return 1
+        else:
+            return 0
             
     def Attacked(self, damage, attacker, melee = True):
         self.hp -= round(damage)

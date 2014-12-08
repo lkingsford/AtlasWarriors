@@ -34,6 +34,7 @@ class PlayerCharacter(character.Character):
         self.difficulty = difficulty
         self.tutorial = tutorial
         self.autopickup = True
+        self.canPummel = True 
         
     def update(self):
         super().update();
