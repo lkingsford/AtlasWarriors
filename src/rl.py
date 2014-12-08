@@ -441,6 +441,8 @@ while running or len(Animations) > 0:
             # moving at the same time (actually, same turn but
             # beforehand) meaning that attacks didn't hit
             if PC.ticksUntilTurn <= 0:
+                for i in messageLog:
+                    i.seen = True
                 PC.update()
                 # This needs investigation to see if this goes here. It is the
                 # part that will add more monsters after an uncertain amount
@@ -532,16 +534,23 @@ while running or len(Animations) > 0:
     # Draw Messages
     toHit = PC.ToHit()
     lines = [
-        hpFont.render('HP ' + str(PC.hp) + ' (' + str(PC.maxhp) + ')    Level ' + str(PC.level) +\
-            '    XP ' + str(PC.xp) + ' (' + str(int(PC.nextLevel)) + ')' \
-            '   Hit ' + str(toHit[0][0]) +\
+        hpFont.render('HP ' + str(PC.hp) + ' (' + str(PC.maxhp) + ')  Level ' + str(PC.level) +\
+            ' XP  ' + str(PC.xp) + ' (' + str(int(PC.nextLevel)) + ')' \
+            '  Hit ' + str(toHit[0][0]) +\
             (', ' + str(toHit[1][0]) if len(toHit) > 1 else '') + '  Def ' +\
         str(PC.ToDefend()), True, (255,255 if PC.ZombieMod() == 0 else 0,255 if PC.ZombieMod() == 0 else 0, 255))]
-    if len(messageLog) > 0: lines.append(messageFont.render(messageLog[len(messageLog)-1].text, True, (255, 255, 255, 255)))
-    if len(messageLog) > 1: lines.append(messageFont.render(messageLog[len(messageLog)-2].text, True, (225, 225, 225, 255)))
-    if len(messageLog) > 2: lines.append(messageFont.render(messageLog[len(messageLog)-3].text, True, (195, 195, 195, 255)))
-    if len(messageLog) > 3: lines.append(messageFont.render(messageLog[len(messageLog)-4].text, True, (165, 165, 165, 255)))
-    if len(messageLog) > 4: lines.append(messageFont.render(messageLog[len(messageLog)-5].text, True, (135, 135, 135, 255)))
+        
+    messageLogToShow = [i for i in messageLog if not(i.seen) and not(i.text[:18]=="KILL OR BE KILLED!") ]
+    # Ensure second wind is always shown on top if necessary
+    if (PC.secondWind):        
+        messageLogToShow.append(Message.Message("KILL OR BE KILLED! - " + str(PC.secondWindTimeLeft) + " turns left"))
+        if len(messageLogToShow) > 0: lines.append(messageFont.render(messageLogToShow[len(messageLogToShow)-1].text, True, (255, 0, 0, 255)))
+    else:
+        if len(messageLogToShow) > 0: lines.append(messageFont.render(messageLogToShow[len(messageLogToShow)-1].text, True, (255, 255, 255, 255)))
+    if len(messageLogToShow) > 1: lines.append(messageFont.render(messageLogToShow[len(messageLogToShow)-2].text, True, (225, 225, 225, 255)))
+    if len(messageLogToShow) > 2: lines.append(messageFont.render(messageLogToShow[len(messageLogToShow)-3].text, True, (195, 195, 195, 255)))
+    if len(messageLogToShow) > 3: lines.append(messageFont.render(messageLogToShow[len(messageLogToShow)-4].text, True, (165, 165, 165, 255)))
+    if len(messageLogToShow) > 4: lines.append(messageFont.render(messageLogToShow[len(messageLogToShow)-5].text, True, (135, 135, 135, 255)))
     
     curY = 5 + win._cellheight * 20
     spacing = 3
@@ -549,10 +558,7 @@ while running or len(Animations) > 0:
     for i in lines:
         surface.blit(i, (3,  curY))
         curY += i.get_height() + spacing
-    
 
-    
-    
     # Draw Bottom Screen Operations
     pygame.draw.rect(surface, pygcurse.colornames['black'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 0)
     pygame.draw.rect(surface, pygcurse.colornames['blue'], pygame.Rect(0, win._cellheight * 26, win._cellwidth * 9, win._pixelheight - win._cellheight * 1), 1)
