@@ -120,39 +120,39 @@ class DragonsBreathAnimation(Animation):
                 break
         
         self.position = position
-        self.frames = len(self.flameSpreadFrames ) - 1
+        self.frames = (len(self.flameSpreadFrames )*3) - 1
     
     def update(self, window, level):
         super().update(window, level)
         
         # TODO: Insert part to copy screen if frame == 0, and paint that
         # character if flameSpreadFrames        
-        
-        width  = len(self.flameSpreadFrames[self.frame])                
+        frame = self.frame // 3
+        width  = len(self.flameSpreadFrames[frame])                
         baseX = self.position[0]
         for i in range( (width//2) * -1, width // 2):
-            height = len(self.flameSpreadFrames[self.frame][i])
+            height = len(self.flameSpreadFrames[frame][i])
             baseY = self.position[1]
             for j in range ( (height//2) * -1, height // 2):
                 if (baseX + i > 0) and (baseX + i < window._width) and (baseY + j > 0) and (baseY + j < window._height):
                     #improve this
-                    if (self.flameSpreadFrames[self.frame][i][j] > 3):
+                    if (self.flameSpreadFrames[frame][i][j] > 3):
                         self.putchar("O", x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,255,0))
-                    elif (self.flameSpreadFrames[self.frame][i][j] > 2):
+                    elif (self.flameSpreadFrames[frame][i][j] > 2):
                         self.putchar("*", x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,255,0))
-                    elif (self.flameSpreadFrames[self.frame][i][j] > 1):
+                    elif (self.flameSpreadFrames[frame][i][j] > 1):
                         self.putchar(random.choice(['*','+',';','\"']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,0,0), bgcolor = pygame.Color(255,128,0))
-                    elif (self.flameSpreadFrames[self.frame][i][j] > 0.75):
+                    elif (self.flameSpreadFrames[frame][i][j] > 0.75):
                         self.putchar(random.choice(['"','o']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,128,0), bgcolor = pygame.Color(128,0,0))
-                    elif (self.flameSpreadFrames[self.frame][i][j] > 0.5):
+                    elif (self.flameSpreadFrames[frame][i][j] > 0.5):
                         self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,128,0), bgcolor = pygame.Color(96,0,0))
-                    elif (self.flameSpreadFrames[self.frame][i][j] > 0.25):
+                    elif (self.flameSpreadFrames[frame][i][j] > 0.25):
                         self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(255,64,0), bgcolor = pygame.Color(64,0,0))
-                    elif (self.flameSpreadFrames[self.frame][i][j] > 0.15):
+                    elif (self.flameSpreadFrames[frame][i][j] > 0.15):
                         self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,32,0), bgcolor = pygame.Color(32,0,0))
-                    elif (self.flameSpreadFrames[self.frame][i][j] > 0):
+                    elif (self.flameSpreadFrames[frame][i][j] > 0):
                         self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,0,0), bgcolor = pygame.Color(32,0,0))
-                    elif (self.flameSpreadFrames[self.frame][i][j] == 0):
+                    elif (self.flameSpreadFrames[frame][i][j] == 0):
                         self.putchar(random.choice(['.',',']), x=baseX+i, y=baseY+j, fgcolor = pygame.Color(128,0,0), bgcolor = None)
 
 class DrawArrowAnimation(Animation):
