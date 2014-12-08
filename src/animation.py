@@ -74,7 +74,7 @@ class BigPunchAnimation(Animation):
         
     def update(self, window, level):
         super().update(window, level)      
-        curFrame = min((self.frame/2), (len(self.route)/2) - 1)
+        curFrame = min((self.frame//2), (len(self.route)//2) - 1)
         fore = self.character.color 
         back = None
         if self.frame >= self.frames:

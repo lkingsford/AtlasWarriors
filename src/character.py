@@ -320,13 +320,15 @@ class Character:
                         if (
                             (i[1] == None) or i[1].ItemClass == ItemClass.none)\
                             and (self.canPummel):
+                            pummelMod = 0;
                             while(not(monsterInSquare[0].dead()) and\
-                                result > 0):
+                                result > 0):                                
                                 self.messageLog.append(Message.Message(\
                                     self.name + " pummels " +\
-                                    monsterInSquare[0].name + "!"))                                
+                                    monsterInSquare[0].name + "!"))
+                                pummelMod += 1
                                 result = self.AttackWithWeapon(\
-                                    monsterInSquare[0], i)
+                                    monsterInSquare[0], (i[0]+pummelMod, i[1]))
                                 
                         
         self.ticksUntilTurn = round(max(map(lambda i:100 if i[1] == None else i[1].Speed, Weapons))/self.speed)
