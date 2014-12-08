@@ -49,6 +49,11 @@ class Warlord(Enemy):
     def dead(self):
         return self.died;
 
+    # Special version needed because of the pumping up damage. This is not really what it was intended for, but it saves
+    # a lot of programming. This returns the unarmed skill to 0 every hit.
+    def RegisterSkillHit(self, skill):
+        self.skills[skill] = 0,0
+
     def Victory(self):
         # Returns 0 if game still going
         # Returns 1 if game won normally
