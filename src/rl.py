@@ -24,6 +24,7 @@ import messageBox
 import sys
 import logging
 import traceback
+import game
 
 from tutorial import *
 from pygame.locals import *
@@ -261,32 +262,10 @@ mouseCellY = 0
 
 ssframe = 0
 
-# Load default items
-DefaultItems = xml2object.parse('items.xml', item.Item)
-
-# Create maps
-Maps = []
-for i in range(10):
-    Maps.append(map.Map(i, messageLog, DefaultItems, difficulty));
-
-for i in range(10):
-    if (i != 9):
-        Maps[i].nextMap = Maps[i + 1]
-    if (i != 0):
-        Maps[i].lastMap = Maps[i - 1]
-    Maps[i].background = pygame.image.load(os.path.join('assets','back_level_'+str(i % 4)+'.png'))
-        
-PC = player_character.PlayerCharacter(messageLog, Maps[0], DefaultItems, difficulty, tutorial)
-PC.x = Maps[0].startX
-PC.y = Maps[0].startY
-Maps[0].UpdateVisibility(PC, PC.x, PC.y)
-
-messageLog.PC = PC
+messageLog.PC = game.PC
 
 currentTint = (0,0,0,0)
 
-PC.currentMap.characters.append(PC)
-lastMap = None
 
 # This is not great
 AllMonsters = []
